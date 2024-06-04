@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,
 *::before,
 *::after {
@@ -5,3 +6,143 @@
   margin: 0;
   font-weight: normal;
 }
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.tp-h1,
+.tp-h2,
+.tp-h3,
+.tp-h4 {
+  font-weight: 600;
+  text-align: left;
+}
+
+.tp-h1 {
+  font-size: 64px;
+  letter-spacing: -0.03em;
+  line-height: 64px;
+}
+.tp-h2 {
+  font-size: 48px;
+  letter-spacing: -0.03em;
+  line-height: 48px;
+}
+.tp-h3 {
+  font-size: 40px;
+  line-height: 48px;
+  letter-spacing: -0.02em;
+}
+.tp-h4 {
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.03em;
+}
+
+.tp-title-sb,
+.tp-title-md {
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+.tp-title-sb {
+  font-weight: 600;
+}
+.tp-title-md {
+  font-weight: 500;
+}
+
+.tp-base-1-b,
+.tp-base-1-sb,
+.tp-base-2 {
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.tp-base-1-sb {
+  font-size: 15px;
+  font-weight: 600;
+}
+.tp-base-1-b {
+  font-size: 15px;
+  font-weight: 700;
+}
+.tp-base-2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tp-body-1-md,
+.tp-body-1-sb,
+.tp-body-2-sb {
+  line-height: 24px;
+  text-align: left;
+}
+.tp-body-1-md {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+.tp-body-1-sb {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tp-body-2-sb {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tp-caption-1,
+.tp-caption-1-md {
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.tp-caption-1 {
+  font-weight: 600;
+}
+.tp-caption-1-md {
+  font-weight: 500;
+}
+
+.tp-caption-2,
+.tp-caption-2-md {
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.tp-caption-2 {
+  font-weight: 700;
+  line-height: 16px;
+}
+.tp-caption-2-md {
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.tp-button-1,
+.tp-button-2 {
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.tp-button-1 {
+  font-size: 15px;
+}
+.tp-button-2 {
+  font-size: 13px;
+}
+
+// @each $colorName, $color in $colors {
+//   .bg--#{$colorName} {
+//       background-color: $color;
+//   }
+// }

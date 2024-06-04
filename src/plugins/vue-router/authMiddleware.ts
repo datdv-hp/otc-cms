@@ -19,7 +19,7 @@ export default async (
   if (isPublic) {
     // Do not allow user to visit entry page if they are logged in
     if (loggedIn && onlyWhenLoggedOut) {
-      return next({ name: PageName.DASHBOARD_PAGE });
+      return next({ name: PageName.HOME_PAGE });
     }
     return next();
   }

@@ -1,17 +1,17 @@
 import { PageName } from '@/common/constants/common.constant';
 import MainLayout from '@/layouts/MainLayout.vue';
 import type { RouteRecordRaw } from 'vue-router';
-import DashboardPage from './pages/DashboardPage.vue';
+import HomePage from './pages/HomePage.vue';
 
-const dashboardRouters: Array<RouteRecordRaw> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     component: MainLayout,
     children: [
       {
-        path: 'dashboard',
-        name: PageName.DASHBOARD_PAGE,
-        component: DashboardPage,
+        path: 'home',
+        name: PageName.HOME_PAGE,
+        component: HomePage,
         meta: {
           requiresAuth: true
         }
@@ -20,4 +20,4 @@ const dashboardRouters: Array<RouteRecordRaw> = [
   }
 ];
 
-export default dashboardRouters;
+export default routes;

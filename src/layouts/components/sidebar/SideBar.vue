@@ -1,30 +1,199 @@
 <script lang="ts" setup>
-const drawer = ref(true);
-const rail = ref(true);
+import MiniLogo from '@/assets/images/mini-logo.svg?url';
+import { PageName, SupportTheme } from '@/common/constants/common.constant';
+import { ISidebarItem } from '@/layouts/type';
+import { useTheme } from 'vuetify';
+
+const { t } = useI18n();
+const theme = useTheme();
+const themeName = computed(() => theme.global.name.value);
+const themeComputed = computed<SupportTheme>({
+  get: () => theme.name.value as SupportTheme,
+  set: (value: SupportTheme) => {
+    return (theme.global.name.value = value);
+  }
+});
+const sidebar = computed<ISidebarItem[]>(() => {
+  return [
+    {
+      title: t('common.app.sidebar.home.name'),
+      icon: '$sidebar.home',
+      activeIcon: '$sidebar.home-solid',
+      routeName: PageName.HOME_PAGE,
+      activeRouteNames: [PageName.HOME_PAGE],
+      role: true
+    },
+    {
+      title: t('common.app.sidebar.user.name'),
+      icon: '$sidebar.user',
+      activeIcon: '$sidebar.user-solid',
+      routeName: PageName.USER_LIST_PAGE,
+      activeRouteNames: [PageName.USER_LIST_PAGE, PageName.USER_DETAIL_PAGE],
+      role: true
+    },
+    {
+      title: t('common.app.sidebar.setting.name'),
+      icon: '$sidebar.setting',
+      activeIcon: '$sidebar.setting-solid',
+      routeName: PageName.SETTING_CASHBACK_PAGE,
+      activeRouteNames: [PageName.SETTING_CASHBACK_PAGE],
+      role: true
+    }
+  ].filter((item) => item.role);
+});
+function toggleTheme() {
+  theme.global.name.value = themeName.value === 'dark' ? 'light' : 'dark';
+}
 </script>
 <template>
-  <v-navigation-drawer v-model="drawer" :rail="rail" permanent @click="rail = false">
-    <v-list-item
-      prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-      title="John Leider"
-      nav
-    >
-      <template v-slot:append>
-        <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
+  <v-navigation-drawer
+    :theme="themeName"
+    class="px-6 py-4"
+    permanent
+    floating
+    width="340"
+    :scrim="false"
+  >
+    <div class="logo-wrapper">
+      <v-img :src="MiniLogo" :lazy-src="MiniLogo" :height="48" :width="48" />
+    </div>
+    <v-list class="sidebar-content" nav>
+      <template v-for="(item, _) in sidebar" :key="_">
+        <v-list-group class="sidebar-item" v-if="item.subItems?.length">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" :title="item.title">
+              <template #prepend="{ isActive }">
+                <v-icon :icon="isActive ? item.activeIcon : item.icon"></v-icon> </template
+            ></v-list-item>
+          </template>
+          <v-list-item
+            v-for="(subItem, subIndex) in item.subItems"
+            :key="subIndex"
+            :to="{ name: subItem.routeName }"
+            :title="subItem.title"
+          >
+            <template #title="{ title }">
+              <span class="tp-base-1-sb">{{ title }}</span>
+            </template>
+          </v-list-item>
+        </v-list-group>
+        <v-list-item
+          v-else
+          class="sidebar-item tp-base-1-sb"
+          :title="item.title"
+          :to="{ name: item.routeName }"
+        >
+          <template #prepend="{ isActive }">
+            <v-icon :icon="isActive ? item.activeIcon : item.icon" />
+          </template>
+          <template #title="{ title }">
+            <span class="tp-base-1-sb">{{ title }}</span>
+          </template>
+        </v-list-item>
       </template>
-    </v-list-item>
-
-    <v-divider></v-divider>
-    <v-list density="compact" nav>
-      <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-      <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-      <v-list-item
-        prepend-icon="mdi-account-group-outline"
-        title="Users"
-        value="users"
-      ></v-list-item>
     </v-list>
-    <BaseButton />
+    <v-btn-toggle
+      class="toggle-theme"
+      v-model="themeComputed"
+      rounded="xl"
+      :mandatory="true"
+      density="comfortable"
+    >
+      <v-btn
+        class="light text-none"
+        rounded="xl"
+        :value="SupportTheme.LIGHT"
+        prepend-icon="$sidebar.light-mode"
+      >
+        <span class="tp-base-1-sb">
+          {{ t('common.app.theme.light') }}
+        </span>
+      </v-btn>
+      <v-btn
+        class="dark text-none"
+        rounded="xl"
+        :value="SupportTheme.DARK"
+        prepend-icon="$sidebar.dark-mode"
+      >
+        <span class="tp-base-1-sb">{{ t('common.app.theme.dark') }}</span>
+      </v-btn>
+    </v-btn-toggle>
   </v-navigation-drawer>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.v-navigation-drawer__content) {
+  display: flex;
+  flex-direction: column;
+  .logo-wrapper {
+    padding-bottom: 48px;
+  }
+  .sidebar-content {
+    flex: 1;
+    padding: 0;
+  }
+}
+
+:deep(.v-list-item) {
+  &.sidebar-item {
+    padding: 12px;
+    margin-bottom: 8px !important;
+    width: 292px;
+    border-radius: 12px;
+    grid-template-columns: 36px 1fr auto;
+  }
+  &.v-list-item--active {
+  }
+  .v-list-item__overlay {
+    opacity: 0;
+  }
+  .v-list-item__prepend {
+    .v-icon {
+      opacity: 1;
+    }
+  }
+  &:hover {
+  }
+}
+
+.toggle-theme {
+  padding: 4px;
+  gap: 4px;
+  .v-btn {
+    flex: 1;
+    transition: all 0.3s linear;
+  }
+
+  &.v-theme--light {
+    background-color: $color-neutral-2;
+    .light {
+      box-shadow:
+        0px 4px 8px -4px #00000040,
+        0px 2px 0px 0px #ffffff40 inset,
+        0px -1px 1px 0px #0000000a inset;
+    }
+    .dark {
+      background-color: inherit;
+      color: $color-neutral-4;
+      &:hover {
+        color: $color-neutral-8;
+      }
+    }
+  }
+  &.v-theme--dark {
+    background-color: $color-neutral-8;
+    .light {
+      background-color: inherit;
+      color: $color-neutral-4;
+      &:hover {
+        color: $color-neutral-2;
+      }
+    }
+    .dark {
+      box-shadow:
+        0px 4px 8px -4px #00000040,
+        0px 2px 1px 0px #ffffff0f inset,
+        0px -1px 1px 0px #0000007d inset;
+    }
+  }
+}
+</style>

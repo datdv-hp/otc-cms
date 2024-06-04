@@ -14,18 +14,15 @@ import SideBar from './components/sidebar/SideBar.vue';
 </template>
 
 <style lang="scss" scoped>
-:deep(v-layout),
-:deep(.v-navigation-drawer) {
-  height: 100vh !important;
-  border-right: 1px solid #e9e9eb;
-}
+// :deep(v-layout),
+// :deep(.v-navigation-drawer) {
+//   height: 100vh !important;
+// }
 
-:deep(.v-navigation-drawer) {
-  position: fixed !important;
-}
-:deep(.v-main) {
-  background-color: white;
-  transition: all 0.24s linear !important;
-  transition: 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-}
+// :deep(.v-navigation-drawer) {
+//   position: fixed !important;
+// }
+// :deep(.v-main) {
+//   transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1) !important;
+// }
 </style>

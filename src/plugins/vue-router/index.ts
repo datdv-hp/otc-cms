@@ -12,7 +12,7 @@ import VueRouteMiddleware, { GLOBAL_MIDDLEWARE_NAME } from './middleware';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: { name: PageName.DASHBOARD_PAGE }
+    redirect: { name: PageName.HOME_PAGE }
   },
   ...moduleRoutes,
   {
