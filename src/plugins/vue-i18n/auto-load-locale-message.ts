@@ -39,4 +39,5 @@ for (const path in localeFiles) {
     Object.assign(messages[lang][module][matchedName], localeFiles[path]);
   }
 }
+console.log('messages', messages);
 export default messages;

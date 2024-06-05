@@ -1,3 +1,6 @@
 export default {
-  Name: 'tên'
+  auth: {
+    username: 'Tên đăng nhập',
+    password: 'Mật khẩu'
+  }
 };

@@ -1,9 +1,14 @@
 export type IUserProfile = {
   id: string | number;
-  firstName: string;
-  lastName: string;
-  email: string;
+  fullname: string;
+  username: string;
+  email?: string;
   permissions: string[];
 };
 
 export type IUserPermission = {};
+
+export type ISignInBody = {
+  username: string;
+  password: string;
+};

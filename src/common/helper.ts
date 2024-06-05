@@ -20,7 +20,7 @@ export function isStringify<T>(obj: T | Record<string, unknown>): boolean {
 }
 
 export function translateYupError(
-  yupError: { i18nKey: string; params?: Record<string, string> } | string
+  yupError?: { i18nKey: string; params?: Record<string, string> } | string
 ): string {
   // @ts-ignore
   const t = i18n.global.t;

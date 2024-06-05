@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import MiniLogo from '@/assets/images/mini-logo.svg?url';
+import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
+import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import { PageName, SupportTheme } from '@/common/constants/common.constant';
 import { ISidebarItem } from '@/layouts/type';
 import { useTheme } from 'vuetify';
@@ -12,6 +13,9 @@ const themeComputed = computed<SupportTheme>({
   set: (value: SupportTheme) => {
     return (theme.global.name.value = value);
   }
+});
+const Logo = computed(() => {
+  return themeName.value === 'dark' ? MiniLogoDark : MiniLogoLight;
 });
 const sidebar = computed<ISidebarItem[]>(() => {
   return [
@@ -55,7 +59,8 @@ function toggleTheme() {
     :scrim="false"
   >
     <div class="logo-wrapper">
-      <v-img :src="MiniLogo" :lazy-src="MiniLogo" :height="48" :width="48" />
+      <component :is="Logo" />
+      <span class="logo-text">OTC</span>
     </div>
     <v-list class="sidebar-content" nav>
       <template v-for="(item, _) in sidebar" :key="_">
@@ -126,6 +131,15 @@ function toggleTheme() {
   flex-direction: column;
   .logo-wrapper {
     padding-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+    }
   }
   .sidebar-content {
     flex: 1;
@@ -141,8 +155,7 @@ function toggleTheme() {
     border-radius: 12px;
     grid-template-columns: 36px 1fr auto;
   }
-  &.v-list-item--active {
-  }
+
   .v-list-item__overlay {
     opacity: 0;
   }
@@ -162,8 +175,18 @@ function toggleTheme() {
     flex: 1;
     transition: all 0.3s linear;
   }
+}
 
-  &.v-theme--light {
+.v-theme--light {
+  &.v-list-item {
+    &.v-list-item--active {
+      box-shadow:
+        0px 1px 1px 0px #ffffff inset,
+        0px -2px 1px 0px #0000000d inset;
+      background-color: $color-neutral-3;
+    }
+  }
+  &.toggle-theme {
     background-color: $color-neutral-2;
     .light {
       box-shadow:
@@ -179,7 +202,19 @@ function toggleTheme() {
       }
     }
   }
-  &.v-theme--dark {
+}
+
+.v-theme--dark {
+  &.v-list-item {
+    &.v-list-item--active {
+      box-shadow:
+        0px 1px 1px 0px #ffffff1c inset,
+        0px -2px 1px 0px #00000066 inset;
+      background-color: $color-neutral-6;
+    }
+  }
+
+  &.toggle-theme {
     background-color: $color-neutral-8;
     .light {
       background-color: inherit;

@@ -1,0 +1,24 @@
+@import '@/assets/styles/variables.scss';
+
+.v-text-field {
+  .v-field {
+    border-radius: 12px;
+    grid-template-columns: 30px minmax(0, 1fr) min-content min-content;
+    .v-field__input {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: -0.01em;
+      color: $color-neutral-7;
+      background-color: $color-neutral-2;
+    }
+
+    .v-field__input::placeholder {
+      color: #9a9fa5;
+      opacity: 0.5;
+    }
+    input.v-field__input:-webkit-autofill {
+      background: transparent !important; /* Set background to transparent */
+    }
+  }
+}
