@@ -15,14 +15,6 @@ const routes: Array<RouteRecordRaw> = [
           requiresAuth: true
         }
       },
-      {
-        path: 'sign-up',
-        name: PageName.SIGN_UP_PAGE,
-        component: () => import('@/modules/auth/pages/SignUpPage.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      }
     ]
   }
 ];

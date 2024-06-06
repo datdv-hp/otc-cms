@@ -34,7 +34,9 @@ export class ApiService {
     this.client = axios;
   }
 
-  _getList<Record>(queryString: IQueryParams): Promise<IBodyResponse<IGetListData<Record>>> {
+  _getList<Record, T extends IQueryParams = IQueryParams>(
+    queryString: T
+  ): Promise<IBodyResponse<IGetListData<Record>>> {
     return this.client.get(`${this.baseUrl}`, {
       params: queryString
     });

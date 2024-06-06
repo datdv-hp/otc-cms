@@ -4,35 +4,21 @@ import SideBar from './components/sidebar/SideBar.vue';
 </script>
 
 <template>
-  <!-- <v-app :full-height="true">
-    <SideBar />
-    <v-main>
-      <router-view v-slot="{ Component }">
-        <component :is="Component" />
-      </router-view>
-    </v-main>
-  </v-app> -->
-  <v-layout class="rounded rounded-md">
+  <v-app :full-height="true">
     <SideBar />
     <HeaderBar />
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-      <router-view v-slot="{ Component }">
-        <component :is="Component" />
-      </router-view>
+    <v-main class="d-flex flex-column" style="min-height: 300px">
+      <div class="app-content flex-1 pa-6">
+        <router-view v-slot="{ Component }">
+          <component :is="Component" />
+        </router-view>
+      </div>
     </v-main>
-  </v-layout>
+  </v-app>
 </template>
 
 <style lang="scss" scoped>
-// :deep(v-layout),
-// :deep(.v-navigation-drawer) {
-//   height: 100vh !important;
-// }
-
-// :deep(.v-navigation-drawer) {
-//   position: fixed !important;
-// }
-// :deep(.v-main) {
-//   transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1) !important;
-// }
+:deep(.v-main) {
+  transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
 </style>
