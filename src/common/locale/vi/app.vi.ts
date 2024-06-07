@@ -6,6 +6,9 @@ export default {
     user: {
       name: 'Người dùng'
     },
+    admin: {
+      name: 'Quản trị viên'
+    },
     setting: {
       name: 'Cài đặt'
     }

@@ -46,7 +46,7 @@ export class ApiService {
     return this.client.get(this.detailUrl + '/' + id);
   }
 
-  _create<Params, Record>(params: Params): Promise<IBodyResponse<Record>> {
+  _create<Params, Record = any>(params: Params): Promise<IBodyResponse<Record>> {
     return this.client.post(this.createUrl, params);
   }
 

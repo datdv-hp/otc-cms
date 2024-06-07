@@ -7,4 +7,4 @@ class UserApiService extends ApiService {
     return this._getList<IUser>(params);
   }
 }
-export const authApiService = new UserApiService({ baseUrl: '/user' }, axiosInstance);
+export const userApiService = new UserApiService({ baseUrl: '/user' }, axiosInstance);

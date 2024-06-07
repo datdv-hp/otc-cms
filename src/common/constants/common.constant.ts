@@ -17,7 +17,8 @@ export enum PageName {
   NOT_FOUND_PAGE = 'not_found_page',
   FORBIDDEN_PAGE = 'forbidden_page',
   HOME_PAGE = 'home_page',
-  SETTING_CASHBACK_PAGE = 'setting_cashback_page'
+  SETTING_CASHBACK_PAGE = 'setting_cashback_page',
+  ADMIN_LIST_PAGE = 'admin_list_page'
 }
 
 export enum SupportTheme {

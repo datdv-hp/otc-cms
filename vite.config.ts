@@ -59,5 +59,6 @@ export default defineConfig({
         additionalData: `@import "@/assets/styles/variables.scss";`
       }
     }
-  }
+  },
+  envPrefix: 'VUE_'
 });

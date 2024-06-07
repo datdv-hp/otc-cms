@@ -20,7 +20,7 @@ const Logo = computed(() => {
 const sidebar = computed<ISidebarItem[]>(() => {
   return [
     {
-      title: t('common.app.sidebar.home.name'),
+      title: t('app.sidebar.home.name'),
       icon: '$sidebar.home',
       activeIcon: '$sidebar.home-solid',
       routeName: PageName.HOME_PAGE,
@@ -28,7 +28,7 @@ const sidebar = computed<ISidebarItem[]>(() => {
       role: true
     },
     {
-      title: t('common.app.sidebar.user.name'),
+      title: t('app.sidebar.user.name'),
       icon: '$sidebar.user',
       activeIcon: '$sidebar.user-solid',
       routeName: PageName.USER_LIST_PAGE,
@@ -36,7 +36,15 @@ const sidebar = computed<ISidebarItem[]>(() => {
       role: true
     },
     {
-      title: t('common.app.sidebar.setting.name'),
+      title: t('app.sidebar.admin.name'),
+      icon: '$sidebar.user',
+      activeIcon: '$sidebar.user-solid',
+      routeName: PageName.ADMIN_LIST_PAGE,
+      activeRouteNames: [PageName.ADMIN_LIST_PAGE],
+      role: true
+    },
+    {
+      title: t('app.sidebar.setting.name'),
       icon: '$sidebar.setting',
       activeIcon: '$sidebar.setting-solid',
       routeName: PageName.SETTING_CASHBACK_PAGE,
@@ -111,7 +119,7 @@ function toggleTheme() {
         prepend-icon="$sidebar.light-mode"
       >
         <span class="tp-base-1-sb">
-          {{ t('common.app.theme.light') }}
+          {{ t('app.theme.light') }}
         </span>
       </v-btn>
       <v-btn
@@ -120,7 +128,7 @@ function toggleTheme() {
         :value="SupportTheme.DARK"
         prepend-icon="$sidebar.dark-mode"
       >
-        <span class="tp-base-1-sb">{{ t('common.app.theme.dark') }}</span>
+        <span class="tp-base-1-sb">{{ t('app.theme.dark') }}</span>
       </v-btn>
     </v-btn-toggle>
   </v-navigation-drawer>
