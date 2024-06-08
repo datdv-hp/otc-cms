@@ -11,10 +11,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'admin',
         name: PageName.ADMIN_LIST_PAGE,
-        component: AdminListPage
-        // meta: {
-        //   requiresAuth: true
-        // }
+        component: AdminListPage,
+        meta: {
+          requiresAuth: true
+        }
         // children: [
         //   {
         //     path: ':id',

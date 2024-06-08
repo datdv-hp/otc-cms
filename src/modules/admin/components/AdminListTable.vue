@@ -4,6 +4,7 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { AccountStatus, StatusColor } from '../constant';
 import { IAdmin } from '../type';
 import { formatDate, randomDate } from '../util';
+import { adminApiService } from '../api';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
@@ -17,7 +18,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('admin.fields.id'),
       key: 'id',
-      width: '67',
       minWidth: '67'
     },
     {
@@ -47,8 +47,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('admin.fields.actions'),
       key: 'actions',
       minWidth: '160',
-      sortable: false,
-      fixed: true
+      sortable: false
     }
   ];
 });
@@ -59,7 +58,7 @@ const demoItems: IAdmin[] = Array.from({ length: 100 }, (_, i) => {
     fullname: 'user fullname' + i,
     username: 'user' + i,
     status: isActive ? AccountStatus.ACTIVE : AccountStatus.INACTIVE,
-    createdAt: formatDate(randomDate(undefined, new Date()))
+    createdAt: randomDate(new Date(), 365 * 2)
   };
 });
 
@@ -97,6 +96,10 @@ function createNewAdmin() {
   isCreate.value = true;
 }
 
+function getList() {
+  adminApiService._getList({});
+}
+
 const { errors } = useForm();
 const { value: fullname } = useField<string>('fullname');
 const { value: username } = useField<string>('username');
@@ -107,8 +110,8 @@ const { value: username } = useField<string>('username');
     v-model="selectedItems"
     v-model:items-per-page="itemsPerPage"
     :items-length="totalItems"
-    :fixed-header="true"
     :items="items"
+    height="500"
     :headers="headers"
     :loading="loading"
     show-select
@@ -119,6 +122,9 @@ const { value: username } = useField<string>('username');
         <v-btn class="text-none" color="primary" @click="createNewAdmin">{{
           $t('common.button.add')
         }}</v-btn>
+        <v-btn class="text-none" color="primary" @click="getList">{{
+          $t('common.button.add')
+        }}</v-btn>
       </div>
     </template>
     <template #[`body.prepend`] v-if="isCreate">
@@ -127,6 +133,7 @@ const { value: username } = useField<string>('username');
         <td></td>
         <td>
           <v-text-field
+            label="a"
             :prepend="false"
             density="comfortable"
             variant="plain"
@@ -137,6 +144,7 @@ const { value: username } = useField<string>('username');
         </td>
         <td>
           <v-text-field
+            label="b"
             :prepend="false"
             density="comfortable"
             variant="plain"
@@ -165,11 +173,4 @@ const { value: username } = useField<string>('username');
     </template>
   </v-data-table-server>
 </template>
-s
-<style lang="scss" scoped>
-:deep(.v-data-table-footer__items-per-page) {
-  .v-field__input {
-    padding: 0;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -10,4 +10,4 @@ class AdminApiService extends ApiService {
     return this._create<ICreateAdminBody, IAdmin>(body);
   }
 }
-export const userApiService = new AdminApiService({ baseUrl: '/user' }, axiosInstance);
+export const adminApiService = new AdminApiService({ baseUrl: '/auth/admin' }, axiosInstance);

@@ -12,3 +12,8 @@ export type ISignInBody = {
   username: string;
   password: string;
 };
+
+export type IAuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};

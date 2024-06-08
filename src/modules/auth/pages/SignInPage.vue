@@ -5,9 +5,16 @@ import { useTheme } from 'vuetify';
 import { SignInSchema } from '../constant';
 import { authApiService } from '../api';
 import { ISignInBody } from '../types';
+import localStorageAuthService from '@/common/storages/authStorage';
+import { PageName } from '@/common/constants/common.constant';
+import { UseAuthStore } from '../store';
 
 const theme = useTheme();
 const { t } = useI18n();
+const router = useRouter();
+const overlay = shallowRef(false);
+const authStore = UseAuthStore();
+
 const Logo = computed(() => {
   return theme.name.value === 'dark' ? MiniLogoDark : MiniLogoLight;
 });
@@ -19,23 +26,67 @@ const {
   meta,
   errors,
   validate,
-  handleSubmit
+  handleSubmit,
+  isSubmitting,
+  isValidating
 } = useForm<ISignInBody>({
   validationSchema: SignInSchema
 });
 const { value: username } = useField<string>('username');
 const { value: password } = useField<string>('password');
 
-const signIn = handleSubmit(async () => {
-  const res = await authApiService.signIn(formValue);
+function redirectIfNeed() {
+  const redirectPath = sessionStorage.getItem('redirect') as string;
+  if (redirectPath) {
+    router.replace(redirectPath);
+    sessionStorage.removeItem('redirect');
+  } else {
+    router.push({ name: PageName.HOME_PAGE });
+  }
+}
+
+function hasToken() {
+  return !!localStorageAuthService.getAccessToken();
+}
+
+const signIn = handleSubmit(async (values) => {
+  const res = await authApiService.signIn(values);
+  if (res.success) {
+    localStorageAuthService.setAuthTokens(res.data);
+    redirectIfNeed();
+  }
+});
+
+async function fetchProfile() {
+  const res = await authStore.getProfile();
+  if (!res.success) {
+    overlay.value = false;
+    return;
+  }
+  redirectIfNeed();
+}
+
+function setup() {
+  overlay.value = true;
+  if (hasToken()) {
+    fetchProfile();
+    return;
+  }
+  overlay.value = false;
+}
+
+onBeforeMount(() => {
+  setup();
 });
 </script>
 <template>
+  <v-overlay scrim="background" v-model="overlay" :opacity="1" class="align-center justify-center">
+    <v-progress-circular indeterminate></v-progress-circular>
+  </v-overlay>
   <div class="sign-in__wrapper">
     <div class="sign-in__container">
       <div class="logo-wrapper">
         <component :is="Logo" />
-        <!-- <span class="logo-text">OTC</span> -->
       </div>
       <div class="sign-in__title tp-h3">{{ title }}</div>
       <div class="sign-in__content">
@@ -63,10 +114,12 @@ const signIn = handleSubmit(async () => {
           color="primary"
           variant="flat"
           height="48"
+          :loading="isValidating || isSubmitting"
+          @click="signIn"
         />
       </div>
     </div>
-    {{ { meta: meta, formValue } }}
+    {{ { errors } }}
   </div>
 </template>
 <style lang="scss" scoped>

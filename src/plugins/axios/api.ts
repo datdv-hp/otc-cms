@@ -1,4 +1,5 @@
 import type { IBodyResponse, IQueryParams, IGetListData } from '@/common/type';
+import { IAuthTokens } from '@/modules/auth/types';
 import type { AxiosInstance } from 'axios';
 
 interface IServiceOption {
@@ -8,6 +9,7 @@ interface IServiceOption {
 export class ApiService {
   client: AxiosInstance;
   baseUrl: string;
+  static refreshingPromise: Promise<IBodyResponse<IBodyResponse<IAuthTokens>>> | null = null;
 
   constructor(params: IServiceOption, axios: AxiosInstance) {
     this.client = axios;
