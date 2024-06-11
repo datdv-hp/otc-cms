@@ -1,5 +1,8 @@
 import { ToastType, useToasts } from '@/components/toast/store';
 import i18n from '@/plugins/vue-i18n';
+import dayjs from '@/plugins/dayjs';
+import { DATE_TIME_FORMAT } from './constants/common.constant';
+import { Dayjs } from 'dayjs';
 
 export function isValidJSON(str: string) {
   try {
@@ -55,4 +58,11 @@ export function NotifyWarning(message: string, title?: string, duration = 2) {
   if (!message) return;
   const { appendToast } = useToasts();
   appendToast({ message, type: ToastType.WARNING, title: title || '', duration });
+}
+
+export function formatDate(
+  value: Date | string | Dayjs,
+  format: DATE_TIME_FORMAT = DATE_TIME_FORMAT.YYYYMMDDHHmmss_HYPHEN
+) {
+  return dayjs(value).format(format);
 }

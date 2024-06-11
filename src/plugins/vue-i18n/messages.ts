@@ -12,6 +12,8 @@ import commonEn from '@/common/locale/en/common.en';
 import commonVi from '@/common/locale/vi/common.vi';
 import authEn from '@/modules/auth/locale/en/auth.en';
 import authVi from '@/modules/auth/locale/vi/auth.vi';
+import settingEn from '@/modules/setting/locale/en/setting.en';
+import settingVi from '@/modules/setting/locale/vi/setting.vi';
 
 const messages = {
   en: {
@@ -21,7 +23,8 @@ const messages = {
     yup: yupEn,
     fields: fieldsEn,
     common: commonEn,
-    auth: authEn
+    auth: authEn,
+    setting: settingEn
   },
   vi: {
     app: appVi,
@@ -30,7 +33,8 @@ const messages = {
     yup: yupVi,
     fields: fieldsVi,
     common: commonVi,
-    auth: authVi
+    auth: authVi,
+    setting: settingVi
   }
 };
 export default messages;

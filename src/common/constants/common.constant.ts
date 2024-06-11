@@ -18,6 +18,7 @@ export enum PageName {
   FORBIDDEN_PAGE = 'forbidden_page',
   HOME_PAGE = 'home_page',
   SETTING_CASHBACK_PAGE = 'setting_cashback_page',
+  SETTING_ENCOURAGE_TRADING_PAGE = 'setting_encourage_trading_page',
   ADMIN_LIST_PAGE = 'admin_list_page'
 }
 
@@ -25,3 +26,17 @@ export enum SupportTheme {
   LIGHT = 'light',
   DARK = 'dark'
 }
+
+export enum DATE_TIME_FORMAT {
+  YYYYMMDDHHmmss_HYPHEN = 'YYYY-MM-DD HH:mm:ss',
+  YYYYMMDDHHmmss_SLASH = 'YYYY/MM/DD HH:mm:ss',
+  YYYYMMDD_HYPHEN = 'YYYY-MM-DD',
+  YYYYMMDD_SLASH = 'YYYY/MM/DD',
+  HHmmss = 'HH:mm:ss',
+  DDMMYYYY_HYPHEN = 'DD-MM-YYYY',
+  DDMMYYYY_SLASH = 'DD/MM/YYYY',
+  DDMMYYYYHHmmss_HYPHEN = 'DD-MM-YYYY HH:mm:ss',
+  DDMMYYYYHHmmss_SLASH = 'DD/MM/YYYY HH:mm:ss'
+}
+
+export const TEXT_MAX_LENGTH = 255;

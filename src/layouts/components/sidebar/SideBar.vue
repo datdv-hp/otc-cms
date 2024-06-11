@@ -4,6 +4,7 @@ import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import { PageName, SupportTheme } from '@/common/constants/common.constant';
 import { ISidebarItem } from '@/layouts/type';
 import { useTheme } from 'vuetify';
+import localStorageAuthService from '@/common/storages/authStorage';
 
 const { t } = useI18n();
 const theme = useTheme();
@@ -11,6 +12,7 @@ const themeName = computed(() => theme.global.name.value);
 const themeComputed = computed<SupportTheme>({
   get: () => theme.name.value as SupportTheme,
   set: (value: SupportTheme) => {
+    localStorageAuthService.setTheme(value);
     return (theme.global.name.value = value);
   }
 });
@@ -47,15 +49,24 @@ const sidebar = computed<ISidebarItem[]>(() => {
       title: t('app.sidebar.setting.name'),
       icon: '$sidebar.setting',
       activeIcon: '$sidebar.setting-solid',
-      routeName: PageName.SETTING_CASHBACK_PAGE,
+
       activeRouteNames: [PageName.SETTING_CASHBACK_PAGE],
-      role: true
+      role: true,
+      subItems: [
+        {
+          title: t('app.sidebar.setting.cashback.name'),
+          routeName: PageName.SETTING_CASHBACK_PAGE,
+          role: true
+        },
+        {
+          title: t('app.sidebar.setting.encourageTrading.name'),
+          routeName: PageName.SETTING_ENCOURAGE_TRADING_PAGE,
+          role: true
+        }
+      ]
     }
   ].filter((item) => item.role);
 });
-function toggleTheme() {
-  theme.global.name.value = themeName.value === 'dark' ? 'light' : 'dark';
-}
 </script>
 <template>
   <v-navigation-drawer

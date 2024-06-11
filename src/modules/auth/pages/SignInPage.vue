@@ -8,11 +8,13 @@ import { ISignInBody } from '../types';
 import localStorageAuthService from '@/common/storages/authStorage';
 import { PageName } from '@/common/constants/common.constant';
 import { UseAuthStore } from '../store';
+import { notifyError, notifySuccess } from '@/common/helper';
+import { logout } from '@/plugins/axios';
 
 const theme = useTheme();
 const { t } = useI18n();
 const router = useRouter();
-const overlay = shallowRef(false);
+const overlay = shallowRef(true);
 const authStore = UseAuthStore();
 
 const Logo = computed(() => {
@@ -54,6 +56,7 @@ const signIn = handleSubmit(async (values) => {
   if (res.success) {
     localStorageAuthService.setAuthTokens(res.data);
     redirectIfNeed();
+    notifySuccess(t('auth.success.signIn'));
   }
 });
 
@@ -61,6 +64,8 @@ async function fetchProfile() {
   const res = await authStore.getProfile();
   if (!res.success) {
     overlay.value = false;
+    notifyError(t('auth.error.profile'));
+    logout();
     return;
   }
   redirectIfNeed();
@@ -68,14 +73,15 @@ async function fetchProfile() {
 
 function setup() {
   overlay.value = true;
-  if (hasToken()) {
+  const token = hasToken();
+  if (token) {
     fetchProfile();
     return;
   }
   overlay.value = false;
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   setup();
 });
 </script>

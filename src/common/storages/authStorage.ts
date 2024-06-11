@@ -1,5 +1,5 @@
 import type { IUserProfile, IUserPermission } from '@/modules/auth/types';
-import { DEFAULT_LANGUAGE, SupportLanguage } from '../constants/common.constant';
+import { DEFAULT_LANGUAGE, SupportLanguage, SupportTheme } from '../constants/common.constant';
 import { isStringify } from '../helper';
 import { storage } from './localStorage';
 
@@ -10,7 +10,8 @@ export const enum AUTH_SERVICE_KEY {
   REFRESH_TOKEN = 'REFRESH_TOKEN',
   USER = 'USER',
   ROLE = 'ROLE',
-  LANGUAGE = 'LANGUAGE'
+  LANGUAGE = 'LANGUAGE',
+  THEME = 'THEME'
 }
 class LocalStorageAuthService {
   setAuthTokens(tokens: { accessToken: string; refreshToken: string } | null): void {
@@ -71,6 +72,14 @@ class LocalStorageAuthService {
       Authorization: `Bearer ${this.getAccessToken()}`,
       'Accept-Language': this.getLanguage() || DEFAULT_LANGUAGE
     };
+  }
+
+  getTheme() {
+    return storage.getLocalStorage(AUTH_SERVICE_KEY.THEME);
+  }
+
+  setTheme(theme: SupportTheme) {
+    return storage.setLocalStorage(AUTH_SERVICE_KEY.THEME, theme);
   }
 
   resetAll(): void {

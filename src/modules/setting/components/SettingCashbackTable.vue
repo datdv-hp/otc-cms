@@ -1,19 +1,18 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { AccountStatus, StatusColor } from '../constant';
-import { IAdmin } from '../type';
-import { randomDate } from '../util';
-import { adminApiService } from '../api';
 import { formatDate } from '@/common/helper';
-import { translateYupError } from '@/common/helper';
+import { randomDate } from '@/modules/admin/util';
+import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { ICashbackSetting } from '../type';
 import { useNow } from '@vueuse/core';
+import { CreateCashbackSettingSchema } from '../constant';
+import { translateYupError } from '@/common/helper';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
 const isCreate = shallowRef(false);
 const itemsPerPage = shallowRef(10);
-const items = ref<IAdmin[]>([]);
+const items = ref<ICashbackSetting[]>([]);
 const totalItems = shallowRef(0);
 const selectedItems = ref();
 const now = useNow();
@@ -28,36 +27,30 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       fixed: true
     },
     {
-      title: t('admin.fields.id'),
+      title: t('setting.fields.id'),
       key: 'id',
       minWidth: '67',
       fixed: true
     },
     {
-      title: t('admin.fields.fullname'),
-      key: 'fullname',
+      title: t('setting.fields.name'),
+      key: 'name',
       minWidth: '160'
     },
     {
-      title: t('admin.fields.username'),
-      key: 'username',
+      title: t('setting.fields.cashback'),
+      key: 'cashbackValue',
       minWidth: '160'
     },
     {
-      title: t('admin.fields.status'),
-      key: 'status',
-      minWidth: '160',
-      align: 'center'
-    },
-    {
-      title: t('admin.fields.createdAt'),
+      title: t('setting.fields.createdAt'),
       key: 'createdAt',
       minWidth: '220',
       align: 'center',
       value: (item) => formatDate(item.createdAt)
     },
     {
-      title: t('admin.fields.actions'),
+      title: t('setting.fields.actions'),
       key: 'actions',
       minWidth: '160',
       sortable: false,
@@ -65,13 +58,14 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     }
   ];
 });
-const demoItems: IAdmin[] = Array.from({ length: 100 }, (_, i) => {
-  const isActive = Math.random() < 0.6;
+
+const demoItems: ICashbackSetting[] = Array.from({ length: 100 }, (_, i) => {
+  const random = Math.random();
+  const isActive = random < 0.6;
   return {
     id: i + 1,
-    fullname: 'user fullname' + i,
-    username: 'user' + i,
-    status: isActive ? AccountStatus.ACTIVE : AccountStatus.INACTIVE,
+    name: 'cashback' + i,
+    cashbackValue: Math.round(random * 100) % 30,
     createdAt: randomDate(new Date(), 365 * 2)
   };
 });
@@ -110,14 +104,11 @@ function createNewAdmin() {
   isCreate.value = true;
 }
 
-function getList() {
-  adminApiService._getList({});
-}
-
-const { errors, resetForm, handleSubmit } = useForm();
-const { value: fullname } = useField<string>('fullname');
-const { value: username } = useField<string>('username');
-
+const { errors, resetForm, handleSubmit } = useForm({
+  validationSchema: CreateCashbackSettingSchema
+});
+const { value: name } = useField<string>('name');
+const { value: cashbackValue } = useField<string>('cashbackValue');
 function cancelCreateForm() {
   resetForm();
   isCreate.value = false;
@@ -131,6 +122,7 @@ function cancelCreateForm() {
     :items-length="totalItems"
     :items="items"
     height="500"
+    fixed-header
     :headers="headers"
     :loading="loading"
     show-select
@@ -139,13 +131,9 @@ function cancelCreateForm() {
     <template #top>
       <div class="d-flex align-center">
         <v-spacer></v-spacer>
-        <v-btn
-          :disabled="isCreate"
-          class="text-none me-6"
-          color="primary"
-          @click="createNewAdmin"
-          >{{ $t('common.button.add') }}</v-btn
-        >
+        <v-btn v-if="!isCreate" class="text-none me-6" color="primary" @click="createNewAdmin">{{
+          $t('common.button.add')
+        }}</v-btn>
       </div>
     </template>
     <template #[`body.prepend`] v-if="isCreate">
@@ -155,31 +143,34 @@ function cancelCreateForm() {
           class="v-data-table-column--fixed v-data-table-column--last-fixed"
           :style="{ left: '56px' }"
         ></td>
-        <td>
+        <td class="pb-1">
           <v-text-field
-            v-model="fullname"
+            v-model="name"
             :prepend="false"
             density="comfortable"
             variant="plain"
+            :placeholder="t('setting.placeholder.name')"
+            auto-focus
             hide-details="auto"
-            :error="!!errors.fullname"
-            :error-messages="translateYupError(errors.fullname)"
+            :error="!!errors.name"
+            :error-messages="translateYupError(errors.name)"
           ></v-text-field>
         </td>
-        <td>
+        <td class="pb-1">
           <v-text-field
-            v-model="username"
-            :prepend="false"
+            :placeholder="t('setting.placeholder.cashback')"
+            v-model="cashbackValue"
+            type="number"
+            hide-spin-buttons
             density="comfortable"
             variant="plain"
             hide-details="auto"
-            :error="!!errors.username"
-            :error-messages="translateYupError(errors.username)"
+            :error="!!errors.cashbackValue"
+            :error-messages="translateYupError(errors.cashbackValue)"
           ></v-text-field>
         </td>
-        <td></td>
         <td align="center">{{ currentDateTime }}</td>
-        <td class="v-data-table-column--fixed" :style="{ right: 0 }">
+        <td>
           <v-btn size="24" variant="tonal" color="primary" icon="$common.check"></v-btn>
           <v-btn
             @click="cancelCreateForm"
@@ -193,13 +184,6 @@ function cancelCreateForm() {
     </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
-    </template>
-    <template v-slot:[`item.status`]="{ item }">
-      <v-chip
-        density="compact"
-        :color="StatusColor[item.status]"
-        :text="t(`admin.status.${item.status}`)"
-      ></v-chip>
     </template>
   </v-data-table-server>
 </template>

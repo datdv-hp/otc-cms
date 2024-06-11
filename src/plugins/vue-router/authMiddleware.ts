@@ -37,6 +37,5 @@ export default async (
       return next({ name: PageName.FORBIDDEN_PAGE });
     }
   }
-
   return next();
 };

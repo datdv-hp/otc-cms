@@ -14,7 +14,7 @@ export const UseAuthStore = defineStore(STORE_NAME, () => {
     const res: IBodyResponse<IUserProfile> = await new Promise((resolve, reject) => {
       setTimeout(() => {
         const randomNum = Math.random() * 20;
-        const isSuccess = 3 < randomNum && randomNum < 17;
+        const isSuccess = 5 < randomNum && randomNum < 13;
         if (isSuccess) {
           resolve({
             success: isSuccess,

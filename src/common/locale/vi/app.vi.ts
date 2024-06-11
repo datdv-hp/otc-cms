@@ -10,7 +10,13 @@ export default {
       name: 'Quản trị viên'
     },
     setting: {
-      name: 'Cài đặt'
+      name: 'Cài đặt',
+      cashback: {
+        name: 'Chương trình hoàn tiền'
+      },
+      encourageTrading: {
+        name: 'Khuyến khích giao dịch'
+      }
     }
   },
   theme: {
