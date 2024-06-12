@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
-import VueDevTools from 'vite-plugin-vue-devtools';
+// import VueDevTools from 'vite-plugin-vue-devtools';
 import AutoImport from 'unplugin-auto-import/vite';
 import Component from 'unplugin-vue-components/vite';
 import svgLoader from 'vite-svg-loader';
@@ -12,7 +12,7 @@ import svgLoader from 'vite-svg-loader';
 export default defineConfig({
   plugins: [
     vue(),
-    VueDevTools(),
+    // VueDevTools(),
     vuetify(),
     svgLoader({ defaultImport: 'component' }),
     AutoImport({

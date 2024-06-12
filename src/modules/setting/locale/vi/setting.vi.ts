@@ -1,7 +1,8 @@
 export default {
   title: {
     cashback: 'Cài đặt chương trình hoàn tiền',
-    encourageTrading: 'Cài đặt khuyến khích giao dịch'
+    encourageTrading: 'Cài đặt khuyến khích giao dịch',
+    listAward: 'Các mốc thưởng'
   },
   fields: {
     id: 'ID',

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { translateYupError } from '@/common/helper';
 type Props = {
-  value?: string;
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'number';
   label?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -11,6 +10,8 @@ type Props = {
   clearable?: boolean;
   prependInnerIcon?: string;
   appendInnerIcon?: string;
+  hideSpinButtons?: boolean;
+  hideDetails?: 'auto' | boolean;
   error?:
     | string
     | {
@@ -20,15 +21,16 @@ type Props = {
   loading?: boolean;
 };
 withDefaults(defineProps<Props>(), {
-  type: 'text'
+  type: 'text',
+  hideDetails: 'auto'
 });
 
-const model = defineModel<string>('modelValue');
+const model = defineModel<string>();
 </script>
 <template>
   <v-text-field
-    :type="type"
     v-model="model"
+    :type="type"
     :prepend-inner-icon="prependInnerIcon"
     :append-inner-icon="appendInnerIcon"
     :placeholder="placeholder"
@@ -36,7 +38,7 @@ const model = defineModel<string>('modelValue');
     :readonly="readonly"
     :loading="loading"
     :clearable="clearable"
-    hide-details="auto"
+    :hide-details="hideDetails"
     :error="!!error"
     :error-messages="translateYupError(error)"
     flat

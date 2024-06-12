@@ -7,5 +7,9 @@ export default {
     submit: 'Xác nhận',
     delete: 'Xóa',
     edit: 'Chỉnh sửa'
-  }
+  },
+  error: {
+    somethingWrong: 'Có lỗi xảy ra, vui lòng thử lại sau'
+  },
+  indicateRequired: '*trường dữ liệu bắt buộc'
 };
