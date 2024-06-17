@@ -1,22 +1,29 @@
-import type { IUserProfile, IUserPermission } from '@/modules/auth/types';
 import { DEFAULT_LANGUAGE, SupportLanguage, SupportTheme } from '../constants/common.constant';
-import { isStringify } from '../helper';
 import { storage } from './localStorage';
-
-const BUFFER_TIME = 60 * 1000; // 60s
 
 export const enum AUTH_SERVICE_KEY {
   ACCESS_TOKEN = 'ACCESS_TOKEN',
   REFRESH_TOKEN = 'REFRESH_TOKEN',
-  USER = 'USER',
-  ROLE = 'ROLE',
   LANGUAGE = 'LANGUAGE',
   THEME = 'THEME'
 }
 class LocalStorageAuthService {
-  setAuthTokens(tokens: { accessToken: string; refreshToken: string } | null): void {
-    storage.setLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN, tokens?.accessToken || '');
-    storage.setLocalStorage(AUTH_SERVICE_KEY.REFRESH_TOKEN, tokens?.refreshToken || '');
+  setAuthTokens(
+    tokens: {
+      access_token: string;
+      refresh_token: string;
+      accessToken: string;
+      refreshToken: string;
+    } | null
+  ): void {
+    storage.setLocalStorage(
+      AUTH_SERVICE_KEY.ACCESS_TOKEN,
+      tokens?.access_token || tokens?.accessToken || ''
+    );
+    storage.setLocalStorage(
+      AUTH_SERVICE_KEY.REFRESH_TOKEN,
+      tokens?.refresh_token || tokens?.refreshToken || ''
+    );
   }
   // ACCESS_TOKEN
   setAccessToken(token: string): void {
@@ -48,25 +55,6 @@ class LocalStorageAuthService {
       DEFAULT_LANGUAGE) as SupportLanguage;
   }
 
-  // LOGIN USER
-  setLoginUser(user: null | IUserProfile, role: IUserPermission | null): void {
-    if (!user) {
-      storage.setLocalStorage(AUTH_SERVICE_KEY.USER, '');
-    }
-    if (!isStringify(user)) {
-      return;
-    }
-    storage.setLocalStorage(AUTH_SERVICE_KEY.USER, JSON.stringify(user));
-    storage.setLocalStorage(AUTH_SERVICE_KEY.ROLE, JSON.stringify(role));
-  }
-  getLoginUser(): IUserProfile {
-    return storage.getObjectFromKey(AUTH_SERVICE_KEY.USER) as IUserProfile;
-  }
-
-  getUserPermission() {
-    return storage.getObjectFromKey(AUTH_SERVICE_KEY.ROLE) as IUserPermission;
-  }
-
   getHeader() {
     return {
       Authorization: `Bearer ${this.getAccessToken()}`,
@@ -85,7 +73,6 @@ class LocalStorageAuthService {
   resetAll(): void {
     this.resetAccessToken();
     this.resetRefreshToken();
-    this.setLoginUser(null, null);
   }
 }
 

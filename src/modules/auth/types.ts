@@ -2,8 +2,8 @@ export type IUserProfile = {
   id: string | number;
   fullname: string;
   username: string;
-  email?: string;
-  permissions: string[];
+  created_at?: Date;
+  updated_at?: Date;
 };
 
 export type IUserPermission = {};

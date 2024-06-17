@@ -1,3 +1,5 @@
+import { SupportLanguage } from '@/common/constants/common.constant';
+
 export default {
   sidebar: {
     home: {
@@ -22,5 +24,9 @@ export default {
   theme: {
     dark: 'Tối',
     light: 'Sáng'
+  },
+  lang: {
+    [SupportLanguage.EN]: 'Tiếng Anh',
+    [SupportLanguage.VI]: 'Tiếng Việt'
   }
 };

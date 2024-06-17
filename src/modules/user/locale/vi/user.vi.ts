@@ -3,14 +3,22 @@ export default {
     list: 'Danh sách người dùng'
   },
   fields: {
-    telegram_id: 'ID',
-    telegram_usr: 'Tên người dùng',
-    daily_trading_vol: 'Khối lượng giao dịch trong ngày',
-    monthly_trading_vol: 'Khối lượng giao dịch trong tháng',
-    tip: 'Hoa hồng',
-    cashback: 'Chương trình hoàn tiền',
-    last_trading_at: 'Giao dịch lần cuối',
-    last_login_at: 'Đăng nhập lần cuối',
-    actions: 'Hành động'
+    index: 'STT',
+    telegramUser: 'Tên người dùng (Telegram)',
+    dailyTradingVolume: 'Khối lượng giao dịch trong ngày',
+    lastTradingAt: 'Giao dịch lần cuối',
+    lastCashbackRequestAt: 'Yêu cầu cashback lần cuối',
+    actions: 'Hành động',
+    f1Count: 'Số lượng F1'
+  },
+  action: {
+    deactivate: 'Vô hiệu hóa',
+    activate: 'Kích hoạt',
+    tradingDetail: 'Chi tiết giao dịch',
+    cashbackConfiguration: 'Cấu hình hoàn tiền'
+  },
+  tooltip: {
+    detail: 'Chi tiết người dùng',
+    more: 'Xem thêm'
   }
 };

@@ -11,6 +11,8 @@ import userSolid from '@/assets/icons/sidebar/user-solid.svg';
 import settingSolid from '@/assets/icons/sidebar/setting-solid.svg';
 import darkMode from '@/assets/icons/sidebar/dark-mode.svg';
 import lightMode from '@/assets/icons/sidebar/light-mode.svg';
+import language from '@/assets/icons/sidebar/language.svg';
+
 export default {
   help,
   home,
@@ -24,5 +26,6 @@ export default {
   'user-solid': userSolid,
   'setting-solid': settingSolid,
   'dark-mode': darkMode,
-  'light-mode': lightMode
+  'light-mode': lightMode,
+  language
 };

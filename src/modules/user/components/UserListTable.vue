@@ -3,6 +3,8 @@
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import dayjs from '@/plugins/dayjs';
 import { Dayjs } from 'dayjs';
+import { randomDate } from '@/modules/admin/util';
+import { IOption } from '@/common/type';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
@@ -12,46 +14,36 @@ const totalItems = shallowRef(0);
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
-      title: t('user.fields.telegram_id'),
-      key: 'telegram_id',
+      title: t('user.fields.index'),
+      key: 'index',
       fixed: true,
       width: '67',
       minWidth: '67'
     },
     {
-      title: t('user.fields.telegram_usr'),
-      key: 'telegram_usr',
+      title: t('user.fields.telegramUser'),
+      key: 'telegramUser',
       fixed: true,
       minWidth: '160'
     },
     {
-      title: t('user.fields.daily_trading_vol'),
-      key: 'daily_trading_vol',
+      title: t('user.fields.dailyTradingVolume'),
+      key: 'dailyTradingVolume',
       minWidth: '160'
     },
     {
-      title: t('user.fields.monthly_trading_vol'),
-      key: 'monthly_trading_vol',
-      minWidth: '180'
-    },
-    {
-      title: t('user.fields.tip'),
-      key: 'tip',
-      minWidth: '120'
-    },
-    {
-      title: t('user.fields.cashback'),
-      key: 'cashback',
+      title: t('user.fields.lastTradingAt'),
+      key: 'lastTradingAt',
       minWidth: '160'
     },
     {
-      title: t('user.fields.last_trading_at'),
-      key: 'last_trading_at',
+      title: t('user.fields.lastCashbackRequestAt'),
+      key: 'lastCashbackRequestAt',
       minWidth: '160'
     },
     {
-      title: t('user.fields.last_login_at'),
-      key: 'last_login_at',
+      title: t('user.fields.f1Count'),
+      key: 'f1Count',
       minWidth: '160'
     },
     {
@@ -73,26 +65,18 @@ function formatCurrenCy(value: number, params?: { lang?: string; currency?: stri
   }).format(value);
 }
 
-function randomDate(start?: Date | Dayjs | number, end?: Date | Dayjs | number) {
-  start = dayjs(start).subtract(2, 'year').unix();
-  end = dayjs(end).add(2, 'year').unix();
-  return dayjs(start + Math.floor(Math.random() * (end - start)) * 1000).toDate();
-}
-
 function formatDate(value: Date | string | Dayjs) {
   return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
 }
 const demoItems = Array.from({ length: 100 }, (_, i) => {
-  const last_login_at = randomDate(undefined, new Date());
+  const lastTradingAt = randomDate(new Date(), 365 * 2);
   return {
     telegram_id: i + 1,
-    telegram_usr: 'user' + i,
-    daily_trading_vol: formatCurrenCy(Math.random() * 1000),
-    monthly_trading_vol: formatCurrenCy(Math.random() * 10000),
-    tip: Math.random() * 100,
-    cashback: Math.random() * 100,
-    last_trading_at: formatDate(randomDate(undefined, last_login_at)),
-    last_login_at: formatDate(last_login_at)
+    telegramUser: 'user' + i,
+    dailyTradingVolume: formatCurrenCy(Math.random() * 1000),
+    lastTradingAt: formatDate(lastTradingAt),
+    lastCashbackRequestAt: formatDate(randomDate(lastTradingAt, 365 * 2)),
+    f1Count: Math.floor(Math.random() * 100)
   };
 });
 const FakeAPI = {
@@ -138,8 +122,18 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
     </template>
+    <template v-slot:[`item.index`]="{ index }">
+      <span>{{ index + 1 }}</span>
+    </template>
     <template v-slot:[`item.cashback`]="{ item }">
       <span>{{ item.cashback }}</span>
+    </template>
+    <template v-slot:[`item.actions`]>
+      <div class="actions">
+        <BActionButton icon="$common.eye" :tooltip="$t('user.tooltip.detail')" />
+        <BActionButton icon="$common.more-horizontal" :tooltip="$t('user.tooltip.more')" />
+        <!-- <v-btn density="comfortable" variant="text" icon="$common.more-horizontal" /> -->
+      </div>
     </template>
   </v-data-table-server>
 </template>
@@ -149,4 +143,8 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     padding: 0;
   }
 }
+
+// .actions {
+//   opacity: 0.7;
+// }
 </style>

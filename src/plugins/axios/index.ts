@@ -2,7 +2,6 @@ import HttpStatus from '@/common/constants/http.constant';
 import localStorageAuthService from '@/common/storages/authStorage';
 import type { IBodyResponse } from '@/common/type';
 import { IAuthTokens } from '@/modules/auth/types';
-import dayjs from '@/plugins/dayjs';
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import { throttle } from 'lodash';
@@ -10,9 +9,7 @@ import { logout } from './helper';
 
 const options: AxiosRequestConfig = {
   headers: {
-    'Content-Type': 'application/json',
-    'X-Timezone': dayjs().format('Z'),
-    'X-Timezone-Name': dayjs.tz.guess()
+    'Content-Type': 'application/json'
   },
   baseURL: import.meta.env.VUE_APP_API_URL,
   responseType: 'json',
@@ -24,9 +21,16 @@ let refreshingPromise: Promise<AxiosResponse> | null = null;
 
 async function sendRefreshToken() {
   const API_URL = import.meta.env.VUE_APP_API_URL;
-  refreshingPromise = axios.post<IBodyResponse<IAuthTokens>>(`${API_URL}/auth/refresh`, {
-    refreshToken: localStorageAuthService.getRefreshToken()
-  });
+  refreshingPromise = axios.post<IBodyResponse<IAuthTokens>>(
+    `${API_URL}/auth/refresh`,
+    {
+      refreshToken: localStorageAuthService.getRefreshToken()
+    },
+    {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'json'
+    }
+  );
   refreshingPromise
     .then(async (res) => {
       if (res?.status === HttpStatus.OK) {

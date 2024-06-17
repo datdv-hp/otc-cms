@@ -12,6 +12,7 @@ export enum OrderDirection {
 export enum PageName {
   SIGN_IN_PAGE = 'sign_in_page',
   SIGN_UP_PAGE = 'sign_up_page',
+  PROFILE_PAGE = 'profile_page',
   USER_LIST_PAGE = 'user_list_page',
   USER_DETAIL_PAGE = 'user_detail_page',
   NOT_FOUND_PAGE = 'not_found_page',

@@ -6,6 +6,7 @@ export default {
     save: 'Save',
     submit: 'Submit',
     delete: 'Delete',
-    edit: 'Edit'
+    edit: 'Edit',
+    search: 'Search'
   }
 };

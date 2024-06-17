@@ -14,6 +14,7 @@ import authEn from '@/modules/auth/locale/en/auth.en';
 import authVi from '@/modules/auth/locale/vi/auth.vi';
 import settingEn from '@/modules/setting/locale/en/setting.en';
 import settingVi from '@/modules/setting/locale/vi/setting.vi';
+import { en as vuetifyEn, vi as vuetifyVi } from 'vuetify/locale';
 
 const messages = {
   en: {
@@ -24,7 +25,8 @@ const messages = {
     fields: fieldsEn,
     common: commonEn,
     auth: authEn,
-    setting: settingEn
+    setting: settingEn,
+    $vuetify: vuetifyEn
   },
   vi: {
     app: appVi,
@@ -34,7 +36,8 @@ const messages = {
     fields: fieldsVi,
     common: commonVi,
     auth: authVi,
-    setting: settingVi
+    setting: settingVi,
+    $vuetify: vuetifyVi
   }
 };
 export default messages;

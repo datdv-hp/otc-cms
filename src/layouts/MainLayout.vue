@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FooterBar from './components/footer/FooterBar.vue';
 import HeaderBar from './components/header/HeaderBar.vue';
 import SideBar from './components/sidebar/SideBar.vue';
 </script>
@@ -14,11 +15,8 @@ import SideBar from './components/sidebar/SideBar.vue';
         </router-view>
       </div>
     </v-main>
+    <FooterBar />
   </v-app>
 </template>
 
-<style lang="scss" scoped>
-:deep(.v-main) {
-  transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-</style>
+<style lang="scss" scoped></style>

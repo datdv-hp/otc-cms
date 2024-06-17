@@ -53,6 +53,7 @@ function hasToken() {
 
 const signIn = handleSubmit(async (values) => {
   const res = await authApiService.signIn(values);
+  console.log(res);
   if (res.success) {
     localStorageAuthService.setAuthTokens(res.data);
     redirectIfNeed();

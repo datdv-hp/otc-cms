@@ -6,7 +6,8 @@ export default {
     save: 'Lưu',
     submit: 'Xác nhận',
     delete: 'Xóa',
-    edit: 'Chỉnh sửa'
+    edit: 'Chỉnh sửa',
+    search: 'Tìm kiếm'
   },
   error: {
     somethingWrong: 'Có lỗi xảy ra, vui lòng thử lại sau'
