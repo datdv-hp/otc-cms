@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { IOption } from '@/common/type';
+import { throttle } from 'lodash';
 import { VBtn } from 'vuetify/components/VBtn';
 type Props = {
   tooltip?: string;
@@ -17,6 +18,10 @@ withDefaults(defineProps<Props>(), {
   tooltip: '',
   variant: 'text'
 });
+
+const handleClick = throttle(($event: MouseEvent) => {
+  emits('click', $event);
+}, 500);
 const btnRef = ref<VBtn | null>(null);
 const selectedModel = defineModel('selected');
 </script>
@@ -46,7 +51,7 @@ const selectedModel = defineModel('selected');
     :color="color"
     :icon="icon"
     :text="text"
-    @click="($event: MouseEvent) => emits('click', $event)"
+    @click="handleClick"
   />
 </template>
 <style lang="scss" scoped></style>

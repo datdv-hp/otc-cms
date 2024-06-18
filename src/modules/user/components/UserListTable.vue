@@ -5,8 +5,11 @@ import dayjs from '@/plugins/dayjs';
 import { Dayjs } from 'dayjs';
 import { randomDate } from '@/modules/admin/util';
 import { IOption } from '@/common/type';
+import { IUser } from '../type';
+import { PageName } from '@/common/constants/common.constant';
 
 const { t } = useI18n();
+const router = useRouter();
 const loading = shallowRef(false);
 const itemsPerPage = shallowRef(10);
 const items = ref<any[]>([]);
@@ -18,7 +21,10 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       key: 'index',
       fixed: true,
       width: '67',
-      minWidth: '67'
+      minWidth: '67',
+      maxWidth: '67',
+      align: 'center',
+      sortable: false
     },
     {
       title: t('user.fields.telegramUser'),
@@ -34,12 +40,12 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('user.fields.lastTradingAt'),
       key: 'lastTradingAt',
-      minWidth: '160'
+      minWidth: '180'
     },
     {
       title: t('user.fields.lastCashbackRequestAt'),
       key: 'lastCashbackRequestAt',
-      minWidth: '160'
+      minWidth: '180'
     },
     {
       title: t('user.fields.f1Count'),
@@ -108,6 +114,11 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
       loading.value = false;
     });
 }
+
+function toDetail(item: IUser) {
+  router.push({ name: PageName.USER_DETAIL_PAGE, params: { id: item.telegram_id } });
+}
+const openTelegram = (item: IUser) => {};
 </script>
 <template>
   <v-data-table-server
@@ -125,12 +136,19 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     <template v-slot:[`item.index`]="{ index }">
       <span>{{ index + 1 }}</span>
     </template>
+    <template v-slot:[`item.telegramUser`]="{ item }">
+      <a :href="`https://t.me/dvdathp`" target="_blank">{{ item.telegramUser }}</a>
+    </template>
     <template v-slot:[`item.cashback`]="{ item }">
       <span>{{ item.cashback }}</span>
     </template>
-    <template v-slot:[`item.actions`]>
+    <template v-slot:[`item.actions`]="{ item }">
       <div class="actions">
-        <BActionButton icon="$common.eye" :tooltip="$t('user.tooltip.detail')" />
+        <BActionButton
+          icon="$common.eye"
+          :tooltip="$t('user.tooltip.detail')"
+          @click="toDetail(item)"
+        />
         <BActionButton icon="$common.more-horizontal" :tooltip="$t('user.tooltip.more')" />
         <!-- <v-btn density="comfortable" variant="text" icon="$common.more-horizontal" /> -->
       </div>

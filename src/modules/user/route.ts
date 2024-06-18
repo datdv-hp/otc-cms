@@ -6,26 +6,24 @@ import UserDetailPage from './pages/UserDetailPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '',
+    path: '/user',
     component: MainLayout,
     children: [
       {
-        path: 'user',
+        path: '',
         name: PageName.USER_LIST_PAGE,
         component: UserListPage,
         meta: {
           requiresAuth: true
-        },
-        children: [
-          {
-            path: ':id',
-            name: PageName.USER_DETAIL_PAGE,
-            component: UserDetailPage,
-            meta: {
-              requiresAuth: true
-            }
-          }
-        ]
+        }
+      },
+      {
+        path: ':id',
+        name: PageName.USER_DETAIL_PAGE,
+        component: UserDetailPage,
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   }
