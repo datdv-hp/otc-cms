@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
-import { PageName } from '@/common/constants/common.constant';
+import { PageName, SupportTheme } from '@/common/constants/common.constant';
 import { ISidebarItem } from '@/layouts/type';
 import { useTheme } from 'vuetify';
 
@@ -9,7 +9,7 @@ const { t } = useI18n();
 const theme = useTheme();
 
 const Logo = computed(() => {
-  return theme.name.value === 'dark' ? MiniLogoDark : MiniLogoLight;
+  return theme.name.value === SupportTheme.DARK ? MiniLogoDark : MiniLogoLight;
 });
 const sidebar = computed<ISidebarItem[]>(() => {
   return [

@@ -1,11 +1,21 @@
-export type IUser = {
+export type IUserListItem = {
+  id: number | string;
+  telegramId: number | string;
+  tradingVolumeInMonth: string; // after format currency with { amount: number; currency: string }
+  lastTradingAt?: Date | string;
+  lastCashbackAt?: Date | string;
+  f1Count: number;
+};
+export type IUserDetail = {
   id: number;
-  telegram_id: string;
-  telegramUser: string;
-  dailyTradingVolume: { amount: number; currency: string };
-  monthly_trading_vol: { amount: number; currency: string };
-  min_tip: number;
-  cashback_id: number;
-  lastTradingAt: Date;
-  last_login_at: Date;
+  telegramId: string;
+  referralId: number | string;
+  tip: number | string;
+  tipSnip: number | string;
+  slippage: number | string;
+  slippageSnip: number | string;
+  buyCustom: number | string;
+  sellCustom: number | string;
+  antimev: string;
+  lashCashbackAt?: Date;
 };

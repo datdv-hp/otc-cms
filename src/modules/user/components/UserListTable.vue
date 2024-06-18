@@ -1,12 +1,11 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { DATE_TIME_FORMAT, PageName } from '@/common/constants/common.constant';
+import { randomDate } from '@/modules/admin/util';
 import dayjs from '@/plugins/dayjs';
 import { Dayjs } from 'dayjs';
-import { randomDate } from '@/modules/admin/util';
-import { IOption } from '@/common/type';
-import { IUser } from '../type';
-import { PageName } from '@/common/constants/common.constant';
+import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { IUserListItem } from '../type';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -27,14 +26,14 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       sortable: false
     },
     {
-      title: t('user.fields.telegramUser'),
-      key: 'telegramUser',
+      title: t('user.fields.telegramId'),
+      key: 'telegramId',
       fixed: true,
       minWidth: '160'
     },
     {
-      title: t('user.fields.dailyTradingVolume'),
-      key: 'dailyTradingVolume',
+      title: t('user.fields.tradingVolumeInMonth'),
+      key: 'tradingVolumeInMonth',
       minWidth: '160'
     },
     {
@@ -43,8 +42,8 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       minWidth: '180'
     },
     {
-      title: t('user.fields.lastCashbackRequestAt'),
-      key: 'lastCashbackRequestAt',
+      title: t('user.fields.lastCashbackAt'),
+      key: 'lastCashbackAt',
       minWidth: '180'
     },
     {
@@ -72,18 +71,18 @@ function formatCurrenCy(value: number, params?: { lang?: string; currency?: stri
 }
 
 function formatDate(value: Date | string | Dayjs) {
-  return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+  return dayjs(value).format(DATE_TIME_FORMAT.YYYYMMDDHHmmss_HYPHEN);
 }
 const demoItems = Array.from({ length: 100 }, (_, i) => {
   const lastTradingAt = randomDate(new Date(), 365 * 2);
   return {
-    telegram_id: i + 1,
-    telegramUser: 'user' + i,
-    dailyTradingVolume: formatCurrenCy(Math.random() * 1000),
+    id: i + 1,
+    telegramId: 'user' + i,
+    tradingVolumeInMonth: formatCurrenCy(Math.random() * 1000),
     lastTradingAt: formatDate(lastTradingAt),
-    lastCashbackRequestAt: formatDate(randomDate(lastTradingAt, 365 * 2)),
+    lastCashbackAt: formatDate(randomDate(lastTradingAt, 365 * 2)),
     f1Count: Math.floor(Math.random() * 100)
-  };
+  } as IUserListItem;
 });
 const FakeAPI = {
   async fetchItems(params: {
@@ -115,10 +114,9 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     });
 }
 
-function toDetail(item: IUser) {
-  router.push({ name: PageName.USER_DETAIL_PAGE, params: { id: item.telegram_id } });
+function toDetail(item: IUserListItem) {
+  router.push({ name: PageName.USER_DETAIL_PAGE, params: { id: item.id } });
 }
-const openTelegram = (item: IUser) => {};
 </script>
 <template>
   <v-data-table-server
@@ -136,8 +134,8 @@ const openTelegram = (item: IUser) => {};
     <template v-slot:[`item.index`]="{ index }">
       <span>{{ index + 1 }}</span>
     </template>
-    <template v-slot:[`item.telegramUser`]="{ item }">
-      <a :href="`https://t.me/dvdathp`" target="_blank">{{ item.telegramUser }}</a>
+    <template v-slot:[`item.telegramId`]="{ item }">
+      <a :href="`https://t.me/${item.telegramId}`" target="_blank">{{ item.telegramId }}</a>
     </template>
     <template v-slot:[`item.cashback`]="{ item }">
       <span>{{ item.cashback }}</span>

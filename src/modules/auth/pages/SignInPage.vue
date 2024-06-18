@@ -53,11 +53,12 @@ function hasToken() {
 
 const signIn = handleSubmit(async (values) => {
   const res = await authApiService.signIn(values);
-  console.log(res);
   if (res.success) {
     localStorageAuthService.setAuthTokens(res.data);
-    redirectIfNeed();
-    notifySuccess(t('auth.success.signIn'));
+    const profile = await fetchProfile();
+    if (profile?.success) {
+      notifySuccess(t('auth.success.signIn'));
+    }
   }
 });
 
@@ -67,7 +68,7 @@ async function fetchProfile() {
     overlay.value = false;
     notifyError(t('auth.error.profile'));
     logout();
-    return;
+    return res;
   }
   redirectIfNeed();
 }
@@ -126,7 +127,6 @@ onMounted(() => {
         />
       </div>
     </div>
-    {{ { errors } }}
   </div>
 </template>
 <style lang="scss" scoped>
