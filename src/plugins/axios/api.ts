@@ -59,4 +59,8 @@ export class ApiService {
   _delete<Record>(id: number | string): Promise<IBodyResponse<Record>> {
     return this.client.delete(this.deleteUrl + '/' + id);
   }
+
+  _getListByLink<Record>(url: string): Promise<IBodyResponse<IGetListData<Record>>> {
+    return this.client.get(url);
+  }
 }

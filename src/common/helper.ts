@@ -3,6 +3,7 @@ import i18n from '@/plugins/vue-i18n';
 import dayjs from '@/plugins/dayjs';
 import { DATE_TIME_FORMAT } from './constants/common.constant';
 import { Dayjs } from 'dayjs';
+import { snakeCase } from 'lodash';
 
 export function isValidJSON(str: string) {
   try {
@@ -65,4 +66,14 @@ export function formatDate(
   format: DATE_TIME_FORMAT = DATE_TIME_FORMAT.YYYYMMDDHHmmss_HYPHEN
 ) {
   return dayjs(value).format(format);
+}
+
+export function formatCurrenCy(value: number, params?: { lang?: string; currency?: string }) {
+  const { lang = navigator.languages?.[0] || 'en-US', currency = 'SOL' } = params || {};
+  return Intl.NumberFormat(lang, {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  }).format(value);
 }

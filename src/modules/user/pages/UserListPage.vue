@@ -3,12 +3,15 @@ import FilterBar from '../components/FilterBar.vue';
 import UserListTable from '../components/UserListTable.vue';
 </script>
 <template>
-  <div class="tp-h4 mb-4">
-    {{ $t('user.title.list') }}
-  </div>
-  <v-card flat>
-    <FilterBar class="pa-4 mb-2" />
-    <UserListTable />
+  <v-card class="card-wrapper pa-4" flat>
+    <FilterBar class="mb-2" />
+    <UserListTable class="flex-1" />
   </v-card>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

@@ -1,6 +1,5 @@
-import type { AxiosResponse } from 'axios';
+import type { SortDirection } from './constants/common.constant';
 import HttpStatus from './constants/http.constant';
-import type { OrderDirection } from './constants/common.constant';
 
 export type Prettify<T> = {
   [P in keyof T]: T[P];
@@ -13,26 +12,40 @@ export type IResponseError<T = any> = {
   data?: T;
 };
 
-export type IBodyResponse<T> = AxiosResponse & {
+export type IBodyResponse<T> = {
   success: boolean;
-  isRequestError?: boolean;
-  code: HttpStatus;
   message: string;
-  error: string;
-  data: T;
+  data: Prettify<T>;
   errors?: IResponseError<any>[];
 };
 
+export type IReferenceLink = {
+  url: string;
+  label: string | number;
+  active: boolean;
+};
+
 export type IGetListData<T> = {
-  items: T[];
-  totalItems: number;
+  data: T[];
+  total: number;
+  per_page: number;
+  last_page: number;
+  current_page: number;
+  links: IReferenceLink[];
+  from: number;
+  to: number;
+  first_page_url: string;
+  last_page_url: string;
+  prev_page_url: string | null;
+  next_page_url: string | null;
+  path: string;
 };
 
 export type IQueryParams = {
   page?: number;
-  limit?: number;
-  orderBy?: string;
-  orderDirection?: OrderDirection | string;
+  per_page?: number;
+  order_by?: string;
+  sort?: SortDirection | string;
   keyword?: string;
 };
 

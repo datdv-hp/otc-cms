@@ -12,6 +12,7 @@ import settingSolid from '@/assets/icons/sidebar/setting-solid.svg';
 import darkMode from '@/assets/icons/sidebar/dark-mode.svg';
 import lightMode from '@/assets/icons/sidebar/light-mode.svg';
 import language from '@/assets/icons/sidebar/language.svg';
+import layout from '@/assets/icons/sidebar/layout.svg';
 
 export default {
   help,
@@ -27,5 +28,6 @@ export default {
   'setting-solid': settingSolid,
   'dark-mode': darkMode,
   'light-mode': lightMode,
-  language
+  language,
+  layout
 };

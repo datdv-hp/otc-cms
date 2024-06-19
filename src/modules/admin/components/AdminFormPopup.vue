@@ -11,28 +11,16 @@ const { t } = useI18n();
 
 const title = computed(() => (props.id ? t('admin.title.edit') : t('admin.title.create')));
 
-const { errors, resetForm, handleSubmit, isSubmitting, isValidating } = useForm();
+const { errors, handleSubmit, isSubmitting } = useForm();
 const { value: fullname } = useField<string>('fullname');
 const { value: username } = useField<string>('username');
-const { value: password } = useField<string>('password');
-const { value: confirmPassword } = useField<string>('confirmPassword');
-
-function cancelCreateForm() {
-  resetForm();
-}
+useField<string>('password');
+useField<string>('confirmPassword');
 
 async function fetchAdmin() {
   try {
     if (props.id) {
-      const res = await adminApiService._getDetail(props.id);
-      if (res.success) {
-        resetForm({
-          values: {
-            fullname: res.data.fullname,
-            username: res.data.username
-          }
-        });
-      }
+      await adminApiService._getDetail(props.id);
     }
   } catch (error) {
     notifyError(t('common.error.somethingWrong'));
@@ -45,7 +33,7 @@ function closeDialog() {
   isOpen.value = false;
 }
 
-const submit = handleSubmit(async (values) => {
+const submit = handleSubmit(async () => {
   try {
     //
   } catch (error) {

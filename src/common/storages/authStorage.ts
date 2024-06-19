@@ -10,10 +10,10 @@ export const enum AUTH_SERVICE_KEY {
 class LocalStorageAuthService {
   setAuthTokens(
     tokens: {
-      access_token: string;
-      refresh_token: string;
-      accessToken: string;
-      refreshToken: string;
+      access_token?: string;
+      refresh_token?: string;
+      accessToken?: string;
+      refreshToken?: string;
     } | null
   ): void {
     storage.setLocalStorage(

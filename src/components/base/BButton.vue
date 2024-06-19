@@ -7,7 +7,7 @@ type Props = {
   icon?: string;
 };
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   variant: 'tonal',
   size: 'medium'
 });

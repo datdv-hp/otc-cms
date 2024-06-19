@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
-import { useTheme } from 'vuetify';
-import { SignInSchema } from '../constant';
-import { authApiService } from '../api';
-import { ISignInBody } from '../types';
-import localStorageAuthService from '@/common/storages/authStorage';
 import { PageName } from '@/common/constants/common.constant';
-import { UseAuthStore } from '../store';
 import { notifyError, notifySuccess } from '@/common/helper';
+import localStorageAuthService from '@/common/storages/authStorage';
 import { logout } from '@/plugins/axios';
+import { useTheme } from 'vuetify';
+import { authApiService } from '../api';
+import { SignInSchema } from '../constant';
+import { UseAuthStore } from '../store';
+import { ISignInBody } from '../types';
 
 const theme = useTheme();
 const { t } = useI18n();
@@ -23,15 +23,7 @@ const Logo = computed(() => {
 const title = computed(() => t('auth.signIn.title'));
 
 /** Handle form  */
-const {
-  values: formValue,
-  meta,
-  errors,
-  validate,
-  handleSubmit,
-  isSubmitting,
-  isValidating
-} = useForm<ISignInBody>({
+const { meta, errors, handleSubmit, isSubmitting, isValidating } = useForm<ISignInBody>({
   validationSchema: SignInSchema
 });
 const { value: username } = useField<string>('username');

@@ -4,7 +4,7 @@ export enum SupportLanguage {
 }
 export const DEFAULT_LANGUAGE = SupportLanguage.VI;
 
-export enum OrderDirection {
+export enum SortDirection {
   ASC = 'asc',
   DESC = 'desc'
 }
@@ -41,3 +41,5 @@ export enum DATE_TIME_FORMAT {
 }
 
 export const TEXT_MAX_LENGTH = 255;
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_PER_PAGE = 10;

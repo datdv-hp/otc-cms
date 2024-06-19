@@ -12,8 +12,7 @@ const options: AxiosRequestConfig = {
     'Content-Type': 'application/json'
   },
   baseURL: import.meta.env.VUE_APP_API_URL,
-  responseType: 'json',
-  withCredentials: true
+  responseType: 'json'
 };
 
 const axiosInstance = axios.create(options);

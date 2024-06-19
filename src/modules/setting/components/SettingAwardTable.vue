@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { formatDate, translateYupError } from '@/common/helper';
+import { formatDate } from '@/common/helper';
 import { randomDate } from '@/modules/admin/util';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { CreateCashbackSettingSchema } from '../constant';
@@ -8,7 +8,6 @@ import { ICashbackSetting } from '../type';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
-const isCreate = shallowRef(false);
 const itemsPerPage = shallowRef(10);
 const items = ref<ICashbackSetting[]>([]);
 const totalItems = shallowRef(0);
@@ -57,7 +56,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
 
 const demoItems: ICashbackSetting[] = Array.from({ length: 100 }, (_, i) => {
   const random = Math.random();
-  const isActive = random < 0.6;
   return {
     id: i + 1,
     name: 'cashback' + i,
@@ -96,15 +94,11 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     });
 }
 
-const { errors, resetForm, handleSubmit } = useForm({
+useForm({
   validationSchema: CreateCashbackSettingSchema
 });
-const { value: name } = useField<string>('name');
-const { value: cashbackValue } = useField<string>('cashbackValue');
-function cancelCreateForm() {
-  resetForm();
-  isCreate.value = false;
-}
+useField<string>('name');
+useField<string>('cashbackValue');
 </script>
 <template>
   <v-data-table-server

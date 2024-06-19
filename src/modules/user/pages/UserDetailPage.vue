@@ -8,7 +8,4 @@ import UserDetailF1Section from '@/modules/user/components/UserDetailF1Section.v
     <UserDetailF1Section class="mt-6" />
   </div>
 </template>
-<style lang="scss" scoped>
-.detail__wrapper {
-}
-</style>
+<style lang="scss" scoped></style>

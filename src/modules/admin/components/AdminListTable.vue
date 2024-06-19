@@ -2,7 +2,6 @@
 <script lang="ts" setup>
 import { formatDate } from '@/common/helper';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { adminApiService } from '../api';
 import { AccountStatus, StatusColor } from '../constant';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
@@ -104,9 +103,9 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     });
 }
 
-function getList() {
-  adminApiService._getList({});
-}
+// function getList() {
+//   adminApiService._getList({});
+// }
 
 function openFormPopup(id?: string | number) {
   adminStore.setIsOpenFormPopup(true);

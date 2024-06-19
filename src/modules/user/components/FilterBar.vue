@@ -1,8 +1,17 @@
 <script lang="ts" setup>
+import { UseUserStore } from '../store';
+
 const { t } = useI18n();
+const store = UseUserStore();
 const filter = ref({
   keyword: ''
 });
+
+function search() {
+  filter.value.keyword = filter.value.keyword?.trim();
+  store.patchQueryParams({ keyword: filter.value.keyword });
+  store.getList();
+}
 </script>
 <template>
   <div class="filter-wrapper d-sm-flex">
@@ -13,12 +22,17 @@ const filter = ref({
       :placeholder="t('common.button.search')"
       variant="outlined"
       density="compact"
-      size=""
       color="primary"
     ></v-text-field>
-    <v-btn class="text-none mt-2 mt-sm-0" flat color="primary" height="40" variant="flat">{{
-      t('common.button.search')
-    }}</v-btn>
+    <v-btn
+      class="text-none mt-2 mt-sm-0"
+      flat
+      color="primary"
+      height="40"
+      variant="flat"
+      @click="search"
+      >{{ t('common.button.search') }}</v-btn
+    >
   </div>
 </template>
 <style lang="scss" scoped>

@@ -1,12 +1,11 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { formatDate } from '@/common/helper';
+import { formatDate, translateYupError } from '@/common/helper';
 import { randomDate } from '@/modules/admin/util';
-import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { ICashbackSetting } from '../type';
 import { useNow } from '@vueuse/core';
+import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { CreateCashbackSettingSchema } from '../constant';
-import { translateYupError } from '@/common/helper';
+import { ICashbackSetting } from '../type';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
@@ -61,7 +60,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
 
 const demoItems: ICashbackSetting[] = Array.from({ length: 100 }, (_, i) => {
   const random = Math.random();
-  const isActive = random < 0.6;
   return {
     id: i + 1,
     name: 'cashback' + i,
@@ -104,7 +102,7 @@ function createNewAdmin() {
   isCreate.value = true;
 }
 
-const { errors, resetForm, handleSubmit } = useForm({
+const { errors, resetForm } = useForm({
   validationSchema: CreateCashbackSettingSchema
 });
 const { value: name } = useField<string>('name');

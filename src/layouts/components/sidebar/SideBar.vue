@@ -1,12 +1,22 @@
 <script lang="ts" setup>
 import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
+import { UseAppStore } from '@/common/app.store';
 import { PageName, SupportTheme } from '@/common/constants/common.constant';
 import { ISidebarItem } from '@/layouts/type';
-import { useTheme } from 'vuetify';
+import { useDisplay, useTheme } from 'vuetify';
 
 const { t } = useI18n();
 const theme = useTheme();
+const { smAndUp } = useDisplay();
+const appStore = UseAppStore();
+
+const isOpen = computed({
+  get: () => appStore.isShowSidebar,
+  set: (value: boolean) => {
+    appStore.setIsShowSidebar(value);
+  }
+});
 
 const Logo = computed(() => {
   return theme.name.value === SupportTheme.DARK ? MiniLogoDark : MiniLogoLight;
@@ -58,9 +68,22 @@ const sidebar = computed<ISidebarItem[]>(() => {
     }
   ].filter((item) => item.role);
 });
+
+onMounted(() => {
+  if (smAndUp) {
+    isOpen.value = true;
+  }
+});
 </script>
 <template>
-  <v-navigation-drawer class="px-1 py-0" permanent width="280" :scrim="false">
+  <v-navigation-drawer
+    v-model="isOpen"
+    class="px-1 py-0"
+    :temporary="!smAndUp"
+    :permanent="smAndUp"
+    width="280"
+    :scrim="false"
+  >
     <div class="logo-wrapper">
       <component :is="Logo" />
       <span class="logo-text">OTC</span>
