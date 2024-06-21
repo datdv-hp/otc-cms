@@ -10,7 +10,7 @@ export default {
   },
   fields: {
     username: 'Tên đăng nhập',
-    password: '••••••••'
+    password: '············'
   },
   error: {
     profile: 'Thông tin người dùng không hợp lệ'

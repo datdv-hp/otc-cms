@@ -1,10 +1,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, PageName, SortDirection } from '@/common/constants/common.constant';
-import { IActionOption } from '@/common/type';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
 

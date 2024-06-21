@@ -2,7 +2,7 @@
 import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
 import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
 import { PageName } from '@/common/constants/common.constant';
-import { notifyError, notifySuccess } from '@/common/helper';
+import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import localStorageAuthService from '@/common/storages/authStorage';
 import { logout } from '@/plugins/axios';
 import { useTheme } from 'vuetify';
@@ -20,7 +20,6 @@ const authStore = UseAuthStore();
 const Logo = computed(() => {
   return theme.name.value === 'dark' ? MiniLogoDark : MiniLogoLight;
 });
-const title = computed(() => t('auth.signIn.title'));
 
 /** Handle form  */
 const { meta, errors, handleSubmit, isSubmitting, isValidating } = useForm<ISignInBody>({
@@ -85,43 +84,6 @@ const isPasswordVisible = ref(false);
   <v-overlay scrim="background" v-model="overlay" :opacity="1" class="align-center justify-center">
     <v-progress-circular indeterminate></v-progress-circular>
   </v-overlay>
-  <!-- <div class="sign-in__wrapper">
-    <div class="sign-in__container">
-      <div class="logo-wrapper">
-        <component :is="Logo" />
-      </div>
-      <div class="sign-in__title tp-h3">{{ title }}</div>
-      <div class="sign-in__content">
-        <BInputText
-          class="mb-3"
-          v-model="username"
-          prepend-inner-icon="$common.email"
-          :placeholder="t('auth.fields.username')"
-          :error="errors.username"
-          @keydown.enter="signIn"
-        />
-        <BInputText
-          class="mb-4"
-          v-model="password"
-          type="password"
-          prepend-inner-icon="$common.lock"
-          :placeholder="t('auth.fields.password')"
-          :error="errors.password"
-          @keydown.enter="signIn"
-        />
-        <v-btn
-        class="sign-btn tp-button-1"
-        color="primary"
-        variant="flat"
-        height="48"
-        :disabled="!meta.valid"
-          :text="t('auth.signIn.title')"
-          :loading="isValidating || isSubmitting"
-          @click="signIn"
-        />
-      </div>
-    </div>
-  </div> -->
   <div class="sign-in__wrapper d-flex align-center justify-center pa-4">
     <VCard class="auth-card pa-4 pt-7 pb-7" max-width="448">
       <VCardItem class="justify-center">
@@ -140,44 +102,53 @@ const isPasswordVisible = ref(false);
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="$router.push('/')">
-          <VRow>
-            <!-- email -->
-            <VCol cols="12">
-              <VTextField v-model="username" autofocus placeholder="username123" label="Username" />
-            </VCol>
+        <VRow>
+          <!-- email -->
+          <VCol cols="12">
+            <VTextField
+              v-model="username"
+              autofocus
+              :placeholder="t('auth.fields.username')"
+              label="Username"
+              :error="!!errors.username"
+              :error-messages="translateYupError(errors.username)"
+              @keydown.enter="signIn"
+            />
+          </VCol>
 
-            <!-- password -->
-            <VCol cols="12">
-              <VTextField
-                v-model="password"
-                label="Password"
-                placeholder="············"
-                :type="isPasswordVisible ? 'text' : 'password'"
-                :append-inner-icon="isPasswordVisible ? '$common.eye' : '$common.eye'"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
+          <!-- password -->
+          <VCol cols="12">
+            <VTextField
+              v-model="password"
+              label="Password"
+              :placeholder="t('auth.fields.password')"
+              :type="isPasswordVisible ? 'text' : 'password'"
+              :append-inner-icon="isPasswordVisible ? '$common.eye' : '$common.eye'"
+              @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              :error="!!errors.password"
+              :error-messages="translateYupError(errors.password)"
+            />
 
-              <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                <VCheckbox v-model="remember" label="Remember me" />
+            <!-- remember me checkbox -->
+            <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
+              <VCheckbox v-model="remember" label="Remember me" />
 
-                <RouterLink class="text-primary ms-2 mb-1" to="#"> Forgot Password? </RouterLink>
-              </div>
+              <RouterLink class="text-primary ms-2 mb-1" to="#"> Forgot Password? </RouterLink>
+            </div>
 
-              <!-- login button -->
-              <VBtn
-                block
-                type="submit"
-                :disabled="!meta.valid"
-                :loading="isValidating || isSubmitting"
-                @click="signIn"
-              >
-                {{ t('auth.signIn.title') }}
-              </VBtn>
-            </VCol>
-          </VRow>
-        </VForm>
+            <!-- login button -->
+            <VBtn
+              block
+              type="submit"
+              :disabled="!meta.valid"
+              :loading="isValidating || isSubmitting"
+              @click="signIn"
+            >
+              {{ t('auth.signIn.title') }}
+              <template #loader> <span class="loader"></span></template>
+            </VBtn>
+          </VCol>
+        </VRow>
       </VCardText>
     </VCard>
   </div>
@@ -205,15 +176,53 @@ const isPasswordVisible = ref(false);
   }
 }
 
-.sign-in__title {
-  margin-bottom: 32px;
+.loader {
+  width: 30px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, #fff 90%, #0000);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 50%;
+  animation: l3 1s infinite linear;
 }
-.sign-in__content {
-  width: 296px;
+@keyframes l3 {
+  20% {
+    background-position:
+      0% 0%,
+      50% 50%,
+      100% 50%;
+  }
+  40% {
+    background-position:
+      0% 100%,
+      50% 0%,
+      100% 50%;
+  }
+  60% {
+    background-position:
+      0% 50%,
+      50% 100%,
+      100% 0%;
+  }
+  80% {
+    background-position:
+      0% 50%,
+      50% 50%,
+      100% 100%;
+  }
 }
-.sign-btn {
-  width: 100%;
-  border-radius: 12px;
-  text-transform: none;
-}
+
+// .sign-in__title {
+//   margin-bottom: 32px;
+// }
+// .sign-in__content {
+//   width: 296px;
+// }
+// .sign-btn {
+//   width: 100%;
+//   border-radius: 12px;
+//   text-transform: none;
+// }
 </style>

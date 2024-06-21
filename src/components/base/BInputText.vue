@@ -31,6 +31,7 @@ const model = defineModel<string>();
   <v-text-field
     v-model="model"
     :type="type"
+    :label="label"
     :prepend-inner-icon="prependInnerIcon"
     :append-inner-icon="appendInnerIcon"
     :placeholder="placeholder"
