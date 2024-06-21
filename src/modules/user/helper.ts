@@ -1,5 +1,6 @@
 import { formatCurrenCy, formatDate } from '@/common/helper';
 import { IF1UserListItem, IUserDetail, IUserListItem } from './type';
+import { UserStatus } from './constant';
 
 export const toUserListItem = (params: Record<string, unknown>): IUserListItem => {
   return {
@@ -9,7 +10,8 @@ export const toUserListItem = (params: Record<string, unknown>): IUserListItem =
     transactionToday: formatCurrenCy(params.transaction_today as number),
     lastTransactionAt: formatDate(params.last_transaction as Date),
     lastClaimAt: params.last_claim as Date,
-    f1Count: params.f1Count as number
+    f1Count: params.f1Count as number,
+    status: params.status as UserStatus
   };
 };
 
@@ -30,7 +32,8 @@ export const toUserDetail = (params: Record<string, unknown>): IUserDetail => {
     buyCustom: formatCurrenCy(params.buy_custom as number),
     sellCustom: formatCurrenCy(params.sell_custom as number),
     antimev: formatCurrenCy(params.tip as number),
-    lastClaimAt: formatDate(params.last_claim as Date)
+    lastClaimAt: formatDate(params.last_claim as Date),
+    status: params.status as UserStatus
   };
 };
 

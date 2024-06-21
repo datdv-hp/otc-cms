@@ -1,6 +1,8 @@
 export default {
   signIn: {
-    title: 'Đăng nhập'
+    title: 'Đăng nhập',
+    welcome: 'Chào mừng trở lại với OTC! 👋🏻',
+    pleaseSignIn: 'Vui lòng đăng nhập vào tài khoản để bắt đầu sử dụng'
   },
   accountMenu: {
     profile: 'Hồ sơ cá nhân',

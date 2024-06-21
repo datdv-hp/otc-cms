@@ -83,6 +83,7 @@ onMounted(() => {
     :permanent="smAndUp"
     width="280"
     :scrim="false"
+    flat
   >
     <div class="logo-wrapper">
       <component :is="Logo" />

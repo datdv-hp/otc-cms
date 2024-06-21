@@ -17,7 +17,7 @@ export default {
         name: 'Cashback'
       },
       encourageTrading: {
-        name: 'Trading'
+        name: 'Award'
       }
     }
   },

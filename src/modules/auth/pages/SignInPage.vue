@@ -28,6 +28,7 @@ const { meta, errors, handleSubmit, isSubmitting, isValidating } = useForm<ISign
 });
 const { value: username } = useField<string>('username');
 const { value: password } = useField<string>('password');
+const { value: remember } = useField<boolean>('remember');
 
 function redirectIfNeed() {
   const redirectPath = sessionStorage.getItem('redirect') as string;
@@ -78,12 +79,13 @@ function setup() {
 onMounted(() => {
   setup();
 });
+const isPasswordVisible = ref(false);
 </script>
 <template>
   <v-overlay scrim="background" v-model="overlay" :opacity="1" class="align-center justify-center">
     <v-progress-circular indeterminate></v-progress-circular>
   </v-overlay>
-  <div class="sign-in__wrapper">
+  <!-- <div class="sign-in__wrapper">
     <div class="sign-in__container">
       <div class="logo-wrapper">
         <component :is="Logo" />
@@ -108,17 +110,76 @@ onMounted(() => {
           @keydown.enter="signIn"
         />
         <v-btn
-          :disabled="!meta.valid"
-          class="sign-btn tp-button-1"
+        class="sign-btn tp-button-1"
+        color="primary"
+        variant="flat"
+        height="48"
+        :disabled="!meta.valid"
           :text="t('auth.signIn.title')"
-          color="primary"
-          variant="flat"
-          height="48"
           :loading="isValidating || isSubmitting"
           @click="signIn"
         />
       </div>
     </div>
+  </div> -->
+  <div class="sign-in__wrapper d-flex align-center justify-center pa-4">
+    <VCard class="auth-card pa-4 pt-7 pb-7" max-width="448">
+      <VCardItem class="justify-center">
+        <template #prepend>
+          <div class="d-flex">
+            <div class="d-flex text-primary"><component :is="Logo" /></div>
+          </div>
+        </template>
+
+        <VCardTitle class="text-2xl font-weight-bold"> OTC </VCardTitle>
+      </VCardItem>
+
+      <VCardText class="pt-2">
+        <h5 class="text-h5 mb-1">{{ t('auth.signIn.welcome') }}</h5>
+        <p class="mb-0">{{ t('auth.signIn.pleaseSignIn') }}</p>
+      </VCardText>
+
+      <VCardText>
+        <VForm @submit.prevent="$router.push('/')">
+          <VRow>
+            <!-- email -->
+            <VCol cols="12">
+              <VTextField v-model="username" autofocus placeholder="username123" label="Username" />
+            </VCol>
+
+            <!-- password -->
+            <VCol cols="12">
+              <VTextField
+                v-model="password"
+                label="Password"
+                placeholder="············"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="isPasswordVisible ? '$common.eye' : '$common.eye'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              />
+
+              <!-- remember me checkbox -->
+              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
+                <VCheckbox v-model="remember" label="Remember me" />
+
+                <RouterLink class="text-primary ms-2 mb-1" to="#"> Forgot Password? </RouterLink>
+              </div>
+
+              <!-- login button -->
+              <VBtn
+                block
+                type="submit"
+                :disabled="!meta.valid"
+                :loading="isValidating || isSubmitting"
+                @click="signIn"
+              >
+                {{ t('auth.signIn.title') }}
+              </VBtn>
+            </VCol>
+          </VRow>
+        </VForm>
+      </VCardText>
+    </VCard>
   </div>
 </template>
 <style lang="scss" scoped>

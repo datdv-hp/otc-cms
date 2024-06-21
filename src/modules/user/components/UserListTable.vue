@@ -1,10 +1,12 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, PageName, SortDirection } from '@/common/constants/common.constant';
+import { IActionOption } from '@/common/type';
+import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
-import { snakeCase } from 'lodash';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -55,6 +57,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     }
   ];
 });
+
 const itemPerPage = computed({
   get: () => store.queryParams.per_page || DEFAULT_PER_PAGE,
   set: (value: number) => {
@@ -119,8 +122,6 @@ defineExpose({
           :tooltip="$t('user.tooltip.detail')"
           @click="toDetail(item)"
         />
-        <BActionButton icon="$common.more-horizontal" :tooltip="$t('user.tooltip.more')" />
-        <!-- <v-btn density="comfortable" variant="text" icon="$common.more-horizontal" /> -->
       </div>
     </template>
   </v-data-table-server>

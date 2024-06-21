@@ -44,22 +44,13 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
   ];
 });
 
-async function fetchF1UserList() {
-  loading.value = true;
-  try {
-    store.patchQueryParams({ parent_id: +route.params.id as number });
-    await store.getList();
-  } finally {
-    loading.value = false;
-  }
-}
-
 async function loadItems(options: { page: number; itemsPerPage: number }) {
   loading.value = true;
   try {
     store.patchQueryParams({
       page: options.page,
-      per_page: options.itemsPerPage
+      per_page: options.itemsPerPage,
+      parent_id: +route.params.id as number
     });
     await store.getList();
   } finally {
@@ -72,10 +63,6 @@ const itemPerPage = computed({
   set: (value: number) => {
     store.patchQueryParams({ per_page: value });
   }
-});
-
-onMounted(() => {
-  fetchF1UserList();
 });
 </script>
 <template>

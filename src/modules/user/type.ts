@@ -1,4 +1,5 @@
 import { IQueryParams } from '@/common/type';
+import { UserStatus } from './constant';
 
 export type IUserListItem = {
   id: number | string;
@@ -8,6 +9,7 @@ export type IUserListItem = {
   lastTransactionAt?: Date | string;
   lastClaimAt?: Date | string;
   f1Count: number;
+  status: UserStatus;
 };
 
 export type IUserDetail = {
@@ -23,6 +25,7 @@ export type IUserDetail = {
   sellCustom: number | string;
   antimev: string;
   lastClaimAt?: Date | string;
+  status: UserStatus;
 };
 
 export type IUserQueryParams = IQueryParams & {

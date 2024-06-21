@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IOption } from '@/common/type';
+import { IActionOption } from '@/common/type';
 import { throttle } from 'lodash';
 import { VBtn } from 'vuetify/components/VBtn';
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   text?: string;
   color?: string;
   variant?: 'text' | 'plain' | 'tonal' | 'outlined' | 'flat' | 'elevated';
-  options?: IOption[];
+  options?: IActionOption[];
 };
 type Emits = {
   (event: 'click', $event: MouseEvent): void;
@@ -32,6 +32,7 @@ const selectedModel = defineModel('selected');
     v-if="tooltip"
     open-delay="200"
     location="top center"
+    density="compact"
   />
   <v-menu :activator="btnRef?.$el" v-if="options?.length">
     <v-list v-model:selected="selectedModel" density="compact" color="primary">
@@ -39,7 +40,8 @@ const selectedModel = defineModel('selected');
         v-for="(item, index) in options"
         :key="index"
         :title="item.title"
-        :value="item.value"
+        :disabled="item.disabled"
+        @click="item.action"
       ></v-list-item>
     </v-list>
   </v-menu>

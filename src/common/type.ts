@@ -55,3 +55,10 @@ export type IOption = {
   disabled?: boolean;
   other?: any;
 };
+
+export type IActionOption = {
+  title: string;
+  prependIcon?: string;
+  action?: () => void;
+  disabled?: boolean;
+};

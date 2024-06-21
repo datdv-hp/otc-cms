@@ -14,10 +14,10 @@ export default {
     setting: {
       name: 'Cài đặt',
       cashback: {
-        name: 'Chương trình hoàn tiền'
+        name: 'Hoàn tiền'
       },
       encourageTrading: {
-        name: 'Khuyến khích giao dịch'
+        name: 'Mốc thưởng'
       }
     }
   },
