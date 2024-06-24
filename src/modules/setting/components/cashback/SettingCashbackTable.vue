@@ -1,0 +1,132 @@
+<!-- eslint-disable vue/valid-v-slot -->
+<script lang="ts" setup>
+import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
+import { formatDate } from '@/common/helper';
+import { snakeCase } from 'lodash';
+import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
+import { ICashbackSetting } from '../../type';
+
+const { t } = useI18n();
+const store = UseCashbackSettingStore();
+
+const headers = computed<VDataTableServer['$props']['headers']>(() => {
+  return [
+    {
+      key: 'data-table-select',
+      minWidth: '56',
+      width: '56',
+      sortable: false,
+      fixed: true
+    },
+    {
+      title: t('setting.fields.id'),
+      key: 'id',
+      minWidth: '67',
+      sortable: false,
+      fixed: true
+    },
+    {
+      title: t('setting.fields.name'),
+      key: 'name',
+      minWidth: '160'
+    },
+    {
+      title: t('setting.fields.cashback'),
+      key: 'percent',
+      minWidth: '120'
+    },
+    {
+      title: t('setting.fields.createdAt'),
+      key: 'createdAt',
+      minWidth: '180',
+      sortable: false,
+      value: (item) => formatDate(item.createdAt)
+    },
+    {
+      title: t('setting.fields.actions'),
+      key: 'actions',
+      minWidth: '160',
+      sortable: false,
+      fixed: true
+    }
+  ];
+});
+
+const itemsPerPage = computed({
+  get: () => store.queryParams.per_page || DEFAULT_PER_PAGE,
+  set: (value: number) => {
+    store.patchQueryParams({ per_page: value });
+  }
+});
+
+async function loadItems(options: {
+  page?: number;
+  itemsPerPage?: number;
+  sortBy?: { key: string; order: SortDirection }[];
+}) {
+  store.patchQueryParams({
+    page: options.page,
+    per_page: options.itemsPerPage,
+    sort: options.sortBy?.[0]?.order,
+    order_by: snakeCase(options.sortBy?.[0]?.key)
+  });
+  store.getList();
+}
+function deleteCashbackSetting(item: ICashbackSetting) {
+  console.log('deleteCashbackSetting', item);
+}
+</script>
+<template>
+  <v-data-table-server
+    class="pa-4"
+    v-model:items-per-page="itemsPerPage"
+    :items-length="store.totalItems"
+    :items="store.list"
+    height="500"
+    fixed-header
+    :headers="headers"
+    :loading="store.isLoadingList"
+    show-select
+    @update:options="loadItems"
+  >
+    <template #top>
+      <div class="d-flex align-center">
+        <v-spacer></v-spacer>
+        <v-btn
+          :disabled="store.dialog.isShow"
+          class="text-none me-6"
+          color="primary"
+          @click="store.openDialog()"
+          >{{ $t('common.button.add') }}</v-btn
+        >
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <div class="actions">
+        <BActionButton
+          icon="$common.pencil"
+          :tooltip="$t('common.button.edit')"
+          color="neutral"
+          @click="store.openDialog(item.id)"
+        />
+        <BActionButton
+          icon="$common.trash"
+          :tooltip="$t('common.button.delete')"
+          color="neutral"
+          @click="deleteCashbackSetting(item)"
+        />
+      </div>
+    </template>
+    <template v-slot:loading>
+      <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
+    </template>
+  </v-data-table-server>
+</template>
+<style lang="scss" scoped>
+.create-form {
+  :deep(.v-field__input) {
+    padding-top: 0;
+  }
+}
+</style>

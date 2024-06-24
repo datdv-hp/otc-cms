@@ -14,7 +14,7 @@ function toggleSidebar() {
   <v-app-bar flat class="app-header" height="60">
     <template #prepend>
       <v-breadcrumbs :items="breadcrumbs">
-        <template #prepend>
+        <template #prepend v-if="!appStore.isShowSidebar">
           <v-icon icon="$sidebar.layout" @click="toggleSidebar"></v-icon>
         </template>
       </v-breadcrumbs>

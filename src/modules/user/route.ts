@@ -1,9 +1,7 @@
 import { PageName } from '@/common/constants/common.constant';
 import MainLayout from '@/layouts/MainLayout.vue';
-import type { RouteRecordRaw } from 'vue-router';
-import UserListPage from './pages/UserListPage.vue';
-import UserDetailPage from './pages/UserDetailPage.vue';
 import i18n from '@/plugins/vue-i18n';
+import type { RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,21 +11,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         name: PageName.USER_LIST_PAGE,
-        component: UserListPage,
+        component: () => import('@/modules/user/pages/UserListPage.vue'),
         meta: {
           requiresAuth: true,
-          breadcrumbs: [
-            {
-              title: i18n.global.t('user.breadcrumb.list'),
-              active: false
-            }
-          ]
+          breadcrumbs: [{ title: i18n.global.t('user.breadcrumb.list') }]
         }
       },
       {
         path: ':id',
         name: PageName.USER_DETAIL_PAGE,
-        component: UserDetailPage,
+        component: () => import('@/modules/user/pages/UserDetailPage.vue'),
         meta: {
           requiresAuth: true,
           breadcrumbs: [
@@ -35,9 +28,7 @@ const routes: Array<RouteRecordRaw> = [
               title: i18n.global.t('user.breadcrumb.list'),
               to: { name: PageName.USER_LIST_PAGE }
             },
-            {
-              title: i18n.global.t('user.breadcrumb.detail')
-            }
+            { title: i18n.global.t('user.breadcrumb.detail') }
           ]
         }
       }

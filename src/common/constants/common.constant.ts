@@ -19,7 +19,7 @@ export enum PageName {
   FORBIDDEN_PAGE = 'forbidden_page',
   HOME_PAGE = 'home_page',
   SETTING_CASHBACK_PAGE = 'setting_cashback_page',
-  SETTING_ENCOURAGE_TRADING_PAGE = 'setting_encourage_trading_page',
+  SETTING_AWARD_PAGE = 'setting_award_page',
   ADMIN_LIST_PAGE = 'admin_list_page'
 }
 

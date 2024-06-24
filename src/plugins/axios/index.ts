@@ -22,9 +22,7 @@ async function sendRefreshToken() {
   const API_URL = import.meta.env.VUE_APP_API_URL;
   refreshingPromise = axios.post<IBodyResponse<IAuthTokens>>(
     `${API_URL}/auth/refresh`,
-    {
-      refreshToken: localStorageAuthService.getRefreshToken()
-    },
+    { refresh_token: localStorageAuthService.getRefreshToken() },
     {
       headers: { 'Content-Type': 'application/json' },
       responseType: 'json'
@@ -33,8 +31,7 @@ async function sendRefreshToken() {
   refreshingPromise
     .then(async (res) => {
       if (res?.status === HttpStatus.OK) {
-        localStorageAuthService.setAccessToken(res?.data?.data.accessToken);
-        localStorageAuthService.setRefreshToken(res?.data?.data.refreshToken);
+        localStorageAuthService.setAuthTokens(res?.data?.data);
       } else {
         await logout(true);
       }
@@ -52,7 +49,6 @@ const throttled = throttle(sendRefreshToken, 10000, { trailing: false });
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig & { _retried?: boolean }) => {
     await refreshingPromise;
-
     Object.assign(config, {
       headers: config._retried
         ? { ...config.headers, ...localStorageAuthService.getHeader() }

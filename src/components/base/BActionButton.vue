@@ -33,6 +33,8 @@ const selectedModel = defineModel('selected');
     open-delay="200"
     location="top center"
     density="compact"
+    :offset="-4"
+    class="compact-tooltip"
   />
   <v-menu :activator="btnRef?.$el" v-if="options?.length">
     <v-list v-model:selected="selectedModel" density="compact" color="primary">

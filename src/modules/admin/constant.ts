@@ -1,9 +1,9 @@
 export enum AccountStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE'
+  ACTIVE = 'active',
+  INACTIVE = 'inactive'
 }
 
 export const StatusColor = {
   [AccountStatus.ACTIVE]: 'success',
-  [AccountStatus.INACTIVE]: 'error'
+  [AccountStatus.INACTIVE]: 'warning'
 };

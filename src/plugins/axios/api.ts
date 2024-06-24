@@ -53,11 +53,14 @@ export class ApiService {
   }
 
   _update<Params, Record>(id: number | string, params: Params): Promise<IBodyResponse<Record>> {
-    return this.client.patch(this.updateUrl + '/' + id, params);
+    return this.client.put(this.updateUrl + '/' + id, params);
   }
 
-  _delete<Record>(id: number | string): Promise<IBodyResponse<Record>> {
-    return this.client.delete(this.deleteUrl + '/' + id);
+  _delete<Record, Params = undefined>(
+    id: number | string,
+    params?: Params
+  ): Promise<IBodyResponse<Record>> {
+    return this.client.delete(this.deleteUrl + '/' + id, { params });
   }
 
   _getListByLink<Record>(url: string): Promise<IBodyResponse<IGetListData<Record>>> {

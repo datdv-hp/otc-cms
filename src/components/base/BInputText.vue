@@ -45,7 +45,6 @@ const model = defineModel<string>();
     flat
     color="primary"
     variant="outlined"
-    density="comfortable"
   >
     <template #label="{ props, label }" v-if="label">
       <v-label v-bind="props">

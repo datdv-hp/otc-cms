@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import SettingCashbackTable from '../components/SettingCashbackTable.vue';
+import SettingCashbackPopup from '../components/cashback/SettingCashbackPopup.vue';
+import SettingCashbackTable from '../components/cashback/SettingCashbackTable.vue';
 </script>
 <template>
-  <div class="tp-h4 mb-4">
-    {{ $t('setting.title.cashback') }}
-  </div>
-  <SettingCashbackTable />
+  <v-card class="card-wrapper pa-4" :elevation="1">
+    <SettingCashbackTable class="flex-1" />
+  </v-card>
+  <SettingCashbackPopup />
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

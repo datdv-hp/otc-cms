@@ -4,7 +4,7 @@ export default {
     password: 'Mật khẩu'
   },
   cashbackSetting: {
-    name: 'Tên chương trình hoàn tiền',
-    cashbackValue: 'Giá trị hoàn'
+    name: 'Tên gói hoàn tiền',
+    percent: 'Giá trị hoàn'
   }
 };

@@ -1,7 +1,8 @@
 import { DEFAULT_PAGE } from '@/common/constants/common.constant';
 import { userApiService } from './api';
+import { IUserQueryParamsDTO } from './dto/request.user-dto';
 import { toUserDetail, toUserList } from './helper';
-import { IUserDetail, IUserListItem, IUserQueryParams } from './type';
+import { IUserDetail, IUserListItem } from './type';
 
 const STORE_NAME = 'user-store';
 export const UseUserStore = defineStore(STORE_NAME, () => {
@@ -9,7 +10,7 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   const totalItems = shallowRef(0);
   const detail = ref<IUserDetail | null>(null);
   const lastPage = shallowRef(DEFAULT_PAGE);
-  const queryParams = ref<IUserQueryParams>({});
+  const queryParams = ref<IUserQueryParamsDTO>({});
   const isLoadingList = shallowRef(false);
 
   function setDetail(data: IUserDetail | null) {
@@ -25,10 +26,10 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   function setTotalItems(value: number) {
     totalItems.value = value;
   }
-  function setQueryParams(value?: IUserQueryParams) {
+  function setQueryParams(value?: IUserQueryParamsDTO) {
     queryParams.value = value ?? {};
   }
-  function patchQueryParams(value: Partial<IUserQueryParams>) {
+  function patchQueryParams(value: Partial<IUserQueryParamsDTO>) {
     queryParams.value = {
       ...queryParams.value,
       ...value

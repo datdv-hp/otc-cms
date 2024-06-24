@@ -1,9 +1,7 @@
 <script lang="ts" setup></script>
 <template>
   <div class="wrapper">
-    <b-button>
-      <template #default> Click me</template>
-    </b-button>
+    <h1>Coming soon!</h1>
   </div>
 </template>
 <style lang="scss" scoped>

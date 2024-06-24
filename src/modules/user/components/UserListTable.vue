@@ -1,8 +1,12 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, PageName, SortDirection } from '@/common/constants/common.constant';
+import { notifySuccess } from '@/common/helper';
+import { StatusColor } from '@/modules/admin/constant';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { userApiService } from '../api';
+import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
 
@@ -35,23 +39,34 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('user.fields.lastTransactionAt'),
       key: 'lastTransactionAt',
-      minWidth: '180'
+      minWidth: '180',
+      sortable: false
     },
     {
       title: t('user.fields.lastClaimAt'),
       key: 'lastClaimAt',
-      minWidth: '180'
+      minWidth: '180',
+      sortable: false
     },
     {
       title: t('user.fields.f1Count'),
       key: 'f1Count',
-      minWidth: '160'
+      minWidth: '100',
+      sortable: false
+    },
+    {
+      title: t('user.fields.status'),
+      key: 'status',
+      minWidth: '160',
+      align: 'center',
+      sortable: false
     },
     {
       title: t('user.fields.actions'),
       key: 'actions',
       minWidth: '160',
-      sortable: false
+      sortable: false,
+      align: 'center'
     }
   ];
 });
@@ -74,12 +89,38 @@ async function loadItems(options: {
     sort: options.sortBy?.[0]?.order,
     order_by: snakeCase(options.sortBy?.[0]?.key)
   });
-  await store.getList();
+  store.getList();
 }
 
 function toDetail(item: IUserListItem) {
   router.push({ name: PageName.USER_DETAIL_PAGE, params: { id: item.id } });
 }
+
+async function changeStatus(item: IUserListItem) {
+  const isActive = item.status === UserStatus.ACTIVE;
+  const res = isActive
+    ? await userApiService.banUser(item.id)
+    : await userApiService.unbanUser(item.id);
+  if (res.success) {
+    notifySuccess;
+  }
+}
+
+function openCashbackConfigPopup(item: IUserListItem) {
+  // TODO: Open cashback config popup
+  console.log(item);
+}
+
+const actions = computed(() => ({
+  [UserStatus.ACTIVE]: {
+    icon: '$common.lock',
+    tooltip: t('user.tooltip.ban')
+  },
+  [UserStatus.INACTIVE]: {
+    icon: '$common.unlock',
+    tooltip: t('user.tooltip.unban')
+  }
+}));
 
 onUnmounted(() => {
   store.setQueryParams({});
@@ -113,12 +154,32 @@ defineExpose({
         item.telegramUsername
       }}</a>
     </template>
+    <template v-slot:[`item.status`]="{ item }">
+      <v-chip
+        density="compact"
+        :color="StatusColor[item.status]"
+        :text="t(`admin.status.${item.status}`)"
+      ></v-chip>
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <div class="actions">
         <BActionButton
-          icon="$common.eye"
+          icon="$common.open"
           :tooltip="$t('user.tooltip.detail')"
+          color="neutral"
           @click="toDetail(item)"
+        />
+        <BActionButton
+          :icon="actions[item.status].icon"
+          :tooltip="actions[item.status].tooltip"
+          color="neutral"
+          @click="changeStatus(item)"
+        />
+        <BActionButton
+          icon="$common.tune"
+          :tooltip="$t('user.tooltip.configCashback')"
+          color="neutral"
+          @click="openCashbackConfigPopup(item)"
         />
       </div>
     </template>

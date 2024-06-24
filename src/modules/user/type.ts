@@ -1,4 +1,3 @@
-import { IQueryParams } from '@/common/type';
 import { UserStatus } from './constant';
 
 export type IUserListItem = {
@@ -13,7 +12,7 @@ export type IUserListItem = {
 };
 
 export type IUserDetail = {
-  id: number;
+  id: number | string;
   telegramId: string;
   telegramUsername: string;
   referralId: number | string;
@@ -26,10 +25,6 @@ export type IUserDetail = {
   antimev: string;
   lastClaimAt?: Date | string;
   status: UserStatus;
-};
-
-export type IUserQueryParams = IQueryParams & {
-  parent_id?: number | string;
 };
 
 export type IF1UserListItem = {

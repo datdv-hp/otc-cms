@@ -1,3 +1,5 @@
+import { UserStatus } from '../../constant';
+
 export default {
   title: {
     list: 'Danh sách người dùng'
@@ -12,6 +14,7 @@ export default {
     transactionToday: 'Khối lượng giao dịch trong ngày',
     lastTransactionAt: 'Giao dịch lần cuối',
     lastClaimAt: 'Nhận thưởng lần cuối',
+    status: 'Trạng thái',
     actions: 'Hành động',
     f1Count: 'Số lượng F1',
     referralId: 'Người giới thiệu',
@@ -22,6 +25,10 @@ export default {
     buyCustom: 'Buy custom',
     sellCustom: 'Sell custom',
     antimev: 'Antimev'
+  },
+  status: {
+    [UserStatus.ACTIVE]: 'Đang hoạt động',
+    [UserStatus.INACTIVE]: 'Ngừng hoạt động'
   },
   action: {
     deactivate: 'Vô hiệu hóa',
@@ -34,7 +41,17 @@ export default {
     f1Title: 'Thông tin F1'
   },
   tooltip: {
-    detail: 'Chi tiết người dùng',
-    more: 'Xem thêm'
+    detail: 'Chi tiết',
+    ban: 'Vô hiệu hóa',
+    unban: 'Kích hoạt',
+    configCashback: 'Cấu hình hoàn tiền'
+  },
+  success: {
+    ban: 'Vô hiệu hóa người dùng thành công',
+    unban: 'Kích hoạt người dùng thành công'
+  },
+  error: {
+    ban: 'Vô hiệu hóa người dùng không thành công',
+    unban: 'Kích hoạt người dùng không thành công'
   }
 };

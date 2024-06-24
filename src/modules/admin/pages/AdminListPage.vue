@@ -6,9 +6,6 @@ import { UseAdminStore } from '../store';
 const adminStore = UseAdminStore();
 </script>
 <template>
-  <div class="tp-h4 mb-4">
-    {{ $t('admin.title.list') }}
-  </div>
   <AdminListTable />
   <AdminFormPopup
     :model-value="adminStore.isOpenFormPopup"

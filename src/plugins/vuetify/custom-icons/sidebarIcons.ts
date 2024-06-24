@@ -13,6 +13,12 @@ import darkMode from '@/assets/icons/sidebar/dark-mode.svg';
 import lightMode from '@/assets/icons/sidebar/light-mode.svg';
 import language from '@/assets/icons/sidebar/language.svg';
 import layout from '@/assets/icons/sidebar/layout.svg';
+import cashback from '@/assets/icons/sidebar/cashback.svg';
+import cashbackSolid from '@/assets/icons/sidebar/cashback-solid.svg';
+import award from '@/assets/icons/sidebar/award.svg';
+import awardSolid from '@/assets/icons/sidebar/award-solid.svg';
+import admin from '@/assets/icons/sidebar/admin.svg';
+import adminSolid from '@/assets/icons/sidebar/admin-solid.svg';
 
 export default {
   help,
@@ -29,5 +35,11 @@ export default {
   'dark-mode': darkMode,
   'light-mode': lightMode,
   language,
-  layout
+  layout,
+  cashback,
+  'cashback-solid': cashbackSolid,
+  award,
+  'award-solid': awardSolid,
+  admin,
+  'admin-solid': adminSolid
 };

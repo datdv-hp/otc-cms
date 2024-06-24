@@ -85,10 +85,6 @@ export default {
     color: 'rgba(var(--v-theme-on-background),0.22)',
     activeColor: 'warning'
   },
-  VProgressCircular: {
-    // set v-progress-circular default color to primary
-    color: 'primary'
-  },
   VSlider: {
     // set v-slider default color to primary
     thumbSize: 14,
@@ -98,7 +94,8 @@ export default {
   VTextField: {
     variant: 'outlined',
     color: 'primary',
-    hideDetails: 'auto'
+    hideDetails: 'auto',
+    hideSpinButtons: true
   },
   VAutocomplete: {
     variant: 'outlined',

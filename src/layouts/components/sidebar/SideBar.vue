@@ -41,8 +41,8 @@ const sidebar = computed<ISidebarItem[]>(() => {
     },
     {
       title: t('app.sidebar.admin.name'),
-      icon: '$sidebar.user',
-      activeIcon: '$sidebar.user-solid',
+      icon: '$sidebar.admin',
+      activeIcon: '$sidebar.admin-solid',
       routeName: PageName.ADMIN_LIST_PAGE,
       role: true
     },
@@ -55,19 +55,25 @@ const sidebar = computed<ISidebarItem[]>(() => {
         {
           title: t('app.sidebar.setting.cashback.name'),
           routeName: PageName.SETTING_CASHBACK_PAGE,
-          activeRouteNames: [PageName.SETTING_CASHBACK_PAGE],
+          icon: '$sidebar.cashback',
+          activeIcon: '$sidebar.cashback-solid',
           role: true
         },
         {
-          title: t('app.sidebar.setting.encourageTrading.name'),
-          routeName: PageName.SETTING_ENCOURAGE_TRADING_PAGE,
-          activeRouteNames: [PageName.SETTING_ENCOURAGE_TRADING_PAGE],
+          title: t('app.sidebar.setting.award.name'),
+          routeName: PageName.SETTING_AWARD_PAGE,
+          icon: '$sidebar.award',
+          activeIcon: '$sidebar.award-solid',
           role: true
         }
       ]
     }
   ].filter((item) => item.role);
 });
+
+function hideSidebar() {
+  isOpen.value = false;
+}
 
 onMounted(() => {
   if (smAndUp) {
@@ -88,6 +94,8 @@ onMounted(() => {
     <div class="logo-wrapper">
       <component :is="Logo" />
       <span class="logo-text">OTC</span>
+      <v-spacer />
+      <v-icon icon="$common.close" @click="hideSidebar"></v-icon>
     </div>
     <v-list class="sidebar-content" nav density="comfortable">
       <template v-for="(item, _) in sidebar" :key="_">
@@ -99,6 +107,9 @@ onMounted(() => {
             :to="{ name: subItem.routeName }"
             :title="subItem.title"
           >
+            <template #prepend="{ isActive }">
+              <v-icon :icon="isActive ? subItem.activeIcon : subItem.icon" />
+            </template>
             <template #title="{ title }">
               <span class="tp-base-1-sb">{{ title }}</span>
             </template>
@@ -118,7 +129,7 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .logo-wrapper {
-  padding: 16px 0 48px 10px;
+  padding: 6px 16px 48px 10px;
   display: flex;
   align-items: center;
   gap: 12px;

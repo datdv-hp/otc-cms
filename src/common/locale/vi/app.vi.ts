@@ -16,7 +16,7 @@ export default {
       cashback: {
         name: 'Hoàn tiền'
       },
-      encourageTrading: {
+      award: {
         name: 'Mốc thưởng'
       }
     }

@@ -2,9 +2,11 @@ import { AccountStatus } from '../../constant';
 
 export default {
   title: {
-    list: 'Danh sách quản trị viên',
     create: 'Tạo mới quản trị viên',
     update: 'Chỉnh sửa quản trị viên'
+  },
+  breadcrumb: {
+    list: 'Danh sách quản trị viên'
   },
   fields: {
     id: 'ID',

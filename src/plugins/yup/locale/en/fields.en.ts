@@ -5,6 +5,6 @@ export default {
   },
   cashbackSetting: {
     name: 'Cashback name',
-    cashbackValue: 'Cashback value'
+    percent: 'Cashback value'
   }
 };

@@ -1,22 +1,18 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { formatDate, translateYupError } from '@/common/helper';
+import { formatDate } from '@/common/helper';
 import { randomDate } from '@/modules/admin/util';
-import { useNow } from '@vueuse/core';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { CreateCashbackSettingSchema } from '../constant';
-import { ICashbackSetting } from '../type';
+import { ICashbackSetting } from '../../type';
+import { CashbackSettingFormSchema } from '../../constant';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
-const isCreate = shallowRef(false);
 const itemsPerPage = shallowRef(10);
 const items = ref<ICashbackSetting[]>([]);
 const totalItems = shallowRef(0);
 const selectedItems = ref();
-const now = useNow();
 
-const currentDateTime = computed(() => formatDate(now.value));
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
@@ -38,7 +34,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     },
     {
       title: t('setting.fields.cashback'),
-      key: 'cashbackValue',
+      key: 'percent',
       minWidth: '160'
     },
     {
@@ -63,7 +59,7 @@ const demoItems: ICashbackSetting[] = Array.from({ length: 100 }, (_, i) => {
   return {
     id: i + 1,
     name: 'cashback' + i,
-    cashbackValue: Math.round(random * 100) % 30,
+    percent: Math.round(random * 100) % 30,
     createdAt: randomDate(new Date(), 365 * 2)
   };
 });
@@ -98,23 +94,14 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
     });
 }
 
-function createNewAdmin() {
-  isCreate.value = true;
-}
-
-const { errors, resetForm } = useForm({
-  validationSchema: CreateCashbackSettingSchema
+useForm({
+  validationSchema: CashbackSettingFormSchema
 });
-const { value: name } = useField<string>('name');
-const { value: cashbackValue } = useField<string>('cashbackValue');
-function cancelCreateForm() {
-  resetForm();
-  isCreate.value = false;
-}
+useField<string>('name');
+useField<string>('cashbackValue');
 </script>
 <template>
   <v-data-table-server
-    class="pa-4"
     v-model="selectedItems"
     v-model:items-per-page="itemsPerPage"
     :items-length="totalItems"
@@ -126,60 +113,6 @@ function cancelCreateForm() {
     show-select
     @update:options="loadItems"
   >
-    <template #top>
-      <div class="d-flex align-center">
-        <v-spacer></v-spacer>
-        <v-btn v-if="!isCreate" class="text-none me-6" color="primary" @click="createNewAdmin">{{
-          $t('common.button.add')
-        }}</v-btn>
-      </div>
-    </template>
-    <template #[`body.prepend`] v-if="isCreate">
-      <tr class="create-form">
-        <td class="v-data-table-column--fixed" :style="{ width: '56px' }"></td>
-        <td
-          class="v-data-table-column--fixed v-data-table-column--last-fixed"
-          :style="{ left: '56px' }"
-        ></td>
-        <td class="pb-1">
-          <v-text-field
-            v-model="name"
-            :prepend="false"
-            density="comfortable"
-            variant="plain"
-            :placeholder="t('setting.placeholder.name')"
-            auto-focus
-            hide-details="auto"
-            :error="!!errors.name"
-            :error-messages="translateYupError(errors.name)"
-          ></v-text-field>
-        </td>
-        <td class="pb-1">
-          <v-text-field
-            :placeholder="t('setting.placeholder.cashback')"
-            v-model="cashbackValue"
-            type="number"
-            hide-spin-buttons
-            density="comfortable"
-            variant="plain"
-            hide-details="auto"
-            :error="!!errors.cashbackValue"
-            :error-messages="translateYupError(errors.cashbackValue)"
-          ></v-text-field>
-        </td>
-        <td align="center">{{ currentDateTime }}</td>
-        <td>
-          <v-btn size="24" variant="tonal" color="primary" icon="$common.check"></v-btn>
-          <v-btn
-            @click="cancelCreateForm"
-            class="ms-2"
-            size="24"
-            variant="tonal"
-            icon="$common.close"
-          ></v-btn>
-        </td>
-      </tr>
-    </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
     </template>
