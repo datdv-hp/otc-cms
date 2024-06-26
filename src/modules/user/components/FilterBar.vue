@@ -21,6 +21,7 @@ function search() {
       max-width="300"
       :placeholder="t('common.button.search')"
       variant="outlined"
+      :disabled="store.isLoadingList"
       density="compact"
       color="primary"
     ></v-text-field>
@@ -30,6 +31,7 @@ function search() {
       color="primary"
       height="40"
       variant="flat"
+      :disabled="store.isLoadingList"
       @click="search"
       >{{ t('common.button.search') }}</v-btn
     >

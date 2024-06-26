@@ -3,6 +3,7 @@ import { userApiService } from './api';
 import { IUserQueryParamsDTO } from './dto/request.user-dto';
 import { toUserDetail, toUserList } from './helper';
 import { IUserDetail, IUserListItem } from './type';
+import { UserStatus } from './constant';
 
 const STORE_NAME = 'user-store';
 export const UseUserStore = defineStore(STORE_NAME, () => {
@@ -22,7 +23,6 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   function setIsLoadingList(value: boolean) {
     isLoadingList.value = value;
   }
-
   function setTotalItems(value: number) {
     totalItems.value = value;
   }
@@ -37,6 +37,11 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   }
   function setLastPage(value: number) {
     lastPage.value = value;
+  }
+  function patchUserStatusInList(index: number, status: UserStatus) {
+    if (list.value[index]) {
+      list.value[index].status = status;
+    }
   }
 
   async function getList(query = queryParams.value) {
@@ -75,6 +80,7 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
     setLastPage,
     getList,
     isLoadingList,
-    setIsLoadingList
+    setIsLoadingList,
+    patchUserStatusInList
   };
 });

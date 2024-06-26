@@ -17,13 +17,7 @@ const initForm: Partial<ICashbackForm> = {
   percent: undefined
 };
 
-const {
-  errors,
-  handleSubmit,
-  isSubmitting,
-  resetForm,
-  values: formValue
-} = useForm<ICashbackForm>({
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<ICashbackForm>({
   validationSchema: CashbackSettingFormSchema,
   initialValues: initForm
 });
@@ -88,7 +82,6 @@ watch(
     } else {
       resetForm({ values: initForm });
       store.resetDialog();
-      console.log(formValue);
     }
   }
 );
@@ -106,6 +99,7 @@ watch(
               :placeholder="t('setting.cashback.placeholder.name')"
               auto-focus
               :loading="!!store.dialog?.isLoading"
+              :disabled="!!store.dialog?.isLoading"
               :error="!!errors.name"
               :error-messages="translateYupError(errors.name)"
             ></v-text-field>
@@ -117,6 +111,7 @@ watch(
               :placeholder="t('setting.cashback.placeholder.percent')"
               type="number"
               :loading="!!store.dialog?.isLoading"
+              :disabled="!!store.dialog?.isLoading"
               hide-spin-buttons
               :error="!!errors.percent"
               :error-messages="translateYupError(errors.percent)"

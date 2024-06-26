@@ -8,7 +8,7 @@ import SideBar from './components/sidebar/SideBar.vue';
   <v-app :full-height="true">
     <SideBar />
     <HeaderBar />
-    <v-main style="min-height: 300px; height: 100vh">
+    <v-main style="min-height: 300px">
       <div class="app-content pa-4">
         <router-view v-slot="{ Component }">
           <component :is="Component" />

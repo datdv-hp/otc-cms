@@ -16,17 +16,15 @@ class UserApiService extends ApiService {
   }
 
   banUser(id: number | string): Promise<IBodyResponse<IResponseUserDetailDTO>> {
-    return this._delete<IResponseUserDetailDTO, IUpdateUserStatusParamsDTO>(
-      `${this.baseUrl}/${id}`,
-      { status: UserStatus.INACTIVE }
-    );
+    return this._delete<IResponseUserDetailDTO, IUpdateUserStatusParamsDTO>(id, {
+      status: UserStatus.INACTIVE
+    });
   }
 
   unbanUser(id: number | string): Promise<IBodyResponse<IResponseUserDetailDTO>> {
-    return this._delete<IResponseUserDetailDTO, IUpdateUserStatusParamsDTO>(
-      `${this.baseUrl}/${id}`,
-      { status: UserStatus.ACTIVE }
-    );
+    return this._delete<IResponseUserDetailDTO, IUpdateUserStatusParamsDTO>(id, {
+      status: UserStatus.ACTIVE
+    });
   }
 
   async getUserListByLink(

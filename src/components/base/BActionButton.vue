@@ -9,6 +9,7 @@ type Props = {
   color?: string;
   variant?: 'text' | 'plain' | 'tonal' | 'outlined' | 'flat' | 'elevated';
   options?: IActionOption[];
+  loading?: boolean;
 };
 type Emits = {
   (event: 'click', $event: MouseEvent): void;
@@ -55,6 +56,7 @@ const selectedModel = defineModel('selected');
     :color="color"
     :icon="icon"
     :text="text"
+    :loading="loading"
     @click="handleClick"
   />
 </template>

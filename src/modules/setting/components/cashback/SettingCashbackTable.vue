@@ -1,15 +1,17 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
-import { formatDate } from '@/common/helper';
+import { formatDate, notifyError, notifySuccess } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackSetting } from '../../type';
+import { cashbackSettingServiceApi } from '../../api';
+import { toAwardSettingListItem } from '../../helper';
 
 const { t } = useI18n();
 const store = UseCashbackSettingStore();
-
+const deleting = reactive<Record<string, boolean>>({});
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
@@ -73,8 +75,21 @@ async function loadItems(options: {
   });
   store.getList();
 }
-function deleteCashbackSetting(item: ICashbackSetting) {
-  console.log('deleteCashbackSetting', item);
+async function deleteCashbackSetting(item: ICashbackSetting, index: number) {
+  deleting[index] = true;
+  try {
+    const res = await cashbackSettingServiceApi.deleteCashbackSetting(item.id);
+    if (res.success) {
+      notifySuccess(t('setting.cashback.success.delete'));
+      store.patchItemInList(index);
+    } else {
+      notifyError(t('setting.cashback.error.delete'));
+    }
+  } catch (error) {
+    notifyError(t('common.error.somethingWrong'));
+  } finally {
+    deleting[index] = false;
+  }
 }
 </script>
 <template>
@@ -102,7 +117,7 @@ function deleteCashbackSetting(item: ICashbackSetting) {
         >
       </div>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
+    <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton
           icon="$common.pencil"
@@ -114,7 +129,8 @@ function deleteCashbackSetting(item: ICashbackSetting) {
           icon="$common.trash"
           :tooltip="$t('common.button.delete')"
           color="neutral"
-          @click="deleteCashbackSetting(item)"
+          :loading="deleting[actionIndex]"
+          @click="deleteCashbackSetting(item, actionIndex)"
         />
       </div>
     </template>

@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
-import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
+import LogoImage from '@/assets/images/logo.png';
 import { UseAppStore } from '@/common/app.store';
-import { PageName, SupportTheme } from '@/common/constants/common.constant';
+import { PageName } from '@/common/constants/common.constant';
 import { ISidebarItem } from '@/layouts/type';
-import { useDisplay, useTheme } from 'vuetify';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
-const theme = useTheme();
 const { smAndUp } = useDisplay();
 const appStore = UseAppStore();
 
@@ -18,9 +16,6 @@ const isOpen = computed({
   }
 });
 
-const Logo = computed(() => {
-  return theme.name.value === SupportTheme.DARK ? MiniLogoDark : MiniLogoLight;
-});
 const sidebar = computed<ISidebarItem[]>(() => {
   return [
     {
@@ -76,8 +71,10 @@ function hideSidebar() {
 }
 
 onMounted(() => {
-  if (smAndUp) {
+  if (smAndUp.value) {
     isOpen.value = true;
+  } else {
+    isOpen.value = false;
   }
 });
 </script>
@@ -92,7 +89,7 @@ onMounted(() => {
     flat
   >
     <div class="logo-wrapper">
-      <component :is="Logo" />
+      <v-img :src="LogoImage"></v-img>
       <span class="logo-text">OTC</span>
       <v-spacer />
       <v-icon icon="$common.close" @click="hideSidebar"></v-icon>

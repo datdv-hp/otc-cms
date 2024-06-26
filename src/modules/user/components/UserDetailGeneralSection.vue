@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { notifyError } from '@/common/helper';
 import { UserDetailSection } from '../constant';
 import { UseUserStore } from '../store';
 const { t } = useI18n();
@@ -30,6 +31,8 @@ async function fetchDetail() {
   isLoading.value = true;
   try {
     await userStore.getDetail(+route.params.id as number);
+  } catch {
+    notifyError(t('common.error.somethingWrong'));
   } finally {
     isLoading.value = false;
   }
@@ -41,28 +44,33 @@ onMounted(async () => {
 </script>
 <template>
   <v-expansion-panels v-model="open" :elevation="1">
-    <v-expansion-panel :value="UserDetailSection.General" :title="t('user.section.generalTitle')">
+    <v-expansion-panel :value="UserDetailSection.General">
+      <template #title>
+        <span class="section-title">
+          {{ t('user.section.generalTitle') }}
+        </span>
+      </template>
       <template #text>
         <template v-if="isLoading">
-          <v-skeleton-loader type="text@5"></v-skeleton-loader>
+          <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
         </template>
         <v-row v-else>
-          <v-col sm="6">
+          <v-col md="6">
             <v-row v-for="(leftItem, index) in generalInfo.left" :key="index">
               <v-col>
                 <div class="item__wrapper">
                   <span class="item__title">{{ leftItem.title }}</span>
-                  <span class="item__default">{{ leftItem.value }}</span>
+                  <span class="item__value">{{ leftItem.value }}</span>
                 </div>
               </v-col>
             </v-row>
           </v-col>
-          <v-col sm="6">
+          <v-col md="6">
             <v-row v-for="(rightItem, index) in generalInfo.right" :key="index">
               <v-col>
                 <div class="item__wrapper">
                   <span class="item__title">{{ rightItem.title }}</span>
-                  <span class="item__default">{{ rightItem.value }}</span>
+                  <span class="item__value">{{ rightItem.value }}</span>
                 </div>
               </v-col>
             </v-row>
@@ -76,8 +84,28 @@ onMounted(async () => {
 .item__wrapper {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   .item__title {
-    flex-basis: 160px;
+    flex-basis: 200px;
+    opacity: 0.9;
   }
+  .item__value {
+    flex-basis: 200px;
+    font-weight: 600;
+  }
+}
+:deep(.v-expansion-panel-title) {
+  transition: border-bottom-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+  &.v-expansion-panel-title--active {
+    border-bottom-color: rgba(var(--v-theme-on-surface));
+  }
+}
+:deep(.v-expansion-panel-text__wrapper) {
+  padding: 1.5rem;
+}
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 </style>

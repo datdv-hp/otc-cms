@@ -1,25 +1,18 @@
 <script lang="ts" setup>
-import MiniLogoDark from '@/assets/images/mini-logo-dark.svg?component';
-import MiniLogoLight from '@/assets/images/mini-logo-light.svg?component';
+import LogoImage from '@/assets/images/logo.png';
 import { PageName } from '@/common/constants/common.constant';
 import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import localStorageAuthService from '@/common/storages/authStorage';
 import { logout } from '@/plugins/axios';
-import { useTheme } from 'vuetify';
 import { authApiService } from '../api';
 import { SignInSchema } from '../constant';
 import { UseAuthStore } from '../store';
 import { ISignInBody } from '../types';
 
-const theme = useTheme();
 const { t } = useI18n();
 const router = useRouter();
 const overlay = shallowRef(true);
 const authStore = UseAuthStore();
-
-const Logo = computed(() => {
-  return theme.name.value === 'dark' ? MiniLogoDark : MiniLogoLight;
-});
 
 /** Handle form  */
 const { meta, errors, handleSubmit, isSubmitting, isValidating } = useForm<ISignInBody>({
@@ -88,12 +81,8 @@ const isPasswordVisible = ref(false);
     <VCard class="auth-card pa-4 pt-7 pb-7" max-width="448">
       <VCardItem class="justify-center">
         <template #prepend>
-          <div class="d-flex">
-            <div class="d-flex text-primary"><component :is="Logo" /></div>
-          </div>
+          <v-img class="my-n3" :src="LogoImage" :width="90" />
         </template>
-
-        <VCardTitle class="text-2xl font-weight-bold"> OTC </VCardTitle>
       </VCardItem>
 
       <VCardText class="pt-2">
@@ -127,6 +116,7 @@ const isPasswordVisible = ref(false);
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               :error="!!errors.password"
               :error-messages="translateYupError(errors.password)"
+              @keydown.enter="signIn"
             />
 
             <!-- remember me checkbox -->
@@ -156,25 +146,34 @@ const isPasswordVisible = ref(false);
 <style lang="scss" scoped>
 .sign-in__wrapper {
   height: 100%;
+  background-image: url('/src/assets/images/wallpaper.png');
+  min-height: 100vh;
+  background-size: cover;
   padding: auto 39.5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-bottom: 10%;
-}
-.logo-wrapper {
-  padding-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  .logo-text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: 0.25em;
+
+  .auth-card {
+    background-color: rgba(var(--v-theme-surface), 0.4);
+    backdrop-filter: blur(10px);
+    --webkit-backdrop-filter: blur(10px);
   }
 }
+// .logo-wrapper {
+//   padding-bottom: 24px;
+//   display: flex;
+//   align-items: center;
+//   gap: 12px;
+//   .logo-text {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 30px;
+//     font-weight: 600;
+//     letter-spacing: 0.25em;
+//   }
+// }
 
 .loader {
   width: 30px;

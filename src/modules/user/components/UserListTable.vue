@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, PageName, SortDirection } from '@/common/constants/common.constant';
-import { notifySuccess } from '@/common/helper';
+import { notifyError, notifySuccess } from '@/common/helper';
 import { StatusColor } from '@/modules/admin/constant';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
@@ -13,6 +13,7 @@ import { IUserListItem } from '../type';
 const { t } = useI18n();
 const router = useRouter();
 const store = UseUserStore();
+const submittingStatus = reactive<Record<string, boolean>>({});
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -96,13 +97,23 @@ function toDetail(item: IUserListItem) {
   router.push({ name: PageName.USER_DETAIL_PAGE, params: { id: item.id } });
 }
 
-async function changeStatus(item: IUserListItem) {
-  const isActive = item.status === UserStatus.ACTIVE;
-  const res = isActive
-    ? await userApiService.banUser(item.id)
-    : await userApiService.unbanUser(item.id);
-  if (res.success) {
-    notifySuccess;
+async function changeStatus(item: IUserListItem, index: number) {
+  submittingStatus[index] = true;
+  try {
+    const isActive = item.status === UserStatus.ACTIVE;
+    const res = isActive
+      ? await userApiService.banUser(item.id)
+      : await userApiService.unbanUser(item.id);
+    if (res.success) {
+      notifySuccess(isActive ? t('user.success.ban') : t('user.success.unban'));
+      store.patchUserStatusInList(index, res.data.status);
+    } else {
+      notifyError(res.message || (isActive ? t('user.success.ban') : t('user.success.unban')));
+    }
+  } catch (error) {
+    notifyError(t('common.error.somethingWrong'));
+  } finally {
+    submittingStatus[index] = false;
   }
 }
 
@@ -150,7 +161,7 @@ defineExpose({
       <span>{{ index + 1 }}</span>
     </template>
     <template v-slot:[`item.telegramUsername`]="{ item }">
-      <a :href="`https://t.me/${item.telegramUsername}`" target="_blank">{{
+      <a class="username" :href="`https://t.me/${item.telegramUsername}`" target="_blank">{{
         item.telegramUsername
       }}</a>
     </template>
@@ -161,7 +172,7 @@ defineExpose({
         :text="t(`admin.status.${item.status}`)"
       ></v-chip>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
+    <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton
           icon="$common.open"
@@ -173,7 +184,8 @@ defineExpose({
           :icon="actions[item.status].icon"
           :tooltip="actions[item.status].tooltip"
           color="neutral"
-          @click="changeStatus(item)"
+          :loading="submittingStatus[`${actionIndex}`]"
+          @click="changeStatus(item, actionIndex)"
         />
         <BActionButton
           icon="$common.tune"
@@ -188,5 +200,15 @@ defineExpose({
 <style lang="scss" scoped>
 :deep(.v-table) {
   min-height: 300px;
+}
+.username {
+  text-decoration: none;
+  color: rgb(var(--v-theme-primary));
+  font-weight: bold;
+  transition: font-size 0.1s linear;
+  &:hover {
+    font-size: 1.02em;
+    text-decoration: underline;
+  }
 }
 </style>

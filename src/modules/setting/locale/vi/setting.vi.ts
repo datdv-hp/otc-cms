@@ -25,11 +25,13 @@ export default {
     },
     success: {
       create: 'Tạo gói hoàn tiền thành công',
-      update: 'Cập nhật gói hoàn tiền thành công'
+      update: 'Cập nhật gói hoàn tiền thành công',
+      delete: 'Xóa gói hoàn tiền thành công'
     },
     error: {
       create: 'Tạo gói hoàn tiền không thành công',
-      update: 'Cập nhật gói hoàn tiền không thành công'
+      update: 'Cập nhật gói hoàn tiền không thành công',
+      delete: 'Xóa gói hoàn tiền không thành công'
     }
   },
   award: {

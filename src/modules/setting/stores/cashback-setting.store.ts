@@ -57,6 +57,13 @@ export const UseCashbackSettingStore = defineStore('cashback-setting', () => {
   function resetDialog() {
     dialog.value = cloneDeep(initDialog);
   }
+  function patchItemInList(index: number, item?: Partial<ICashbackSetting>) {
+    if (!item) {
+      list.value.splice(index, 1);
+      return;
+    }
+    Object.assign(list.value[index], item);
+  }
 
   async function getList(query = queryParams.value) {
     setIsLoadingList(true);
@@ -85,6 +92,7 @@ export const UseCashbackSettingStore = defineStore('cashback-setting', () => {
     openDialog,
     closeDialog,
     setDialogLoading,
-    resetDialog
+    resetDialog,
+    patchItemInList
   };
 });

@@ -32,6 +32,10 @@ class CashbackSettingApi extends ApiService {
   ): Promise<IBodyResponse<IResponseCashbackDTO>> {
     return this._update(id, data);
   }
+
+  deleteCashbackSetting(id: string | number): Promise<IBodyResponse<IResponseCashbackDTO>> {
+    return this._delete(id);
+  }
 }
 export const cashbackSettingServiceApi = new CashbackSettingApi(
   { baseUrl: '/cashback_setting' },
