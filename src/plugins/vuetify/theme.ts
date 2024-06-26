@@ -5,7 +5,7 @@ import type { VuetifyOptions } from 'vuetify';
 export const staticPrimaryColor = '#696CFF';
 
 const theme: VuetifyOptions['theme'] = {
-  defaultTheme: localStorageAuthService.getTheme() || SupportTheme.LIGHT,
+  defaultTheme: localStorageAuthService.getTheme() || SupportTheme.DARK,
   themes: {
     // light: {
     //   dark: false,
