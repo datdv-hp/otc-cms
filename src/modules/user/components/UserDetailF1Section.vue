@@ -11,7 +11,6 @@ import { IUserListItem } from '../type';
 const { t } = useI18n();
 const loading = shallowRef(false);
 const store = UseUserStore();
-const route = useRoute();
 const router = useRouter();
 const open = shallowRef(UserDetailSection.F1);
 const submittingStatus = reactive<Record<string, boolean>>({});

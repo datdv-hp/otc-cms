@@ -4,10 +4,9 @@ import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.const
 import { formatDate, notifyError, notifySuccess } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
+import { cashbackSettingServiceApi } from '../../api';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackSetting } from '../../type';
-import { cashbackSettingServiceApi } from '../../api';
-import { toAwardSettingListItem } from '../../helper';
 
 const { t } = useI18n();
 const store = UseCashbackSettingStore();
