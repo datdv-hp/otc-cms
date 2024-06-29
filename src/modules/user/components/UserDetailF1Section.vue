@@ -14,6 +14,7 @@ const store = UseUserStore();
 const router = useRouter();
 const open = shallowRef(UserDetailSection.F1);
 const submittingStatus = reactive<Record<string, boolean>>({});
+const route = useRoute();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -85,8 +86,8 @@ async function loadItems(options: { page: number; itemsPerPage: number }) {
   try {
     store.patchQueryParams({
       page: options.page,
-      per_page: options.itemsPerPage
-      // parent_id: +route.params.id as number
+      per_page: options.itemsPerPage,
+      parent_id: +route.params.id as number
     });
     await store.getList();
   } finally {
