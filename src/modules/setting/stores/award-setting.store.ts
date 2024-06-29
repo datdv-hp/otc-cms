@@ -2,7 +2,13 @@ import { DEFAULT_PAGE } from '@/common/constants/common.constant';
 import { awardSettingServiceApi } from '../api';
 import { toAwardSettingList } from '../helper';
 import { IAwardSetting, IAwardSettingQueryParams } from '../type';
+import { cloneDeep } from 'lodash';
 
+const initDialog = {
+  isShow: false,
+  currentId: null,
+  isLoading: false
+};
 export const UseAwardSettingStore = defineStore('award-setting', () => {
   const list = ref<IAwardSetting[]>([]);
   const totalItems = shallowRef(0);
@@ -10,6 +16,12 @@ export const UseAwardSettingStore = defineStore('award-setting', () => {
   const isLoadingList = shallowRef(false);
   const queryParams = ref<IAwardSettingQueryParams>({});
   const selectedId = ref<number | null>(null);
+
+  const dialog = ref<{
+    isShow: boolean;
+    currentId?: string | number | null;
+    isLoading?: boolean;
+  }>(cloneDeep(initDialog));
 
   function setList(data: IAwardSetting[]) {
     list.value = data;
@@ -36,6 +48,29 @@ export const UseAwardSettingStore = defineStore('award-setting', () => {
     selectedId.value = value;
   }
 
+  function openDialog(id: number | null | string = null) {
+    dialog.value.isShow = true;
+    dialog.value.currentId = id;
+  }
+  function closeDialog() {
+    dialog.value.isShow = false;
+    dialog.value.currentId = null;
+  }
+  function setDialogLoading(value: boolean) {
+    dialog.value.isLoading = value;
+  }
+  function resetDialog() {
+    dialog.value = cloneDeep(initDialog);
+  }
+
+  function patchItemInList(index: number, item?: Partial<IAwardSetting>) {
+    if (!item) {
+      list.value.splice(index, 1);
+      return;
+    }
+    Object.assign(list.value[index], item);
+  }
+
   async function getList(query = queryParams.value) {
     setIsLoadingList(true);
     const response = await awardSettingServiceApi.getAwardSettingList(query);
@@ -52,11 +87,19 @@ export const UseAwardSettingStore = defineStore('award-setting', () => {
     list,
     isLoadingList,
     selectedId,
+    queryParams,
+    totalItems,
+    dialog,
     setSelectedId,
     setList,
     setIsLoadingList,
     setQueryParams,
     patchQueryParams,
-    getList
+    getList,
+    openDialog,
+    closeDialog,
+    setDialogLoading,
+    resetDialog,
+    patchItemInList
   };
 });

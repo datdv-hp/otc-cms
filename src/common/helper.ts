@@ -76,3 +76,22 @@ export function formatCurrenCy(value: number, params?: { lang?: string; currency
     minimumFractionDigits: 2
   }).format(value);
 }
+
+export function fileToBase64(file?: File | null): Promise<string | null> {
+  return new Promise((resolve) => {
+    if (!file) {
+      resolve(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = () => {
+      resolve(null);
+    };
+  });
+}
+
+export const toPixel = (value: number | string) => (Number.isNaN(value) ? value : `${value}px`);

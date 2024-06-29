@@ -9,6 +9,10 @@ import tune from '@/assets/icons/common/tune.svg?component';
 import open from '@/assets/icons/common/open.svg?component';
 import trash from '@/assets/icons/common/trash.svg?component';
 import pencil from '@/assets/icons/common/pencil.svg?component';
+import cloudUpload from '@/assets/icons/common/cloud-upload.svg?component';
+import closeCircled from '@/assets/icons/common/close-circled.svg?component';
+import logout from '@/assets/icons/common/logout.svg?component';
+import laugh from '@/assets/icons/common/laugh.svg?component';
 
 export default {
   email,
@@ -21,5 +25,9 @@ export default {
   tune,
   open,
   trash,
-  pencil
+  pencil,
+  'cloud-upload': cloudUpload,
+  'close-circled': closeCircled,
+  logout,
+  laugh
 };

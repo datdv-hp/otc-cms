@@ -47,7 +47,7 @@ onMounted(async () => {
 </script>
 <template>
   <v-dialog v-model="isOpen" max-width="600" min-width="350px">
-    <v-card class="py-2" prepend-icon="$sidebar.user" :title="title" :loading="loading">
+    <v-card class="py-2" prepend-icon="$sidebar.admin" :title="title" :loading="loading">
       <v-card-text>
         <v-row dense>
           <v-col cols="12" md="6">

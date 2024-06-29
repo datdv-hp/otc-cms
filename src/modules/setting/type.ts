@@ -23,3 +23,9 @@ export type IAwardSetting = {
 };
 export type IAwardSettingDetail = IAwardSetting;
 export type IAwardSettingQueryParams = IQueryParams;
+export type IAwardForm = {
+  name: string;
+  stepValue: number;
+  icon: ArrayBuffer | string | null;
+  description: string;
+};

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
-
 const { t } = useI18n();
 const store = UseAwardSettingStore();
 const filter = ref({
@@ -22,7 +21,9 @@ function search() {
       :placeholder="t('common.button.search')"
       variant="outlined"
       density="compact"
+      clearable
       color="primary"
+      @keydown.enter="search"
     ></v-text-field>
     <v-btn
       class="text-none mt-2 mt-sm-0"
@@ -31,8 +32,9 @@ function search() {
       height="40"
       variant="flat"
       @click="search"
-      >{{ t('common.button.search') }}</v-btn
     >
+      {{ t('common.button.search') }}
+    </v-btn>
   </div>
 </template>
 <style lang="scss" scoped>

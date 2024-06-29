@@ -1,10 +1,15 @@
 <script lang="ts" setup>
-import { notifyError, translateYupError } from '@/common/helper';
+import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import { awardSettingServiceApi } from '../../api';
+import {
+  toAwardSettingDetail,
+  toRequestCreateAwardFormDTO,
+  toRequestUpdateAwardFormDTO
+} from '../../helper';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
-import { toAwardSettingDetail } from '../../helper';
+import { IAwardForm } from '../../type';
+import { AwardSettingFormSchema } from '../../constant';
 
-const isOpen = defineModel<boolean>({ required: true });
 const loading = shallowRef(true);
 const { t } = useI18n();
 const store = UseAwardSettingStore();
@@ -12,19 +17,28 @@ const store = UseAwardSettingStore();
 const title = computed(() =>
   store.selectedId ? t('setting.award.title.update') : t('setting.award.title.create')
 );
+const isUpdate = computed(() => !!store?.dialog?.currentId);
+const initForm: Partial<IAwardForm> = {
+  name: undefined,
+  icon: undefined,
+  stepValue: undefined,
+  description: undefined
+};
 
 /** Form */
-const { errors, handleSubmit, isSubmitting, resetForm } = useForm();
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<IAwardForm>({
+  validationSchema: AwardSettingFormSchema
+});
 const { value: name } = useField<string>('name');
-const { value: stepValue } = useField<string>('stepValue');
-const { value: icon } = useField<string>('icon');
+const { value: stepValue } = useField<number>('stepValue');
+const { value: icon } = useField<string | null>('icon');
 const { value: description } = useField<string>('description');
 
 /** Get detail */
-async function getAward() {
+async function fetchAward() {
   try {
-    if (!store.selectedId) return;
-    const res = await awardSettingServiceApi._getDetail<Record<string, unknown>>(store.selectedId);
+    if (!store.dialog?.currentId) return;
+    const res = await awardSettingServiceApi.getAwardSetting(store.dialog.currentId);
     if (res.success) {
       const detail = toAwardSettingDetail(res.data);
       resetForm({
@@ -43,20 +57,54 @@ async function getAward() {
   }
 }
 
-function closeDialog() {
-  isOpen.value = false;
+async function updateAward(form: IAwardForm) {
+  const res = await awardSettingServiceApi.updateAwardSetting(
+    store.dialog?.currentId as string,
+    await toRequestUpdateAwardFormDTO(form)
+  );
+  if (res.success) {
+    notifySuccess(t('setting.award.success.update'));
+  }
+  return res;
+}
+async function createAward(form: IAwardForm) {
+  const res = await awardSettingServiceApi.createAwardSetting(
+    await toRequestCreateAwardFormDTO(form)
+  );
+  if (res.success) {
+    notifySuccess(t('setting.award.success.create'));
+  }
+  return res;
 }
 
-const submit = handleSubmit(async () => {
-  // TODO: Implement submit logic
+const submit = handleSubmit(async (values) => {
+  const res = isUpdate.value ? await updateAward(values) : await createAward(values);
+  if (!res.success) {
+    notifyError(t('common.error.somethingWrong'));
+  } else {
+    store.getList();
+    store.closeDialog();
+  }
 });
 
-onMounted(() => {
-  getAward();
+const watchStop = watch(
+  () => store.dialog.isShow,
+  (value) => {
+    if (value) {
+      fetchAward();
+    } else {
+      resetForm({ values: initForm });
+      store.resetDialog();
+    }
+  }
+);
+
+onUnmounted(() => {
+  watchStop();
 });
 </script>
 <template>
-  <v-dialog v-model="isOpen" max-width="600" min-width="350px">
+  <v-dialog :model-value="store?.dialog?.isShow" max-width="600" min-width="350px" persistent>
     <v-card class="py-2" prepend-icon="$sidebar.award" :title="title" :loading="loading">
       <v-card-text>
         <v-row dense>
@@ -64,6 +112,7 @@ onMounted(() => {
             <v-text-field
               v-model="name"
               :label="t('setting.award.fields.name') + '*'"
+              :placeholder="t('setting.award.placeholder.name')"
               hide-details="auto"
               :error="!!errors.name"
               :error-messages="translateYupError(errors.name)"
@@ -72,28 +121,29 @@ onMounted(() => {
           <v-col cols="12" md="6">
             <v-text-field
               v-model="stepValue"
+              type="number"
+              :hide-spin-buttons="true"
               :label="t('setting.award.fields.stepValue') + '*'"
+              :placeholder="t('setting.award.placeholder.stepValue')"
               hide-details="auto"
               :error="!!errors.stepValue"
               :error-messages="translateYupError(errors.stepValue)"
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="icon"
-              :label="t('setting.award.fields.icon')"
-              hide-details="auto"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
+          <v-col cols="12">
+            <v-textarea
               v-model="description"
               :label="t('setting.award.fields.description')"
+              :placeholder="t('setting.award.placeholder.description')"
               hide-details="auto"
               :error="!!errors.description"
               :error-messages="translateYupError(errors.description)"
-            ></v-text-field>
+            ></v-textarea>
+          </v-col>
+          <v-col cols="12">
+            <v-label>{{ t('setting.award.fields.icon') }}</v-label>
+            <BImageUpload class="image" v-model="icon" :height="200" />
           </v-col>
         </v-row>
 
@@ -107,14 +157,15 @@ onMounted(() => {
         <v-btn
           width="90"
           :text="t('common.button.close')"
-          variant="plain"
-          @click="closeDialog"
+          variant="outlined"
+          color="neutral"
+          @click="store.closeDialog"
         ></v-btn>
         <v-btn
           color="primary"
           width="90"
           :text="t('common.button.save')"
-          variant="tonal"
+          variant="flat"
           :loading="isSubmitting"
           @click="submit"
         ></v-btn>
@@ -122,4 +173,8 @@ onMounted(() => {
     </v-card>
   </v-dialog>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.image {
+  border: 1px solid red;
+}
+</style>

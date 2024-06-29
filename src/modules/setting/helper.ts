@@ -1,6 +1,15 @@
-import { IRequestCreateCashbackBodyDTO } from './dto/request/request.cashback-dto';
+import {
+  IRequestCreateAwardBodyDTO,
+  IRequestUpdateAwardBodyDTO
+} from './dto/request/request.award-dto';
+import {
+  IRequestCreateCashbackBodyDTO,
+  IRequestUpdateCashbackBodyDTO
+} from './dto/request/request.cashback-dto';
+import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
 import {
+  IAwardForm,
   IAwardSetting,
   IAwardSettingDetail,
   ICashbackForm,
@@ -28,7 +37,17 @@ export const toCashbackSettingDetail = (setting: IResponseCashbackDTO): ICashbac
     createdAt: setting.created_at
   };
 };
-export const toRequestCreateCashbackDTO = (form: ICashbackForm): IRequestCreateCashbackBodyDTO => {
+export const toRequestCreateCashbackFormDTO = (
+  form: ICashbackForm
+): IRequestCreateCashbackBodyDTO => {
+  return {
+    name: form.name,
+    percent: form.percent
+  };
+};
+export const toRequestUpdateCashbackFormDTO = (
+  form: ICashbackForm
+): IRequestUpdateCashbackBodyDTO => {
   return {
     name: form.name,
     percent: form.percent
@@ -37,36 +56,48 @@ export const toRequestCreateCashbackDTO = (form: ICashbackForm): IRequestCreateC
 
 /** Award */
 
-export const toAwardSettingListItem = (setting: Record<string, unknown>): IAwardSetting => {
+export const toAwardSettingListItem = (setting: IResponseAwardDTO): IAwardSetting => {
   return {
-    id: setting.id as string,
-    name: setting.name as string,
-    icon: setting.icon as string,
-    description: setting.description as string,
-    stepValue: setting.step_value as number,
-    createdAt: setting.created_at as string
+    id: setting.id,
+    name: setting.name,
+    icon: setting.icon,
+    description: setting.description,
+    stepValue: setting.step_value,
+    createdAt: setting.created_at
   };
 };
-export const toAwardSettingList = (settings: Record<string, unknown>[]): IAwardSetting[] => {
+export const toAwardSettingList = (settings: IResponseAwardDTO[]): IAwardSetting[] => {
   return settings.map(toAwardSettingListItem);
 };
 
-export const toAwardSettingDetail = (setting: Record<string, unknown>): IAwardSettingDetail => {
+export const toAwardSettingDetail = (setting: IResponseAwardDTO): IAwardSettingDetail => {
   return {
-    id: setting.id as string,
-    name: setting.name as string,
-    icon: setting.icon as string,
-    description: setting.description as string,
-    stepValue: setting.step_value as number,
-    createdAt: setting.created_at as string
+    id: setting.id,
+    name: setting.name,
+    icon: setting.icon,
+    description: setting.description,
+    stepValue: setting.step_value,
+    createdAt: setting.created_at
   };
 };
 
-export const toAwardFormDTO = (settings: Record<string, unknown>) => {
+export const toRequestCreateAwardFormDTO = async (
+  settings: IAwardForm
+): Promise<IRequestCreateAwardBodyDTO> => {
   return {
-    name: settings.name as string,
-    icon: settings.icon as string,
-    description: settings.description as string,
-    step_value: settings.stepValue as number
+    name: settings.name,
+    icon: settings.icon,
+    description: settings.description,
+    step_value: settings.stepValue
+  };
+};
+export const toRequestUpdateAwardFormDTO = async (
+  settings: IAwardForm
+): Promise<IRequestUpdateAwardBodyDTO> => {
+  return {
+    name: settings.name,
+    icon: settings.icon,
+    description: settings.description,
+    step_value: settings.stepValue
   };
 };

@@ -1,8 +1,16 @@
 import { IBodyResponse, IGetListData } from '@/common/type';
 import axiosInstance, { ApiService } from '@/plugins/axios';
-import { IRequestCreateCashbackBodyDTO } from './dto/request/request.cashback-dto';
+import {
+  IRequestCreateAwardBodyDTO,
+  IRequestUpdateAwardBodyDTO
+} from './dto/request/request.award-dto';
+import {
+  IRequestCreateCashbackBodyDTO,
+  IRequestUpdateCashbackBodyDTO
+} from './dto/request/request.cashback-dto';
+import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
-import { IAwardSetting, IAwardSettingQueryParams, ICashbackSettingQueryParams } from './type';
+import { IAwardSettingQueryParams, ICashbackSettingQueryParams } from './type';
 
 class CashbackSettingApi extends ApiService {
   getCashbackSetting(id: number | string): Promise<IBodyResponse<IResponseCashbackDTO>> {
@@ -28,7 +36,7 @@ class CashbackSettingApi extends ApiService {
   }
   updateCashbackSetting(
     id: string | number,
-    data: IRequestCreateCashbackBodyDTO
+    data: IRequestUpdateCashbackBodyDTO
   ): Promise<IBodyResponse<IResponseCashbackDTO>> {
     return this._update(id, data);
   }
@@ -43,21 +51,34 @@ export const cashbackSettingServiceApi = new CashbackSettingApi(
 );
 
 class AwardSettingApi extends ApiService {
-  getAwardSetting(id: number): Promise<IBodyResponse<IAwardSetting>> {
-    return this._getDetail<IAwardSetting>(id);
+  getAwardSetting(id: number | string): Promise<IBodyResponse<IResponseAwardDTO>> {
+    return this._getDetail<IResponseAwardDTO>(id);
   }
 
   getAwardSettingList(
     params: IAwardSettingQueryParams
-  ): Promise<IBodyResponse<IGetListData<IAwardSetting>>> {
-    return this._getList<IAwardSetting, IAwardSettingQueryParams>(params);
+  ): Promise<IBodyResponse<IGetListData<IResponseAwardDTO>>> {
+    return this._getList<IResponseAwardDTO, IAwardSettingQueryParams>(params);
   }
 
-  async getAwardSettingByLink(url: string): Promise<IBodyResponse<IGetListData<IAwardSetting>>> {
+  createAwardSetting(data: IRequestCreateAwardBodyDTO): Promise<IBodyResponse<IResponseAwardDTO>> {
+    return this._create(data);
+  }
+  updateAwardSetting(
+    id: string | number,
+    data: IRequestUpdateAwardBodyDTO
+  ): Promise<IBodyResponse<IResponseAwardDTO>> {
+    return this._update(id, data);
+  }
+
+  deleteAwardSetting(id: string | number): Promise<IBodyResponse<IResponseAwardDTO>> {
+    return this._delete(id);
+  }
+
+  async getAwardSettingByLink(
+    url: string
+  ): Promise<IBodyResponse<IGetListData<IResponseAwardDTO>>> {
     return this._getListByLink(url);
   }
 }
-export const awardSettingServiceApi = new AwardSettingApi(
-  { baseUrl: '/award_setting' },
-  axiosInstance
-);
+export const awardSettingServiceApi = new AwardSettingApi({ baseUrl: '/award' }, axiosInstance);

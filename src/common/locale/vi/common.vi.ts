@@ -7,7 +7,8 @@ export default {
     submit: 'Xác nhận',
     delete: 'Xóa',
     edit: 'Chỉnh sửa',
-    search: 'Tìm kiếm'
+    search: 'Tìm kiếm',
+    chooseImage: 'Chọn ảnh'
   },
   error: {
     somethingWrong: 'Có lỗi xảy ra, vui lòng thử lại sau'

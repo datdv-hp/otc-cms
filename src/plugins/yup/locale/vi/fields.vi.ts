@@ -6,5 +6,11 @@ export default {
   cashbackSetting: {
     name: 'Tên gói hoàn tiền',
     percent: 'Giá trị hoàn'
+  },
+  awardSetting: {
+    name: 'Tên mốc thưởng',
+    stepValue: 'Mốc thưởng',
+    description: 'Mô tả',
+    icon: 'Ảnh mô tả'
   }
 };

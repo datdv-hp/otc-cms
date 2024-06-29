@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import SettingCashbackFilterBar from '../components/cashback/SettingCashbackFilterBar.vue';
 import SettingCashbackPopup from '../components/cashback/SettingCashbackPopup.vue';
 import SettingCashbackTable from '../components/cashback/SettingCashbackTable.vue';
 </script>
 <template>
   <v-card class="card-wrapper pa-4" :elevation="1">
+    <SettingCashbackFilterBar class="mb-2" />
     <SettingCashbackTable class="flex-1" />
   </v-card>
   <SettingCashbackPopup />

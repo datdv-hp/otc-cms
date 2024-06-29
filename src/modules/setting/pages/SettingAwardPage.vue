@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import SettingAwardFilterBar from '../components/award/SettingAwardFilterBar.vue';
+import SettingAwardFormPopup from '../components/award/SettingAwardFormPopup.vue';
 import SettingAwardTable from '../components/award/SettingAwardTable.vue';
 </script>
 <template>
@@ -7,6 +8,7 @@ import SettingAwardTable from '../components/award/SettingAwardTable.vue';
     <SettingAwardFilterBar class="mb-2" />
     <SettingAwardTable class="flex-1" />
   </v-card>
+  <SettingAwardFormPopup />
 </template>
 <style lang="scss" scoped>
 .card-wrapper {

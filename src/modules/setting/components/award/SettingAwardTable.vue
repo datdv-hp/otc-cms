@@ -1,18 +1,16 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { formatDate } from '@/common/helper';
-import { randomDate } from '@/modules/admin/util';
+import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
+import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { ICashbackSetting } from '../../type';
-import { CashbackSettingFormSchema } from '../../constant';
+import { awardSettingServiceApi } from '../../api';
+import { UseAwardSettingStore } from '../../stores/award-setting.store';
+import { IAwardSetting } from '../../type';
 
 const { t } = useI18n();
-const loading = shallowRef(false);
-const itemsPerPage = shallowRef(10);
-const items = ref<ICashbackSetting[]>([]);
-const totalItems = shallowRef(0);
-const selectedItems = ref();
-
+const store = UseAwardSettingStore();
+const deleting = reactive<Record<string, boolean>>({});
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
@@ -22,30 +20,36 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       fixed: true
     },
     {
-      title: t('setting.fields.id'),
+      title: t('setting.award.fields.id'),
       key: 'id',
       minWidth: '67',
       fixed: true
     },
     {
-      title: t('setting.fields.name'),
+      title: t('setting.award.fields.name'),
       key: 'name',
       minWidth: '160'
     },
     {
-      title: t('setting.fields.cashback'),
-      key: 'percent',
+      title: t('setting.award.fields.stepValue'),
+      key: 'stepValue',
       minWidth: '160'
     },
     {
-      title: t('setting.fields.createdAt'),
+      title: t('setting.award.fields.description'),
+      key: 'description',
+      sortable: false,
+      minWidth: '160'
+    },
+    {
+      title: t('setting.award.fields.createdAt'),
       key: 'createdAt',
       minWidth: '220',
       align: 'center',
       value: (item) => formatDate(item.createdAt)
     },
     {
-      title: t('setting.fields.actions'),
+      title: t('setting.award.fields.actions'),
       key: 'actions',
       minWidth: '160',
       sortable: false,
@@ -54,74 +58,88 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
   ];
 });
 
-const demoItems: ICashbackSetting[] = Array.from({ length: 100 }, (_, i) => {
-  const random = Math.random();
-  return {
-    id: i + 1,
-    name: 'cashback' + i,
-    percent: Math.round(random * 100) % 30,
-    createdAt: randomDate(new Date(), 365 * 2)
-  };
+const itemsPerPage = computed({
+  get: () => store.queryParams.per_page || DEFAULT_PER_PAGE,
+  set: (value: number) => {
+    store.patchQueryParams({ per_page: value });
+  }
 });
 
-const FakeAPI = {
-  async fetchItems(params: {
-    page: number;
-    itemsPerPage: number;
-  }): Promise<{ items: any[]; total: number }> {
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        const { page, itemsPerPage } = params;
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const slicedItems = demoItems.slice(start, end);
-        resolve({ items: slicedItems, total: demoItems.length });
-      }, 1000)
-    );
-  }
-};
-
-async function loadItems(options: { page: number; itemsPerPage: number }) {
-  loading.value = true;
-  await FakeAPI.fetchItems(options)
-    .then(({ items: _items, total: _total }) => {
-      items.value = _items;
-      itemsPerPage.value = options.itemsPerPage;
-      totalItems.value = _total;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+async function loadItems(options: {
+  page?: number;
+  itemsPerPage?: number;
+  sortBy?: { key: string; order: SortDirection }[];
+}) {
+  store.patchQueryParams({
+    page: options.page,
+    per_page: options.itemsPerPage,
+    sort: options.sortBy?.[0]?.order,
+    order_by: snakeCase(options.sortBy?.[0]?.key)
+  });
+  store.getList();
 }
 
-useForm({
-  validationSchema: CashbackSettingFormSchema
-});
-useField<string>('name');
-useField<string>('cashbackValue');
+async function deleteCashbackSetting(item: IAwardSetting, index: number) {
+  deleting[index] = true;
+  try {
+    const res = await awardSettingServiceApi.deleteAwardSetting(item.id);
+    if (res.success) {
+      notifySuccess(t('setting.award.success.delete'));
+      store.patchItemInList(index);
+    } else {
+      notifyError(t('setting.award.error.delete'));
+    }
+  } catch (error) {
+    notifyError(t('common.error.somethingWrong'));
+  } finally {
+    deleting[index] = false;
+  }
+}
 </script>
 <template>
   <v-data-table-server
-    v-model="selectedItems"
     v-model:items-per-page="itemsPerPage"
-    :items-length="totalItems"
-    :items="items"
+    :items-length="store.totalItems"
+    :items="store.list"
     height="500"
     fixed-header
     :headers="headers"
-    :loading="loading"
+    :loading="store.isLoadingList"
     show-select
     @update:options="loadItems"
   >
+    <template #top>
+      <div class="d-flex align-center">
+        <v-spacer></v-spacer>
+        <v-btn
+          :disabled="store.dialog.isShow"
+          class="text-none me-6"
+          color="primary"
+          @click="store.openDialog()"
+          >{{ $t('common.button.add') }}</v-btn
+        >
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
+      <div class="actions">
+        <BActionButton
+          icon="$common.pencil"
+          :tooltip="$t('common.button.edit')"
+          color="neutral"
+          @click="store.openDialog(item.id)"
+        />
+        <BActionButton
+          icon="$common.trash"
+          :tooltip="$t('common.button.delete')"
+          color="neutral"
+          :loading="deleting[actionIndex]"
+          @click="deleteCashbackSetting(item, actionIndex)"
+        />
+      </div>
+    </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
     </template>
   </v-data-table-server>
 </template>
-<style lang="scss" scoped>
-.create-form {
-  :deep(.v-field__input) {
-    padding-top: 0;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -9,14 +9,14 @@ const menuItems = computed(() => {
   return [
     {
       title: t('auth.accountMenu.signOut'),
-      prependIcon: 'mdi-logout',
+      prependIcon: '$common.logout',
       onClick: () => {
         logout();
       }
     },
     {
       title: t('auth.accountMenu.profile'),
-      prependIcon: 'mdi-user',
+      prependIcon: '$common.laugh',
       onClick: () => {
         router.push({ name: PageName.PROFILE_PAGE });
       }
@@ -26,7 +26,7 @@ const menuItems = computed(() => {
 const selected = shallowRef();
 </script>
 <template>
-  <v-menu>
+  <v-menu elevation="2">
     <template #activator="{ props }">
       <v-img
         v-bind="props"

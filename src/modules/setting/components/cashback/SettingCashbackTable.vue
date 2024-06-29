@@ -21,31 +21,31 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       fixed: true
     },
     {
-      title: t('setting.fields.id'),
+      title: t('setting.cashback.fields.id'),
       key: 'id',
       minWidth: '67',
       sortable: false,
       fixed: true
     },
     {
-      title: t('setting.fields.name'),
+      title: t('setting.cashback.fields.name'),
       key: 'name',
       minWidth: '160'
     },
     {
-      title: t('setting.fields.cashback'),
+      title: t('setting.cashback.fields.percent'),
       key: 'percent',
       minWidth: '120'
     },
     {
-      title: t('setting.fields.createdAt'),
+      title: t('setting.cashback.fields.createdAt'),
       key: 'createdAt',
       minWidth: '180',
       sortable: false,
       value: (item) => formatDate(item.createdAt)
     },
     {
-      title: t('setting.fields.actions'),
+      title: t('setting.cashback.fields.actions'),
       key: 'actions',
       minWidth: '160',
       sortable: false,
@@ -138,10 +138,4 @@ async function deleteCashbackSetting(item: ICashbackSetting, index: number) {
     </template>
   </v-data-table-server>
 </template>
-<style lang="scss" scoped>
-.create-form {
-  :deep(.v-field__input) {
-    padding-top: 0;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

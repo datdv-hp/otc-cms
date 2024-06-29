@@ -2,7 +2,11 @@
 import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import { cashbackSettingServiceApi } from '../../api';
 import { CashbackSettingFormSchema } from '../../constant';
-import { toCashbackSettingDetail, toRequestCreateCashbackDTO } from '../../helper';
+import {
+  toCashbackSettingDetail,
+  toRequestCreateCashbackFormDTO,
+  toRequestUpdateCashbackFormDTO
+} from '../../helper';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackForm } from '../../type';
 
@@ -48,7 +52,7 @@ async function fetchCashback() {
 async function updateCashback(form: ICashbackForm) {
   const res = await cashbackSettingServiceApi.updateCashbackSetting(
     store.dialog?.currentId as string,
-    toRequestCreateCashbackDTO(form)
+    toRequestUpdateCashbackFormDTO(form)
   );
   if (res.success) {
     notifySuccess(t('setting.cashback.success.update'));
@@ -57,7 +61,7 @@ async function updateCashback(form: ICashbackForm) {
 }
 async function createCashback(form: ICashbackForm) {
   const res = await cashbackSettingServiceApi.createCashbackSetting(
-    toRequestCreateCashbackDTO(form)
+    toRequestCreateCashbackFormDTO(form)
   );
   if (res.success) {
     notifySuccess(t('setting.cashback.success.create'));
