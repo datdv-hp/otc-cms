@@ -1,20 +1,17 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
-import { formatDate } from '@/common/helper';
+import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
+import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { AccountStatus, StatusColor } from '../constant';
+import { adminApiService } from '../api';
+import { StatusColor } from '../constant';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
-import { randomDate } from '../util';
 
 const { t } = useI18n();
+const deleting = reactive<Record<string, boolean>>({});
 const adminStore = UseAdminStore();
-const loading = shallowRef(false);
-const isCreate = shallowRef(false);
-const itemsPerPage = shallowRef(10);
-const items = ref<IAdmin[]>([]);
-const totalItems = shallowRef(0);
-const selectedItems = ref();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -62,79 +59,79 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     }
   ];
 });
-const demoItems: IAdmin[] = Array.from({ length: 100 }, (_, i) => {
-  const isActive = Math.random() < 0.6;
-  return {
-    id: i + 1,
-    fullname: 'user fullname' + i,
-    username: 'user' + i,
-    status: isActive ? AccountStatus.ACTIVE : AccountStatus.INACTIVE,
-    createdAt: randomDate(new Date(), 365 * 2)
-  };
+const itemsPerPage = computed({
+  get: () => adminStore.queryParams.per_page || DEFAULT_PER_PAGE,
+  set: (value: number) => {
+    adminStore.patchQueryParams({ per_page: value });
+  }
 });
 
-const FakeAPI = {
-  async fetchItems(params: {
-    page: number;
-    itemsPerPage: number;
-  }): Promise<{ items: any[]; total: number }> {
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        const { page, itemsPerPage } = params;
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const slicedItems = demoItems.slice(start, end);
-        resolve({ items: slicedItems, total: demoItems.length });
-      }, 1000)
-    );
-  }
-};
-
-async function loadItems(options: { page: number; itemsPerPage: number }) {
-  loading.value = true;
-  await FakeAPI.fetchItems(options)
-    .then(({ items: _items, total: _total }) => {
-      items.value = _items;
-      itemsPerPage.value = options.itemsPerPage;
-      totalItems.value = _total;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+async function loadItems(options: {
+  page?: number;
+  itemsPerPage?: number;
+  sortBy?: { key: string; order: SortDirection }[];
+}) {
+  adminStore.patchQueryParams({
+    page: options.page,
+    per_page: options.itemsPerPage,
+    sort: options.sortBy?.[0]?.order,
+    order_by: snakeCase(options.sortBy?.[0]?.key)
+  });
+  adminStore.getList();
 }
 
-// function getList() {
-//   adminApiService._getList({});
-// }
-
-function openFormPopup(id?: string | number) {
-  adminStore.setIsOpenFormPopup(true);
-  adminStore.setSelectedId(id);
+async function deleteAdmin(item: IAdmin, index: number) {
+  deleting[index] = true;
+  try {
+    const res = await adminApiService.deleteAdmin(item.id);
+    if (res.success) {
+      notifySuccess(t('admin.success.delete'));
+      adminStore.patchItemInList(index);
+    } else {
+      notifyError(t('admin.error.delete'));
+    }
+  } catch (error) {
+    notifyError(t('common.error.somethingWrong'));
+  } finally {
+    deleting[index] = false;
+  }
 }
 </script>
 <template>
   <v-data-table-server
     class="pa-4"
-    v-model="selectedItems"
     v-model:items-per-page="itemsPerPage"
-    :items-length="totalItems"
-    :items="items"
+    :items-length="adminStore.totalItems"
+    :items="adminStore.list"
     height="500"
     :headers="headers"
-    :loading="loading"
+    :loading="adminStore.isLoadingList"
     show-select
     @update:options="loadItems"
   >
     <template #top>
       <div class="d-flex align-center">
         <v-spacer></v-spacer>
-        <v-btn
-          :disabled="isCreate"
-          class="text-none me-6"
-          color="primary"
-          @click="() => openFormPopup()"
-          >{{ $t('common.button.add') }}</v-btn
-        >
+        <v-btn class="text-none me-6" color="primary" @click="() => adminStore.openDialog()">{{
+          $t('common.button.add')
+        }}</v-btn>
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
+      <div class="actions">
+        <BActionButton
+          icon="$common.pencil"
+          :tooltip="$t('common.button.edit')"
+          color="neutral"
+          @click="adminStore.openDialog(item.id)"
+        />
+        <BActionButton
+          icon="$common.trash"
+          :tooltip="$t('common.button.delete')"
+          color="neutral"
+          :loading="deleting[actionIndex]"
+          @click="deleteAdmin(item, actionIndex)"
+        />
       </div>
     </template>
     <template v-slot:loading>

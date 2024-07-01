@@ -7,9 +7,6 @@ const adminStore = UseAdminStore();
 </script>
 <template>
   <AdminListTable />
-  <AdminFormPopup
-    :model-value="adminStore.isOpenFormPopup"
-    @update:modelValue="adminStore.setIsOpenFormPopup"
-  />
+  <AdminFormPopup v-if="adminStore.dialog.isShow" />
 </template>
 <style lang="scss" scoped></style>

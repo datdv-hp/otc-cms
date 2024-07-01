@@ -1,4 +1,4 @@
-import { UserStatus } from './constant';
+import { ChainType, UserStatus, UserTransactionType } from './constant';
 
 export type IUserListItem = {
   id: number | string;
@@ -33,4 +33,32 @@ export type IF1UserListItem = {
   telegramUsername: string;
   transactionToday: string; // after format currency with { amount: number; currency: string }
   lastTransactionAt?: Date | string;
+};
+
+export type IUserRefund = {
+  id: number;
+  userId: number;
+  chainType: ChainType;
+  cashbackId: number;
+  lastClaim: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  cashbackName: string;
+  cashbackPercent: number;
+};
+export type IUserRefundItemInForm = {
+  chainType: ChainType;
+  cashbackId: number;
+};
+
+export type IUserTransaction = {
+  id: number;
+  userId: number;
+  fee: number;
+  volumn: number;
+  chainType: ChainType;
+  tokenAddress: string;
+  tip: number;
+  type: UserTransactionType;
+  createdAt: Date;
 };

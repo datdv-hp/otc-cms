@@ -21,5 +21,15 @@ export default {
   status: {
     [AccountStatus.ACTIVE]: 'Đang hoạt động',
     [AccountStatus.INACTIVE]: 'Dừng hoạt động'
+  },
+  success: {
+    create: 'Tạo quản trị viên thành công',
+    update: 'Cập nhật quản trị viên thành công',
+    delete: 'Xóa quản trị viên thành công'
+  },
+  error: {
+    create: 'Tạo quản trị viên không thành công',
+    update: 'Cập nhật quản trị viên không thành công',
+    delete: 'Xóa quản trị viên không thành công'
   }
 };

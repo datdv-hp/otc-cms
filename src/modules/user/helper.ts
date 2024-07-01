@@ -2,9 +2,19 @@ import { formatCurrenCy, formatDate } from '@/common/helper';
 import {
   IResponseF1UserListItemDTO,
   IResponseUserDetailDTO,
-  IResponseUserListItemDTO
+  IResponseUserListItemDTO,
+  IResponseUserRefundDTO,
+  IResponseUserTransactionDTO
 } from './dto/response.user-dto';
-import { IF1UserListItem, IUserDetail, IUserListItem } from './type';
+import {
+  IF1UserListItem,
+  IUserDetail,
+  IUserListItem,
+  IUserRefund,
+  IUserRefundItemInForm,
+  IUserTransaction
+} from './type';
+import { IRequestUpdateUserRefundFormDTO } from './dto/request.user-dto';
 
 export const toUserListItem = (params: IResponseUserListItemDTO): IUserListItem => {
   return {
@@ -53,4 +63,50 @@ export const toF1UserListItem = (params: IResponseF1UserListItemDTO): IF1UserLis
 
 export const toF1UserList = (params: IResponseF1UserListItemDTO[]): IF1UserListItem[] => {
   return params.map((item) => toF1UserListItem(item));
+};
+
+export const toUserTransaction = (params: IResponseUserTransactionDTO): IUserTransaction => {
+  return {
+    id: params.id,
+    userId: params.user_id,
+    chainType: params.chain_type,
+    fee: params.fee,
+    tip: params.tip,
+    tokenAddress: params.token_address,
+    type: params.type,
+    volumn: params.volumn,
+    createdAt: params.created_at
+  };
+};
+
+export const toUserTransactionList = (
+  params: IResponseUserTransactionDTO[]
+): IUserTransaction[] => {
+  return params.map(toUserTransaction);
+};
+
+export const toUserRefund = (params: IResponseUserRefundDTO): IUserRefund => {
+  return {
+    id: params.id,
+    userId: params.user_id,
+    chainType: params.chain_type,
+    cashbackId: params.cashback_id,
+    lastClaim: params.last_claim,
+    createdAt: params.created_at,
+    updatedAt: params.updated_at,
+    cashbackName: params.cashback_name,
+    cashbackPercent: params.cashback_percent
+  };
+};
+
+export const toUserRefundList = (params: IResponseUserRefundDTO[]): IUserRefund[] => {
+  return params.map(toUserRefund);
+};
+export const toUserRefundFormDTO = (
+  params: IUserRefundItemInForm[]
+): IRequestUpdateUserRefundFormDTO => {
+  return params.map((item) => ({
+    chain_type: item.chainType,
+    cashback_id: item.cashbackId
+  }));
 };

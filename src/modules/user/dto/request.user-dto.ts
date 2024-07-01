@@ -8,3 +8,9 @@ export type IUserQueryParamsDTO = IQueryParams & {
 export type IUpdateUserStatusParamsDTO = {
   status: UserStatus;
 };
+
+export type IUserTransactionQueryParamsDTO = IQueryParams;
+export type IRequestUpdateUserRefundFormDTO = {
+  chain_type: string;
+  cashback_id: number;
+}[];

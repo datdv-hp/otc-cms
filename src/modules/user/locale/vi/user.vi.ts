@@ -1,8 +1,9 @@
-import { UserStatus } from '../../constant';
+import { ChainType, UserStatus } from '../../constant';
 
 export default {
   title: {
-    list: 'Danh sách người dùng'
+    list: 'Danh sách người dùng',
+    userRefundConfiguration: 'Cấu hình hoàn tiền'
   },
   breadcrumb: {
     list: 'Danh sách người dùng',
@@ -30,6 +31,10 @@ export default {
     [UserStatus.ACTIVE]: 'Đang hoạt động',
     [UserStatus.INACTIVE]: 'Ngừng hoạt động'
   },
+  chainType: {
+    [ChainType.ETHEREUM]: 'Ethereum',
+    [ChainType.SOLANA]: 'Solana'
+  },
   action: {
     deactivate: 'Vô hiệu hóa',
     activate: 'Kích hoạt',
@@ -48,10 +53,12 @@ export default {
   },
   success: {
     ban: 'Vô hiệu hóa người dùng thành công',
-    unban: 'Kích hoạt người dùng thành công'
+    unban: 'Kích hoạt người dùng thành công',
+    updateRefundConfig: 'Cập nhật cấu hình hoàn tiền thành công'
   },
   error: {
     ban: 'Vô hiệu hóa người dùng không thành công',
-    unban: 'Kích hoạt người dùng không thành công'
+    unban: 'Kích hoạt người dùng không thành công',
+    updateRefundConfig: 'Cập nhật cấu hình hoàn tiền không thành công'
   }
 };

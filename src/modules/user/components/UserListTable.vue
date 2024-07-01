@@ -9,6 +9,7 @@ import { userApiService } from '../api';
 import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
+import UserRefundUpdateDialog from './UserRefundUpdateDialog.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -118,8 +119,7 @@ async function changeStatus(item: IUserListItem, index: number) {
 }
 
 function openCashbackConfigPopup(item: IUserListItem) {
-  // TODO: Open cashback config popup
-  console.log(item);
+  store.openRefundDialog(item.id as number);
 }
 
 const actions = computed(() => ({
@@ -196,6 +196,7 @@ defineExpose({
       </div>
     </template>
   </v-data-table-server>
+  <UserRefundUpdateDialog v-if="store.refundDialog.isShow" />
 </template>
 <style lang="scss" scoped>
 :deep(.v-table) {

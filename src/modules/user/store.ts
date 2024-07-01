@@ -1,11 +1,13 @@
 import { DEFAULT_PAGE } from '@/common/constants/common.constant';
 import { userApiService } from './api';
-import { IUserQueryParamsDTO } from './dto/request.user-dto';
-import { toUserDetail, toUserList } from './helper';
-import { IUserDetail, IUserListItem } from './type';
 import { UserStatus } from './constant';
+import { IUserQueryParamsDTO, IUserTransactionQueryParamsDTO } from './dto/request.user-dto';
+import { toUserRefundList, toUserDetail, toUserList, toUserTransactionList } from './helper';
+import { IUserDetail, IUserListItem, IUserRefund, IUserTransaction } from './type';
+import { cloneDeep } from 'lodash';
 
 const STORE_NAME = 'user-store';
+const initRefundDialog = { isShow: false, userId: NaN, isLoading: false };
 export const UseUserStore = defineStore(STORE_NAME, () => {
   const list = ref<IUserListItem[]>([]);
   const totalItems = shallowRef(0);
@@ -13,6 +15,54 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   const lastPage = shallowRef(DEFAULT_PAGE);
   const queryParams = ref<IUserQueryParamsDTO>({});
   const isLoadingList = shallowRef(false);
+
+  /** transactions */
+  const transactions = ref<IUserTransaction[]>([]);
+  const transactionQueryParams = ref<IUserTransactionQueryParamsDTO>({});
+  const isLoadingTransactions = shallowRef(false);
+  const totalTransactions = shallowRef(0);
+  const transactionLastPage = shallowRef(DEFAULT_PAGE);
+  function setTransactions(value: IUserTransaction[]) {
+    transactions.value = value;
+  }
+  function setTransactionQueryParams(value: IUserTransactionQueryParamsDTO) {
+    transactionQueryParams.value = value;
+  }
+  function patchTransactionQueryParams(value: Partial<IUserTransactionQueryParamsDTO>) {
+    transactionQueryParams.value = {
+      ...transactionQueryParams.value,
+      ...value
+    };
+  }
+  function setIsLoadingTransactions(value: boolean) {
+    isLoadingTransactions.value = value;
+  }
+  function setTotalTransactions(value: number) {
+    totalTransactions.value = value;
+  }
+  function setTransactionLastPage(value: number) {
+    transactionLastPage.value = value;
+  }
+
+  /** User refund */
+  const userRefundMapByChainType = ref<Record<string, IUserRefund>>();
+  const refundDialog = ref(cloneDeep(initRefundDialog));
+  function setUserRefundMapByChainType(value: IUserRefund[]) {
+    userRefundMapByChainType.value = Object.fromEntries(
+      value.map((userRefund) => [userRefund.chainType, userRefund])
+    );
+  }
+  function closeRefundDialog() {
+    refundDialog.value.isShow = false;
+    refundDialog.value = cloneDeep(initRefundDialog);
+  }
+  function openRefundDialog(userId: number) {
+    refundDialog.value.isShow = true;
+    refundDialog.value.userId = userId;
+  }
+  function setIsLoadingRefundDialog(value: boolean) {
+    refundDialog.value.isLoading = value;
+  }
 
   function setDetail(data: IUserDetail | null) {
     detail.value = data || null;
@@ -65,6 +115,23 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
     return res;
   }
 
+  async function getUserTransactions(userId: number, query = transactionQueryParams.value) {
+    const res = await userApiService.getTransactionList(userId, query);
+    if (res.success) {
+      setTransactions(toUserTransactionList(res.data.data));
+    }
+    return res;
+  }
+
+  async function getUserRefund(userId: number) {
+    const res = await userApiService.getRefundByUser(userId);
+    if (res.success) {
+      const userRefunds = toUserRefundList(res.data.data);
+      setUserRefundMapByChainType(userRefunds);
+    }
+    return res;
+  }
+
   return {
     detail,
     setDetail,
@@ -81,6 +148,27 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
     getList,
     isLoadingList,
     setIsLoadingList,
-    patchUserStatusInList
+    patchUserStatusInList,
+
+    setTransactions,
+    setTransactionQueryParams,
+    patchTransactionQueryParams,
+    setIsLoadingTransactions,
+    setTotalTransactions,
+    setTransactionLastPage,
+    getUserTransactions,
+    transactions,
+    transactionQueryParams,
+    isLoadingTransactions,
+    totalTransactions,
+    transactionLastPage,
+
+    userRefundMapByChainType,
+    refundDialog,
+    getUserRefund,
+    setUserRefundMapByChainType,
+    closeRefundDialog,
+    openRefundDialog,
+    setIsLoadingRefundDialog
   };
 });

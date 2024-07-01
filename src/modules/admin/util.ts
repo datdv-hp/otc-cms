@@ -1,8 +1,16 @@
-import dayjs from '@/plugins/dayjs';
+import { IResponseAdminDTO } from './dto/response.admin-dto';
+import { IAdmin } from './type';
 
-export function randomDate(max: Date, offsetDays: number) {
-  return dayjs(max)
-    .subtract(offsetDays, 'day')
-    .add(Math.floor(Math.random() * offsetDays), 'day')
-    .toDate();
-}
+export const toAdmin = (params: IResponseAdminDTO): IAdmin => {
+  return {
+    id: params.id,
+    createdAt: params.created_at,
+    fullname: params.fullname,
+    username: params.username,
+    status: params.status
+  };
+};
+
+export const toAdminList = (params: IResponseAdminDTO[]): IAdmin[] => {
+  return params.map(toAdmin);
+};

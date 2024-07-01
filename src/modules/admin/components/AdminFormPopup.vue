@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { notifyError, translateYupError } from '@/common/helper';
 import { adminApiService } from '../api';
+import { UseAdminStore } from '../store';
 
-const props = defineProps<{
-  id?: string | number;
-}>();
-const isOpen = defineModel<boolean>({ required: true });
 const loading = shallowRef(true);
 const { t } = useI18n();
-
-const title = computed(() => (props.id ? t('admin.title.edit') : t('admin.title.create')));
+const store = UseAdminStore();
+const title = computed(() =>
+  store.dialog.adminId ? t('admin.title.edit') : t('admin.title.create')
+);
 
 const { errors, handleSubmit, isSubmitting } = useForm();
 const { value: fullname } = useField<string>('fullname');
@@ -19,18 +18,14 @@ useField<string>('confirmPassword');
 
 async function fetchAdmin() {
   try {
-    if (props.id) {
-      await adminApiService._getDetail(props.id);
+    if (store.dialog.adminId) {
+      await adminApiService._getDetail(store.dialog.adminId);
     }
   } catch (error) {
     notifyError(t('common.error.somethingWrong'));
   } finally {
     loading.value = false;
   }
-}
-
-function closeDialog() {
-  isOpen.value = false;
 }
 
 const submit = handleSubmit(async () => {
@@ -46,7 +41,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <v-dialog v-model="isOpen" max-width="600" min-width="350px">
+  <v-dialog :model-value="true" max-width="600" min-width="350px" persistent>
     <v-card class="py-2" prepend-icon="$sidebar.admin" :title="title" :loading="loading">
       <v-card-text>
         <v-row dense>
@@ -97,7 +92,7 @@ onMounted(async () => {
           width="90"
           :text="t('common.button.close')"
           variant="plain"
-          @click="closeDialog"
+          @click="store.closeDialog"
         ></v-btn>
         <v-btn
           color="primary"

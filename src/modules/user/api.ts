@@ -1,8 +1,18 @@
 import { IBodyResponse, IGetListData } from '@/common/type';
 import axiosInstance, { ApiService } from '@/plugins/axios';
 import { UserStatus } from './constant';
-import { IUpdateUserStatusParamsDTO, IUserQueryParamsDTO } from './dto/request.user-dto';
-import { IResponseUserDetailDTO, IResponseUserListItemDTO } from './dto/response.user-dto';
+import {
+  IRequestUpdateUserRefundFormDTO,
+  IUpdateUserStatusParamsDTO,
+  IUserQueryParamsDTO,
+  IUserTransactionQueryParamsDTO
+} from './dto/request.user-dto';
+import {
+  IResponseUserDetailDTO,
+  IResponseUserListItemDTO,
+  IResponseUserRefundDTO,
+  IResponseUserTransactionDTO
+} from './dto/response.user-dto';
 
 class UserApiService extends ApiService {
   getUser(id: number): Promise<IBodyResponse<IResponseUserDetailDTO>> {
@@ -25,6 +35,25 @@ class UserApiService extends ApiService {
     return this._delete<IResponseUserDetailDTO, IUpdateUserStatusParamsDTO>(id, {
       status: UserStatus.ACTIVE
     });
+  }
+
+  getRefundByUser(
+    id: number | string
+  ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
+    return this.client.get(`user/${id}/list_refund`);
+  }
+  bulkUpdateRefundByUser(
+    id: number | string,
+    data: IRequestUpdateUserRefundFormDTO
+  ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
+    return this.client.patch(`user/${id}/list_refund`, data);
+  }
+
+  getTransactionList(
+    id: number | string,
+    query: IUserTransactionQueryParamsDTO
+  ): Promise<IBodyResponse<IGetListData<IResponseUserTransactionDTO>>> {
+    return this.client.get(`user/${id}/list_transaction`, { params: query });
   }
 
   async getUserListByLink(

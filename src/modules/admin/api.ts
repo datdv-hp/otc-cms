@@ -1,13 +1,17 @@
-import { IQueryParams } from '@/common/type';
+import { IBodyResponse, IGetListData, IQueryParams } from '@/common/type';
 import axiosInstance, { ApiService } from '@/plugins/axios';
-import { IAdmin, ICreateAdminBody } from './type';
+import { IResponseAdminDTO } from './dto/response.admin-dto';
+import { ICreateAdminBody } from './type';
 
 class AdminApiService extends ApiService {
-  getAdminList(params: IQueryParams) {
-    return this._getList<IAdmin>(params);
+  getAdminList(params: IQueryParams): Promise<IBodyResponse<IGetListData<IResponseAdminDTO>>> {
+    return this._getList(params);
   }
-  createAdmin(body: ICreateAdminBody) {
-    return this._create<ICreateAdminBody, IAdmin>(body);
+  createAdmin(body: ICreateAdminBody): Promise<IBodyResponse<IResponseAdminDTO>> {
+    return this._create(body);
+  }
+  deleteAdmin(id: number | string): Promise<IBodyResponse<IResponseAdminDTO>> {
+    return this._delete(id);
   }
 }
-export const adminApiService = new AdminApiService({ baseUrl: '/auth/admin' }, axiosInstance);
+export const adminApiService = new AdminApiService({ baseUrl: '/admin' }, axiosInstance);
