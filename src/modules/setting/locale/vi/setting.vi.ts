@@ -1,7 +1,10 @@
+import { SystemSettingType } from '../../constant';
+
 export default {
   breadcrumb: {
     cashback: 'Cài đặt hoàn tiền',
-    award: 'Cài đặt mốc thưởng'
+    award: 'Cài đặt mốc thưởng',
+    system: 'Cài đặt hệ thống'
   },
   cashback: {
     title: {
@@ -58,6 +61,46 @@ export default {
       create: 'Tạo mốc thưởng không thành công',
       update: 'Cập nhật mốc thưởng không thành công',
       delete: 'Xóa mốc thưởng không thành công'
+    }
+  },
+  system: {
+    title: {
+      create: 'Tạo cấu hình hệ thống',
+      update: 'Cập nhật cấu hình hệ thống'
+    },
+    fields: {
+      id: 'ID',
+      type: 'Loại dữ liệu',
+      label: 'Nhãn',
+      key: 'Khóa',
+      value: 'Giá trị',
+      createdAt: 'Ngày tạo',
+      actions: 'Hành động'
+    },
+    placeholder: {
+      type: 'Chọn loại dữ liệu',
+      label: 'Nhập nhãn',
+      key: 'Nhập khóa',
+      value: 'Nhập giá trị'
+    },
+    success: {
+      create: 'Tạo cấu hình hệ thống thành công',
+      update: 'Cập nhật cấu hình hệ thống thành công',
+      delete: 'Xóa cấu hình hệ thống thành công'
+    },
+    error: {
+      create: 'Tạo cấu hình hệ thống không thành công',
+      update: 'Cập nhật cấu hình hệ thống không thành công',
+      delete: 'Xóa cấu hình hệ thống không thành công'
+    },
+    settingType: {
+      [SystemSettingType.BOOLEAN]: 'Boolean',
+      [SystemSettingType.DATE]: 'Date',
+      [SystemSettingType.FILE]: 'File',
+      [SystemSettingType.NUMBER]: 'Number',
+      [SystemSettingType.RICHTEXT]: 'Richtext',
+      [SystemSettingType.STRING]: 'String',
+      [SystemSettingType.TEXTAREA]: 'Textarea'
     }
   }
 };

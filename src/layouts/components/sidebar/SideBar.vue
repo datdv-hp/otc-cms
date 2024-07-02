@@ -49,16 +49,23 @@ const sidebar = computed<ISidebarItem[]>(() => {
       subItems: [
         {
           title: t('app.sidebar.setting.cashback.name'),
-          routeName: PageName.SETTING_CASHBACK_PAGE,
+          routeName: PageName.CASHBACK_SETTING_PAGE,
           icon: '$sidebar.cashback',
           activeIcon: '$sidebar.cashback-solid',
           role: true
         },
         {
           title: t('app.sidebar.setting.award.name'),
-          routeName: PageName.SETTING_AWARD_PAGE,
+          routeName: PageName.AWARD_SETTING_PAGE,
           icon: '$sidebar.award',
           activeIcon: '$sidebar.award-solid',
+          role: true
+        },
+        {
+          title: t('app.sidebar.setting.system.name'),
+          routeName: PageName.SYSTEM_SETTING_PAGE,
+          icon: '$sidebar.setting',
+          activeIcon: '$sidebar.setting-solid',
           role: true
         }
       ]

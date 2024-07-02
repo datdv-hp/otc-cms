@@ -31,6 +31,25 @@ const routes: Array<RouteRecordRaw> = [
             { title: i18n.global.t('user.breadcrumb.detail') }
           ]
         }
+      },
+      {
+        path: ':id/transaction',
+        name: PageName.USER_TRANSACTION_PAGE,
+        component: () => import('@/modules/user/pages/UserTransactionPage.vue'),
+        meta: {
+          requiresAuth: true,
+          breadcrumbs: [
+            {
+              title: i18n.global.t('user.breadcrumb.list'),
+              to: { name: PageName.USER_LIST_PAGE }
+            },
+            {
+              title: i18n.global.t('user.breadcrumb.detail'),
+              to: { name: PageName.USER_DETAIL_PAGE }
+            },
+            { title: i18n.global.t('user.breadcrumb.transaction') }
+          ]
+        }
       }
     ]
   }

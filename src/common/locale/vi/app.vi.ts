@@ -18,6 +18,9 @@ export default {
       },
       award: {
         name: 'Mốc thưởng'
+      },
+      system: {
+        name: 'Hệ thống'
       }
     }
   },

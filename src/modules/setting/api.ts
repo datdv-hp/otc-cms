@@ -10,7 +10,16 @@ import {
 } from './dto/request/request.cashback-dto';
 import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
-import { IAwardSettingQueryParams, ICashbackSettingQueryParams } from './type';
+import {
+  IAwardSettingQueryParams,
+  ICashbackSettingQueryParams,
+  ISystemSettingQueryParams
+} from './type';
+import { IResponseSystemSettingDTO } from './dto/response/response.system-dto';
+import {
+  IRequestCreateSystemSettingBodyDTO,
+  IRequestUpdateSystemSettingBodyDTO
+} from './dto/request/request.system-dto';
 
 class CashbackSettingApi extends ApiService {
   getCashbackSetting(id: number | string): Promise<IBodyResponse<IResponseCashbackDTO>> {
@@ -81,4 +90,45 @@ class AwardSettingApi extends ApiService {
     return this._getListByLink(url);
   }
 }
-export const awardSettingServiceApi = new AwardSettingApi({ baseUrl: '/award' }, axiosInstance);
+export const awardSettingServiceApi = new AwardSettingApi(
+  { baseUrl: '/award_setting' },
+  axiosInstance
+);
+
+class SystemSettingApi extends ApiService {
+  getSystemSetting(id: number | string): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
+    return this._getDetail(id);
+  }
+
+  getSystemSettingList(
+    params: ISystemSettingQueryParams
+  ): Promise<IBodyResponse<IGetListData<IResponseSystemSettingDTO>>> {
+    return this._getList<IResponseSystemSettingDTO, ISystemSettingQueryParams>(params);
+  }
+
+  createSystemSetting(
+    data: IRequestCreateSystemSettingBodyDTO
+  ): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
+    return this._create(data);
+  }
+  updateSystemSetting(
+    id: string | number,
+    data: IRequestUpdateSystemSettingBodyDTO
+  ): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
+    return this._update(id, data);
+  }
+
+  deleteSystemSetting(id: string | number): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
+    return this._delete(id);
+  }
+
+  async getSystemSettingByLink(
+    url: string
+  ): Promise<IBodyResponse<IGetListData<IResponseSystemSettingDTO>>> {
+    return this._getListByLink(url);
+  }
+}
+export const systemSettingServiceApi = new SystemSettingApi(
+  { baseUrl: '/system_setting' },
+  axiosInstance
+);

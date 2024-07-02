@@ -1,4 +1,5 @@
 import { IQueryParams } from '@/common/type';
+import { SystemSettingType } from './constant';
 
 export type ICashbackSetting = {
   id: string | number;
@@ -28,4 +29,21 @@ export type IAwardForm = {
   stepValue: number;
   icon: ArrayBuffer | string | null;
   description: string;
+};
+
+export type ISystemSetting = {
+  id: number;
+  type: SystemSettingType;
+  label: string;
+  key: string;
+  value: any;
+  createdAt: Date;
+};
+export type ISystemSettingDetail = ISystemSetting;
+export type ISystemSettingQueryParams = IQueryParams;
+export type ISystemSettingForm = {
+  type: SystemSettingType;
+  label: string;
+  key: string;
+  value: any;
 };

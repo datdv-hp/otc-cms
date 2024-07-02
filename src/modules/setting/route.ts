@@ -10,8 +10,8 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'cashback-setting',
-        name: PageName.SETTING_CASHBACK_PAGE,
-        component: () => import('@/modules/setting/pages/SettingCashbackPage.vue'),
+        name: PageName.CASHBACK_SETTING_PAGE,
+        component: () => import('@/modules/setting/pages/CashbackSettingPage.vue'),
         meta: {
           requiresAuth: true,
           breadcrumbs: [{ title: i18n.global.t('setting.breadcrumb.cashback') }]
@@ -19,11 +19,20 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'award-setting',
-        name: PageName.SETTING_AWARD_PAGE,
-        component: () => import('@/modules/setting/pages/SettingAwardPage.vue'),
+        name: PageName.AWARD_SETTING_PAGE,
+        component: () => import('@/modules/setting/pages/AwardSettingPage.vue'),
         meta: {
           requiresAuth: true,
           breadcrumbs: [{ title: i18n.global.t('setting.breadcrumb.award') }]
+        }
+      },
+      {
+        path: 'system-setting',
+        name: PageName.SYSTEM_SETTING_PAGE,
+        component: () => import('@/modules/setting/pages/SystemSettingPage.vue'),
+        meta: {
+          requiresAuth: true,
+          breadcrumbs: [{ title: i18n.global.t('setting.breadcrumb.system') }]
         }
       }
     ]

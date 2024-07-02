@@ -20,3 +20,13 @@ export const AwardSettingFormSchema = yup.object({
   stepValue: yup.number().min(MIN_STEP_VALUE).required().label('awardSetting.stepValue'),
   description: yup.string().max(TEXT_MAX_LENGTH).nullable().label('awardSetting.description')
 });
+
+export enum SystemSettingType {
+  DATE = 'date',
+  FILE = 'file',
+  NUMBER = 'number',
+  STRING = 'string',
+  BOOLEAN = 'boolean',
+  TEXTAREA = 'textarea',
+  RICHTEXT = 'richtext'
+}

@@ -15,11 +15,13 @@ export enum PageName {
   PROFILE_PAGE = 'profile_page',
   USER_LIST_PAGE = 'user_list_page',
   USER_DETAIL_PAGE = 'user_detail_page',
+  USER_TRANSACTION_PAGE = 'user_transaction_page',
   NOT_FOUND_PAGE = 'not_found_page',
   FORBIDDEN_PAGE = 'forbidden_page',
   HOME_PAGE = 'home_page',
-  SETTING_CASHBACK_PAGE = 'setting_cashback_page',
-  SETTING_AWARD_PAGE = 'setting_award_page',
+  CASHBACK_SETTING_PAGE = 'cashback_setting_page',
+  AWARD_SETTING_PAGE = 'award_setting_page',
+  SYSTEM_SETTING_PAGE = 'system_setting_page',
   ADMIN_LIST_PAGE = 'admin_list_page'
 }
 

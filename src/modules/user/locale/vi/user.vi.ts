@@ -7,7 +7,8 @@ export default {
   },
   breadcrumb: {
     list: 'Danh sách người dùng',
-    detail: 'Chi tiết người dùng'
+    detail: 'Chi tiết người dùng',
+    transaction: 'Lịch sử giao dịch'
   },
   fields: {
     index: 'STT',

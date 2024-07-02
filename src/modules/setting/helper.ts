@@ -6,15 +6,23 @@ import {
   IRequestCreateCashbackBodyDTO,
   IRequestUpdateCashbackBodyDTO
 } from './dto/request/request.cashback-dto';
+import {
+  IRequestCreateSystemSettingBodyDTO,
+  IRequestUpdateSystemSettingBodyDTO
+} from './dto/request/request.system-dto';
 import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
+import { IResponseSystemSettingDTO } from './dto/response/response.system-dto';
 import {
   IAwardForm,
   IAwardSetting,
   IAwardSettingDetail,
   ICashbackForm,
   ICashbackSetting,
-  ICashbackSettingDetail
+  ICashbackSettingDetail,
+  ISystemSetting,
+  ISystemSettingDetail,
+  ISystemSettingForm
 } from './type';
 
 /** Cashback */
@@ -99,5 +107,53 @@ export const toRequestUpdateAwardFormDTO = async (
     icon: settings.icon,
     description: settings.description,
     step_value: settings.stepValue
+  };
+};
+
+/** System */
+
+export const toSystemSettingListItem = (setting: IResponseSystemSettingDTO): ISystemSetting => {
+  return {
+    id: setting.id,
+    label: setting.label,
+    type: setting.type,
+    key: setting.key,
+    value: setting.value,
+    createdAt: setting.createdAt
+  };
+};
+export const toSystemSettingList = (settings: IResponseSystemSettingDTO[]): ISystemSetting[] => {
+  return settings.map(toSystemSettingListItem);
+};
+
+export const toSystemSettingDetail = (setting: IResponseSystemSettingDTO): ISystemSettingDetail => {
+  return {
+    id: setting.id,
+    label: setting.label,
+    type: setting.type,
+    key: setting.key,
+    value: setting.value,
+    createdAt: setting.createdAt
+  };
+};
+
+export const toRequestCreateSystemSettingFormDTO = (
+  setting: ISystemSettingForm
+): IRequestCreateSystemSettingBodyDTO => {
+  return {
+    label: setting.label,
+    type: setting.type,
+    key: setting.key,
+    value: setting.value
+  };
+};
+export const toRequestUpdateSystemSettingFormDTO = (
+  setting: ISystemSettingForm
+): IRequestUpdateSystemSettingBodyDTO => {
+  return {
+    label: setting.label,
+    type: setting.type,
+    key: setting.key,
+    value: setting.value
   };
 };
