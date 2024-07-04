@@ -106,6 +106,8 @@ export const UseSystemSettingStore = defineStore('system-setting', () => {
     closeDialog,
     setDialogLoading,
     resetDialog,
-    patchItemInList
+    patchItemInList,
+    setTotalItems,
+    setLastPage
   };
 });

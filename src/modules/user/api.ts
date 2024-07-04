@@ -40,20 +40,20 @@ class UserApiService extends ApiService {
   getRefundByUser(
     id: number | string
   ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
-    return this.client.get(`${id}/list_refund`);
+    return this.client.get(`${this.baseUrl}/${id}/refund_configuration`);
   }
   bulkUpdateRefundByUser(
     id: number | string,
     data: IRequestUpdateUserRefundFormDTO
   ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
-    return this.client.patch(`${id}/list_refund`, data);
+    return this.client.patch(`${this.baseUrl}/${id}/refund_configuration`, data);
   }
 
   getTransactionList(
     id: number | string,
     query: IUserTransactionQueryParamsDTO
   ): Promise<IBodyResponse<IGetListData<IResponseUserTransactionDTO>>> {
-    return this.client.get(`${id}/list_transaction`, { params: query });
+    return this.client.get(`${this.baseUrl}/${id}/transaction`, { params: query });
   }
 
   async getUserListByLink(

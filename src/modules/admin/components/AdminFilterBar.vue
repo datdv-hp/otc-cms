@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { UseSystemSettingStore } from '../../stores/system.setting.store';
+import { UseAdminStore } from '../store';
 
 const { t } = useI18n();
-const store = UseSystemSettingStore();
+const store = UseAdminStore();
 const filter = ref({
   keyword: ''
 });

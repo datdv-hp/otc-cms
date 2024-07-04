@@ -7,6 +7,7 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { cashbackSettingServiceApi } from '../../api';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackSetting } from '../../type';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 
 const { t } = useI18n();
 const store = UseCashbackSettingStore();
@@ -68,6 +69,11 @@ async function loadItems(options: {
   store.getList();
 }
 async function deleteCashbackSetting(item: ICashbackSetting, index: number) {
+  const confirm = await showDialogConfirm('error', {
+    title: t('setting.cashback.confirm.delete.title'),
+    text: t('setting.cashback.confirm.delete.content', { cashback: item.name })
+  });
+  if (!confirm) return;
   deleting[index] = true;
   try {
     const res = await cashbackSettingServiceApi.deleteCashbackSetting(item.id);
@@ -83,6 +89,13 @@ async function deleteCashbackSetting(item: ICashbackSetting, index: number) {
     deleting[index] = false;
   }
 }
+
+onUnmounted(() => {
+  store.setQueryParams({});
+  store.setList([]);
+  store.setTotalItems(0);
+  store.setLastPage(0);
+});
 </script>
 <template>
   <v-data-table-server

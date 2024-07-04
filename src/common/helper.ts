@@ -28,9 +28,10 @@ export function translateYupError(
 ): string {
   // @ts-ignore
   const t = i18n.global.t;
+  const te = i18n.global.te;
   if (!yupError) return '';
   if (typeof yupError === 'string') {
-    return t(yupError);
+    return te(yupError) ? t(yupError) : yupError;
   }
   if (!yupError?.i18nKey) return '';
   return t(yupError?.i18nKey, { ...(yupError?.params || {}) });

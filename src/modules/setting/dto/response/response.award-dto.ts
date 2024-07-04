@@ -3,6 +3,10 @@ export type IResponseAwardDTO = {
   name: string;
   step_value: number;
   description: string;
-  icon: string;
+  icon?: {
+    name: string;
+    mimeType: string;
+    url: string;
+  } | null;
   created_at: Date | string;
 };

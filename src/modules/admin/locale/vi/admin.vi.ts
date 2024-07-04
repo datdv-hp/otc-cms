@@ -18,6 +18,10 @@ export default {
     status: 'Trạng thái',
     actions: 'Hành động'
   },
+  placeholder: {
+    fullname: 'Nguyen Van A',
+    username: 'nguyenvana'
+  },
   status: {
     [AccountStatus.ACTIVE]: 'Đang hoạt động',
     [AccountStatus.INACTIVE]: 'Dừng hoạt động'
@@ -34,6 +38,14 @@ export default {
   },
   validate: {
     emptyPassword: 'Mật khẩu không được để trống',
-    confirmPassword: 'Mật khẩu không trùng khớp'
+    confirmPassword: 'Mật khẩu không trùng khớp',
+    validUsername: 'Tên đăng nhập chỉ bao gồm chữ thường, in hoa, số hoăc ký tự -_.@'
+  },
+  confirm: {
+    delete: {
+      title: 'Xác nhận xóa quản trị viên',
+      content:
+        'Bạn có chắc chắn muốn xóa quản trị viên <span class="confirm-delete-text-highlight">{admin}</span> không?'
+    }
   }
 };

@@ -82,6 +82,8 @@ export const UseAdminStore = defineStore(STORE_NAME, () => {
     setLastPage,
     setQueryParams,
     patchQueryParams,
-    getList
+    getList,
+    setTotalItems,
+    setList
   };
 });

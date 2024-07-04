@@ -143,8 +143,8 @@ body {
   font-size: 13px;
 }
 
-// @each $colorName, $color in $colors {
-//   .bg--#{$colorName} {
-//       background-color: $color;
-//   }
-// }
+.confirm-delete-text-highlight {
+  color: $color-primary-3;
+  font-weight: 500;
+  font-size: 1.2em;
+}

@@ -7,10 +7,10 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { systemSettingServiceApi } from '../../api';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
 import { ISystemSetting } from '../../type';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
-const deleting = reactive<Record<string, boolean>>({});
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
@@ -67,22 +67,13 @@ async function loadItems(options: {
   });
   store.getList();
 }
-async function deleteSystemSetting(item: ISystemSetting, index: number) {
-  deleting[index] = true;
-  try {
-    const res = await systemSettingServiceApi.deleteSystemSetting(item.id);
-    if (res.success) {
-      notifySuccess(t('setting.system.success.delete'));
-      store.patchItemInList(index);
-    } else {
-      notifyError(t('setting.system.error.delete'));
-    }
-  } catch (error) {
-    notifyError(t('common.error.somethingWrong'));
-  } finally {
-    deleting[index] = false;
-  }
-}
+
+onUnmounted(() => {
+  store.setQueryParams({});
+  store.setList([]);
+  store.setTotalItems(0);
+  store.setLastPage(0);
+});
 </script>
 <template>
   <v-data-table-server
@@ -96,20 +87,13 @@ async function deleteSystemSetting(item: ISystemSetting, index: number) {
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
-    <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
+    <template v-slot:[`item.actions`]="{ item }">
       <div class="actions">
         <BActionButton
           icon="$common.pencil"
           :tooltip="$t('common.button.edit')"
           color="neutral"
           @click="store.openDialog(item)"
-        />
-        <BActionButton
-          icon="$common.trash"
-          :tooltip="$t('common.button.delete')"
-          color="neutral"
-          :loading="deleting[actionIndex]"
-          @click="deleteSystemSetting(item, actionIndex)"
         />
       </div>
     </template>

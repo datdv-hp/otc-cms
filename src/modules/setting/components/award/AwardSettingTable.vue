@@ -7,6 +7,7 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { awardSettingServiceApi } from '../../api';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
 import { IAwardSetting } from '../../type';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 
 const { t } = useI18n();
 const store = UseAwardSettingStore();
@@ -74,6 +75,11 @@ async function loadItems(options: {
 }
 
 async function deleteCashbackSetting(item: IAwardSetting, index: number) {
+  const confirm = await showDialogConfirm('error', {
+    title: t('setting.award.confirm.delete.title'),
+    text: t('setting.award.confirm.delete.content', { award: item.name })
+  });
+  if (!confirm) return;
   deleting[index] = true;
   try {
     const res = await awardSettingServiceApi.deleteAwardSetting(item.id);
@@ -89,6 +95,13 @@ async function deleteCashbackSetting(item: IAwardSetting, index: number) {
     deleting[index] = false;
   }
 }
+
+onUnmounted(() => {
+  store.setQueryParams({});
+  store.setList([]);
+  store.setTotalItems(0);
+  store.setLastPage(0);
+});
 </script>
 <template>
   <v-data-table-server

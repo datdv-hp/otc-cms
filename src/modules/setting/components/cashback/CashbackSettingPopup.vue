@@ -78,74 +78,57 @@ const submit = handleSubmit(async (values) => {
   }
 });
 
-watch(
-  () => store.dialog.isShow,
-  (value) => {
-    if (value) {
-      fetchCashback();
-    } else {
-      resetForm({ values: initForm });
-      store.resetDialog();
-    }
-  }
-);
+onMounted(() => {
+  fetchCashback();
+});
+
+onUnmounted(() => {
+  resetForm({ values: initForm });
+  store.resetDialog();
+});
 </script>
 <template>
-  <v-dialog :model-value="store?.dialog?.isShow" max-width="600" min-width="350px" persistent>
-    <v-card class="py-2" prepend-icon="$sidebar.cashback" :title="title">
-      <v-card-text>
-        <v-row dense>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="name"
-              :prepend="false"
-              :label="t('setting.cashback.fields.name') + '*'"
-              :placeholder="t('setting.cashback.placeholder.name')"
-              auto-focus
-              :loading="!!store.dialog?.isLoading"
-              :disabled="!!store.dialog?.isLoading"
-              :error="!!errors.name"
-              :error-messages="translateYupError(errors.name)"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="percent"
-              :label="t('setting.cashback.fields.percent') + '*'"
-              :placeholder="t('setting.cashback.placeholder.percent')"
-              type="number"
-              :loading="!!store.dialog?.isLoading"
-              :disabled="!!store.dialog?.isLoading"
-              hide-spin-buttons
-              :error="!!errors.percent"
-              :error-messages="translateYupError(errors.percent)"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <small class="text-caption text-medium-emphasis">{{ t('common.indicateRequired') }}</small>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="px-6">
-        <v-spacer></v-spacer>
-        <v-btn
-          width="90"
-          :text="t('common.button.close')"
-          variant="plain"
-          @click="store.closeDialog"
-        ></v-btn>
-        <v-btn
-          color="primary"
-          width="90"
-          :text="t('common.button.save')"
-          variant="flat"
-          :loading="isSubmitting"
-          @click="submit"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <BDialog
+    :title="title"
+    prepend-icon="$sidebar.cashback"
+    @close="store.closeDialog"
+    @submit="submit"
+    :submitting="isSubmitting"
+  >
+    <v-skeleton-loader v-if="store.dialog?.isLoading" :type="`list-item@4`"></v-skeleton-loader>
+    <v-row v-else>
+      <v-col cols="12">
+        <v-text-field
+          v-model="name"
+          :prepend="false"
+          :label="t('setting.cashback.fields.name') + '*'"
+          :placeholder="t('setting.cashback.placeholder.name')"
+          auto-focus
+          :loading="!!store.dialog?.isLoading"
+          :disabled="!!store.dialog?.isLoading"
+          :error="!!errors.name"
+          :error-messages="translateYupError(errors.name)"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="percent"
+          :label="t('setting.cashback.fields.percent') + '*'"
+          :placeholder="t('setting.cashback.placeholder.percent')"
+          type="number"
+          :loading="!!store.dialog?.isLoading"
+          :disabled="!!store.dialog?.isLoading"
+          hide-spin-buttons
+          :error="!!errors.percent"
+          :error-messages="translateYupError(errors.percent)"
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <small class="text-caption text-medium-emphasis">
+          {{ t('common.indicateRequired') }}
+        </small>
+      </v-col>
+    </v-row>
+  </BDialog>
 </template>
 <style lang="scss" scoped></style>

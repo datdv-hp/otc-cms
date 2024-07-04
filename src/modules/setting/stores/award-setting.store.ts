@@ -100,6 +100,8 @@ export const UseAwardSettingStore = defineStore('award-setting', () => {
     closeDialog,
     setDialogLoading,
     resetDialog,
-    patchItemInList
+    patchItemInList,
+    setTotalItems,
+    setLastPage
   };
 });

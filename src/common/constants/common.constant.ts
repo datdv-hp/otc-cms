@@ -45,3 +45,6 @@ export enum DATE_TIME_FORMAT {
 export const TEXT_MAX_LENGTH = 255;
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PER_PAGE = 10;
+export const Regex = {
+  USERNAME: /^[a-zA-Z0-9_.-@]+$/
+};

@@ -93,6 +93,8 @@ export const UseCashbackSettingStore = defineStore('cashback-setting', () => {
     closeDialog,
     setDialogLoading,
     resetDialog,
-    patchItemInList
+    patchItemInList,
+    setTotalItems,
+    setLastPage
   };
 });

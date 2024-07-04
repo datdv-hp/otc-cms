@@ -50,6 +50,10 @@ class CashbackSettingApi extends ApiService {
   deleteCashbackSetting(id: string | number): Promise<IBodyResponse<IResponseCashbackDTO>> {
     return this._delete(id);
   }
+
+  getAllCashbackSettings(): Promise<IBodyResponse<IResponseCashbackDTO[]>> {
+    return this.client.get(`/all_cashback_setting`);
+  }
 }
 export const cashbackSettingServiceApi = new CashbackSettingApi(
   { baseUrl: '/cashback_setting' },
@@ -108,10 +112,6 @@ class SystemSettingApi extends ApiService {
     data: IRequestUpdateSystemSettingBodyDTO
   ): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
     return this._update(id, data);
-  }
-
-  deleteSystemSetting(id: string | number): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
-    return this._delete(id);
   }
 
   async getSystemSettingByLink(

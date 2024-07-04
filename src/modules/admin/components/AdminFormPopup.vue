@@ -74,81 +74,70 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <v-dialog :model-value="true" max-width="600" min-width="350px" persistent>
-    <v-card class="pa-4" prepend-icon="$sidebar.admin" :title="title" :loading="loading">
-      <v-card-text>
-        <v-row dense>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="fullname"
-              :label="t('admin.fields.fullname') + '*'"
-              hide-details="auto"
-              :error="!!errors.fullname"
-              :error-messages="translateYupError(errors.fullname)"
-            />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="username"
-              :label="t('admin.fields.username') + '*'"
-              hide-details="auto"
-              :error="!!errors.username"
-              :error-messages="translateYupError(errors.username)"
-            ></v-text-field>
-          </v-col>
+  <BDialog
+    :title="title"
+    prepend-icon="$sidebar.admin"
+    @close="store.closeDialog"
+    @submit="submit"
+    :submitting="isSubmitting"
+  >
+    <v-skeleton-loader v-if="loading" :type="`list-item@4`"></v-skeleton-loader>
+    <v-row v-else>
+      <v-col cols="12">
+        <v-text-field
+          v-model="fullname"
+          :label="t('admin.fields.fullname') + '*'"
+          :placeholder="t('admin.placeholder.fullname')"
+          hide-details="auto"
+          :error="!!errors.fullname"
+          :error-messages="translateYupError(errors.fullname)"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="username"
+          :label="t('admin.fields.username') + '*'"
+          :placeholder="t('admin.placeholder.username')"
+          hide-details="auto"
+          :error="!!errors.username"
+          :error-messages="translateYupError(errors.username)"
+        ></v-text-field>
+      </v-col>
 
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="password"
-              :label="t('admin.fields.password') + (isUpdate && !password ? '' : '*')"
-              autocomplete="new-password"
-              :type="showing.password ? 'text' : 'password'"
-              hide-details="auto"
-              :error="!!errors.password"
-              :error-messages="translateYupError(errors.password)"
-              :append-inner-icon="showing.password ? '$common.eye-slash' : '$common.eye'"
-              @click:append-inner="showing.password = !showing.password"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="confirmPassword"
-              :label="t('admin.fields.confirmPassword') + (isUpdate && !password ? '' : '*')"
-              autocomplete="off"
-              :type="showing.confirmPassword ? 'text' : 'password'"
-              hide-details="auto"
-              :error="!!errors.confirmPassword"
-              :error-messages="translateYupError(errors.confirmPassword)"
-              :append-inner-icon="showing.confirmPassword ? '$common.eye-slash' : '$common.eye'"
-              @click:append-inner="showing.confirmPassword = !showing.confirmPassword"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <small class="text-caption text-medium-emphasis">{{ t('common.indicateRequired') }}</small>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="px-6">
-        <v-spacer></v-spacer>
-        <v-btn
-          width="90"
-          :text="t('common.button.close')"
-          variant="plain"
-          color="neutral"
-          @click="store.closeDialog"
-        ></v-btn>
-        <v-btn
-          color="primary"
-          width="90"
-          :text="t('common.button.save')"
-          variant="flat"
-          :loading="isSubmitting"
-          @click="submit"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-col cols="12">
+        <v-text-field
+          v-model="password"
+          :label="t('admin.fields.password') + (isUpdate && !password ? '' : '*')"
+          autocomplete="new-password"
+          :placeholder="t('auth.fields.password')"
+          :type="showing.password ? 'text' : 'password'"
+          hide-details="auto"
+          :error="!!errors.password"
+          :error-messages="translateYupError(errors.password)"
+          :append-inner-icon="showing.password ? '$common.eye-slash' : '$common.eye'"
+          @click:append-inner="showing.password = !showing.password"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="confirmPassword"
+          :label="t('admin.fields.confirmPassword') + (isUpdate && !password ? '' : '*')"
+          :placeholder="t('auth.fields.password')"
+          autocomplete="off"
+          :type="showing.confirmPassword ? 'text' : 'password'"
+          hide-details="auto"
+          :error="!!errors.confirmPassword"
+          :error-messages="translateYupError(errors.confirmPassword)"
+          :append-inner-icon="showing.confirmPassword ? '$common.eye-slash' : '$common.eye'"
+          @click:append-inner="showing.confirmPassword = !showing.confirmPassword"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12">
+        <small class="text-caption text-medium-emphasis">
+          {{ t('common.indicateRequired') }}
+        </small>
+      </v-col>
+    </v-row>
+  </BDialog>
 </template>
 <style lang="scss" scoped></style>

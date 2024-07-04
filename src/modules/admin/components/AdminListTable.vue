@@ -7,6 +7,7 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { adminApiService } from '../api';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 
 const { t } = useI18n();
 const deleting = reactive<Record<string, boolean>>({});
@@ -68,6 +69,11 @@ async function loadItems(options: {
 }
 
 async function deleteAdmin(item: IAdmin, index: number) {
+  const confirm = await showDialogConfirm('error', {
+    title: t('admin.confirm.delete.title'),
+    text: t('admin.confirm.delete.content', { admin: item.fullname })
+  });
+  if (!confirm) return;
   deleting[index] = true;
   try {
     const res = await adminApiService.deleteAdmin(item.id);
@@ -83,6 +89,13 @@ async function deleteAdmin(item: IAdmin, index: number) {
     deleting[index] = false;
   }
 }
+
+onUnmounted(() => {
+  adminStore.setQueryParams({});
+  adminStore.setList([]);
+  adminStore.setTotalItems(0);
+  adminStore.setLastPage(0);
+});
 </script>
 <template>
   <v-data-table-server

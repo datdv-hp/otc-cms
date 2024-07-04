@@ -19,14 +19,6 @@ const isOpen = computed({
 const sidebar = computed<ISidebarItem[]>(() => {
   return [
     {
-      title: t('app.sidebar.home.name'),
-      icon: '$sidebar.home',
-      activeIcon: '$sidebar.home-solid',
-      routeName: PageName.HOME_PAGE,
-      activeRouteNames: [PageName.HOME_PAGE],
-      role: true
-    },
-    {
       title: t('app.sidebar.user.name'),
       icon: '$sidebar.user',
       activeIcon: '$sidebar.user-solid',

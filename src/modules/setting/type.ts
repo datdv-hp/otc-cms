@@ -18,7 +18,11 @@ export type IAwardSetting = {
   id: string | number;
   name: string;
   stepValue: number;
-  icon: string;
+  icon?: {
+    name: string;
+    mimeType: string;
+    url: string;
+  } | null;
   description?: string;
   createdAt: string | Date;
 };

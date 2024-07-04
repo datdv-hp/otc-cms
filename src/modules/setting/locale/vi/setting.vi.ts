@@ -31,6 +31,13 @@ export default {
       create: 'Tạo gói hoàn tiền không thành công',
       update: 'Cập nhật gói hoàn tiền không thành công',
       delete: 'Xóa gói hoàn tiền không thành công'
+    },
+    confirm: {
+      delete: {
+        title: 'Xác nhận xóa gói hoàn tiền',
+        content:
+          'Bạn có chắc chắn muốn xóa gói hoàn tiền <span class="confirm-delete-text-highlight">{cashback}</span> không?'
+      }
     }
   },
   award: {
@@ -61,6 +68,13 @@ export default {
       create: 'Tạo mốc thưởng không thành công',
       update: 'Cập nhật mốc thưởng không thành công',
       delete: 'Xóa mốc thưởng không thành công'
+    },
+    confirm: {
+      delete: {
+        title: 'Xác nhận xóa mốc thưởng',
+        content:
+          'Bạn có chắc chắn muốn xóa mốc thưởng <span class="confirm-delete-text-highlight">{award}</span> không?'
+      }
     }
   },
   system: {
@@ -84,14 +98,10 @@ export default {
       value: 'Nhập giá trị'
     },
     success: {
-      create: 'Tạo cấu hình hệ thống thành công',
-      update: 'Cập nhật cấu hình hệ thống thành công',
-      delete: 'Xóa cấu hình hệ thống thành công'
+      update: 'Cập nhật cấu hình hệ thống thành công'
     },
     error: {
-      create: 'Tạo cấu hình hệ thống không thành công',
-      update: 'Cập nhật cấu hình hệ thống không thành công',
-      delete: 'Xóa cấu hình hệ thống không thành công'
+      update: 'Cập nhật cấu hình hệ thống không thành công'
     },
     settingType: {
       [SystemSettingType.BOOLEAN]: 'Boolean',
@@ -99,7 +109,7 @@ export default {
       [SystemSettingType.FILE]: 'File',
       [SystemSettingType.NUMBER]: 'Number',
       [SystemSettingType.RICHTEXT]: 'Richtext',
-      [SystemSettingType.STRING]: 'String',
+      [SystemSettingType.TEXT]: 'Text',
       [SystemSettingType.TEXTAREA]: 'Textarea'
     }
   }

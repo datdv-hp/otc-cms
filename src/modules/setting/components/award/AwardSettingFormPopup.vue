@@ -15,7 +15,7 @@ const { t } = useI18n();
 const store = UseAwardSettingStore();
 
 const title = computed(() =>
-  store.selectedId ? t('setting.award.title.update') : t('setting.award.title.create')
+  store.dialog.currentId ? t('setting.award.title.update') : t('setting.award.title.create')
 );
 const isUpdate = computed(() => !!store?.dialog?.currentId);
 const initForm: Partial<IAwardForm> = {
@@ -45,7 +45,7 @@ async function fetchAward() {
         values: {
           name: detail.name,
           stepValue: detail.stepValue,
-          icon: detail.icon,
+          icon: detail.icon?.url as string,
           description: detail.description
         }
       });
@@ -87,91 +87,69 @@ const submit = handleSubmit(async (values) => {
   }
 });
 
-const watchStop = watch(
-  () => store.dialog.isShow,
-  (value) => {
-    if (value) {
-      fetchAward();
-    } else {
-      resetForm({ values: initForm });
-      store.resetDialog();
-    }
-  }
-);
+onMounted(() => {
+  fetchAward();
+});
 
 onUnmounted(() => {
-  watchStop();
+  resetForm({ values: initForm });
+  store.resetDialog();
 });
 </script>
 <template>
-  <v-dialog :model-value="store?.dialog?.isShow" max-width="600" min-width="350px" persistent>
-    <v-card class="py-2" prepend-icon="$sidebar.award" :title="title" :loading="loading">
-      <v-card-text>
-        <v-row dense>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="name"
-              :label="t('setting.award.fields.name') + '*'"
-              :placeholder="t('setting.award.placeholder.name')"
-              hide-details="auto"
-              :error="!!errors.name"
-              :error-messages="translateYupError(errors.name)"
-            />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="stepValue"
-              type="number"
-              :hide-spin-buttons="true"
-              :label="t('setting.award.fields.stepValue') + '*'"
-              :placeholder="t('setting.award.placeholder.stepValue')"
-              hide-details="auto"
-              :error="!!errors.stepValue"
-              :error-messages="translateYupError(errors.stepValue)"
-            ></v-text-field>
-          </v-col>
+  <BDialog
+    :title="title"
+    prepend-icon="$sidebar.award"
+    @close="store.closeDialog"
+    @submit="submit"
+    :submitting="isSubmitting"
+  >
+    <v-skeleton-loader v-if="loading" :type="`list-item@8`"></v-skeleton-loader>
+    <v-row v-else>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="name"
+          :label="t('setting.award.fields.name') + '*'"
+          :placeholder="t('setting.award.placeholder.name')"
+          hide-details="auto"
+          :error="!!errors.name"
+          :error-messages="translateYupError(errors.name)"
+        />
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="stepValue"
+          type="number"
+          :hide-spin-buttons="true"
+          :label="t('setting.award.fields.stepValue') + '*'"
+          :placeholder="t('setting.award.placeholder.stepValue')"
+          hide-details="auto"
+          :error="!!errors.stepValue"
+          :error-messages="translateYupError(errors.stepValue)"
+        ></v-text-field>
+      </v-col>
 
-          <v-col cols="12">
-            <v-textarea
-              v-model="description"
-              :label="t('setting.award.fields.description')"
-              :placeholder="t('setting.award.placeholder.description')"
-              hide-details="auto"
-              :error="!!errors.description"
-              :error-messages="translateYupError(errors.description)"
-            ></v-textarea>
-          </v-col>
-          <v-col cols="12">
-            <v-label>{{ t('setting.award.fields.icon') }}</v-label>
-            <BImageUpload class="image" v-model="icon" :height="200" />
-          </v-col>
-        </v-row>
-
-        <small class="text-caption text-medium-emphasis">{{ t('common.indicateRequired') }}</small>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="px-6">
-        <v-spacer></v-spacer>
-        <v-btn
-          width="90"
-          :text="t('common.button.close')"
-          variant="outlined"
-          color="neutral"
-          @click="store.closeDialog"
-        ></v-btn>
-        <v-btn
-          color="primary"
-          width="90"
-          :text="t('common.button.save')"
-          variant="flat"
-          :loading="isSubmitting"
-          @click="submit"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-col cols="12">
+        <v-textarea
+          v-model="description"
+          :label="t('setting.award.fields.description')"
+          :placeholder="t('setting.award.placeholder.description')"
+          hide-details="auto"
+          :error="!!errors.description"
+          :error-messages="translateYupError(errors.description)"
+        ></v-textarea>
+      </v-col>
+      <v-col cols="12">
+        <v-label>{{ t('setting.award.fields.icon') }}</v-label>
+        <BImageUpload class="image" v-model="icon" :height="200" />
+      </v-col>
+      <v-col cols="12"
+        ><small class="text-caption text-medium-emphasis">{{
+          t('common.indicateRequired')
+        }}</small></v-col
+      >
+    </v-row>
+  </BDialog>
 </template>
 <style lang="scss" scoped>
 .image {

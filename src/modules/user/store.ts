@@ -43,6 +43,7 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   function setTransactionLastPage(value: number) {
     transactionLastPage.value = value;
   }
+  /** transactions end */
 
   /** User refund */
   const userRefundMapByChainType = ref<Record<string, IUserRefund>>();
@@ -63,6 +64,7 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   function setIsLoadingRefundDialog(value: boolean) {
     refundDialog.value.isLoading = value;
   }
+  /** User refund end */
 
   function setDetail(data: IUserDetail | null) {
     detail.value = data || null;
