@@ -4,7 +4,6 @@ import { useDebounceFn } from '@vueuse/core';
 import Dompurify from 'isomorphic-dompurify';
 import { isNumber } from 'lodash';
 import { computed, onBeforeUnmount, unref, watch } from 'vue';
-import { InputStatus } from '..';
 import TiptapToolbar from './TiptapToolbar.vue';
 import { BaseKit } from './extensions/base-kit';
 import { Bold } from './extensions/bold';
@@ -172,7 +171,7 @@ defineExpose({
         {{ editor?.storage?.characterCount?.characters() }} / {{ maxLength }}
       </div>
     </div>
-    <InputStatus :is-show="!!errorMessage" :message="errorMessage || ''" type="error" />
+    <!-- <InputStatus :is-show="!!errorMessage" :message="errorMessage || ''" type="error" /> -->
   </div>
 </template>
 <style lang="scss" scoped>
