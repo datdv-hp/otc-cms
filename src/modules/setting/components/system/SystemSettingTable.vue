@@ -96,18 +96,6 @@ async function deleteSystemSetting(item: ISystemSetting, index: number) {
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
-    <template #top>
-      <div class="d-flex align-center">
-        <v-spacer></v-spacer>
-        <v-btn
-          :disabled="store.dialog.isShow"
-          class="text-none me-6"
-          color="primary"
-          @click="store.openDialog()"
-          >{{ $t('common.button.add') }}</v-btn
-        >
-      </div>
-    </template>
     <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton
