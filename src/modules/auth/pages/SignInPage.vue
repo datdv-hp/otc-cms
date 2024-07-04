@@ -28,7 +28,7 @@ function redirectIfNeed() {
     router.replace(redirectPath);
     sessionStorage.removeItem('redirect');
   } else {
-    router.push({ name: PageName.HOME_PAGE });
+    router.push({ name: PageName.USER_LIST_PAGE });
   }
 }
 

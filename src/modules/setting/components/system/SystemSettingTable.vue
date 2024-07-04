@@ -1,13 +1,10 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
-import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { formatDate } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
-import { systemSettingServiceApi } from '../../api';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
-import { ISystemSetting } from '../../type';
-import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BaseButton, InputText } from '@/components';
 import yup from '@/plugins/yup';
 import type { Editor } from '@tiptap/vue-3';
 import { useForm } from 'vee-validate';
