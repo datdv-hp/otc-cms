@@ -74,7 +74,13 @@ onMounted(() => {
 const isPasswordVisible = ref(false);
 </script>
 <template>
-  <v-overlay scrim="background" v-model="overlay" :opacity="1" class="align-center justify-center">
+  <v-overlay
+    scrim="background"
+    v-model="overlay"
+    persistent
+    :opacity="1"
+    class="align-center justify-center"
+  >
     <v-progress-circular indeterminate></v-progress-circular>
   </v-overlay>
   <div class="sign-in__wrapper d-flex align-center justify-center pa-4">

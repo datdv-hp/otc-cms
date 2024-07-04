@@ -14,13 +14,6 @@ const deleting = reactive<Record<string, boolean>>({});
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
-      key: 'data-table-select',
-      minWidth: '56',
-      width: '56',
-      sortable: false,
-      fixed: true
-    },
-    {
       title: t('setting.cashback.fields.id'),
       key: 'id',
       minWidth: '67',
@@ -101,7 +94,6 @@ async function deleteCashbackSetting(item: ICashbackSetting, index: number) {
     fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
-    show-select
     @update:options="loadItems"
   >
     <template #top>

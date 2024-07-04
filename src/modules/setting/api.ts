@@ -8,18 +8,15 @@ import {
   IRequestCreateCashbackBodyDTO,
   IRequestUpdateCashbackBodyDTO
 } from './dto/request/request.cashback-dto';
+import { IRequestUpdateSystemSettingBodyDTO } from './dto/request/request.system-dto';
 import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
+import { IResponseSystemSettingDTO } from './dto/response/response.system-dto';
 import {
   IAwardSettingQueryParams,
   ICashbackSettingQueryParams,
   ISystemSettingQueryParams
 } from './type';
-import { IResponseSystemSettingDTO } from './dto/response/response.system-dto';
-import {
-  IRequestCreateSystemSettingBodyDTO,
-  IRequestUpdateSystemSettingBodyDTO
-} from './dto/request/request.system-dto';
 
 class CashbackSettingApi extends ApiService {
   getCashbackSetting(id: number | string): Promise<IBodyResponse<IResponseCashbackDTO>> {
@@ -106,11 +103,6 @@ class SystemSettingApi extends ApiService {
     return this._getList<IResponseSystemSettingDTO, ISystemSettingQueryParams>(params);
   }
 
-  createSystemSetting(
-    data: IRequestCreateSystemSettingBodyDTO
-  ): Promise<IBodyResponse<IResponseSystemSettingDTO>> {
-    return this._create(data);
-  }
   updateSystemSetting(
     id: string | number,
     data: IRequestUpdateSystemSettingBodyDTO
@@ -128,7 +120,4 @@ class SystemSettingApi extends ApiService {
     return this._getListByLink(url);
   }
 }
-export const systemSettingServiceApi = new SystemSettingApi(
-  { baseUrl: '/system_setting' },
-  axiosInstance
-);
+export const systemSettingServiceApi = new SystemSettingApi({ baseUrl: '/setting' }, axiosInstance);

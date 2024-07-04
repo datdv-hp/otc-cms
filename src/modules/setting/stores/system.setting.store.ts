@@ -1,13 +1,16 @@
 import { DEFAULT_PAGE } from '@/common/constants/common.constant';
-import { ISystemSetting, ISystemSettingQueryParams } from '../type';
+import { ISystemSetting, ISystemSettingForm, ISystemSettingQueryParams } from '../type';
 import { cloneDeep } from 'lodash';
 import { systemSettingServiceApi } from '../api';
 import { toSystemSettingList } from '../helper';
+import { SystemSettingType } from '../constant';
 
 const initDialog = {
   isShow: false,
   currentId: null,
-  isLoading: false
+  isLoading: false,
+  type: undefined,
+  formValue: undefined
 };
 export const UseSystemSettingStore = defineStore('system-setting', () => {
   const list = ref<ISystemSetting[]>([]);
@@ -20,6 +23,8 @@ export const UseSystemSettingStore = defineStore('system-setting', () => {
     isShow: boolean;
     currentId?: string | number | null;
     isLoading?: boolean;
+    type?: SystemSettingType;
+    formValue?: ISystemSettingForm;
   }>(cloneDeep(initDialog));
 
   function setList(data: ISystemSetting[]) {
@@ -43,9 +48,17 @@ export const UseSystemSettingStore = defineStore('system-setting', () => {
   function setLastPage(value: number) {
     lastPage.value = value;
   }
-  function openDialog(id: number | null | string = null) {
+  function openDialog(setting: ISystemSetting | null = null) {
     dialog.value.isShow = true;
-    dialog.value.currentId = id;
+    dialog.value.currentId = setting?.id;
+    if (setting) {
+      dialog.value.formValue = {
+        key: setting.key,
+        label: setting.label,
+        type: setting.type,
+        value: setting.value
+      };
+    }
   }
   function closeDialog() {
     dialog.value.isShow = false;

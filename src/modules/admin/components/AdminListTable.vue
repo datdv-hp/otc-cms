@@ -5,7 +5,6 @@ import { formatDate, notifyError, notifySuccess } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { adminApiService } from '../api';
-import { StatusColor } from '../constant';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
 
@@ -15,12 +14,6 @@ const adminStore = UseAdminStore();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
-    {
-      key: 'data-table-select',
-      minWidth: '56',
-      width: '56',
-      fixed: true
-    },
     {
       title: t('admin.fields.id'),
       key: 'id',
@@ -36,12 +29,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('admin.fields.username'),
       key: 'username',
       minWidth: '160'
-    },
-    {
-      title: t('admin.fields.status'),
-      key: 'status',
-      minWidth: '160',
-      align: 'center'
     },
     {
       title: t('admin.fields.createdAt'),
@@ -106,7 +93,6 @@ async function deleteAdmin(item: IAdmin, index: number) {
     height="500"
     :headers="headers"
     :loading="adminStore.isLoadingList"
-    show-select
     @update:options="loadItems"
   >
     <template #top>
@@ -136,13 +122,6 @@ async function deleteAdmin(item: IAdmin, index: number) {
     </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
-    </template>
-    <template v-slot:[`item.status`]="{ item }">
-      <v-chip
-        density="compact"
-        :color="StatusColor[item.status]"
-        :text="t(`admin.status.${item.status}`)"
-      ></v-chip>
     </template>
   </v-data-table-server>
 </template>

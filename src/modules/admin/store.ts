@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import { IAdmin } from './type';
 import { IAdminListQueryParams } from './dto/request.admin-dto';
 import { DEFAULT_PAGE } from '@/common/constants/common.constant';
-import { toAdminList } from './util';
+import { toAdminList } from './helper';
 import { adminApiService } from './api';
 
 const STORE_NAME = 'admin-store';

@@ -6,10 +6,6 @@ import {
   IRequestCreateCashbackBodyDTO,
   IRequestUpdateCashbackBodyDTO
 } from './dto/request/request.cashback-dto';
-import {
-  IRequestCreateSystemSettingBodyDTO,
-  IRequestUpdateSystemSettingBodyDTO
-} from './dto/request/request.system-dto';
 import { IResponseAwardDTO } from './dto/response/response.award-dto';
 import { IResponseCashbackDTO } from './dto/response/response.cashback-dto';
 import { IResponseSystemSettingDTO } from './dto/response/response.system-dto';
@@ -21,8 +17,7 @@ import {
   ICashbackSetting,
   ICashbackSettingDetail,
   ISystemSetting,
-  ISystemSettingDetail,
-  ISystemSettingForm
+  ISystemSettingDetail
 } from './type';
 
 /** Cashback */
@@ -134,26 +129,5 @@ export const toSystemSettingDetail = (setting: IResponseSystemSettingDTO): ISyst
     key: setting.key,
     value: setting.value,
     createdAt: setting.createdAt
-  };
-};
-
-export const toRequestCreateSystemSettingFormDTO = (
-  setting: ISystemSettingForm
-): IRequestCreateSystemSettingBodyDTO => {
-  return {
-    label: setting.label,
-    type: setting.type,
-    key: setting.key,
-    value: setting.value
-  };
-};
-export const toRequestUpdateSystemSettingFormDTO = (
-  setting: ISystemSettingForm
-): IRequestUpdateSystemSettingBodyDTO => {
-  return {
-    label: setting.label,
-    type: setting.type,
-    key: setting.key,
-    value: setting.value
   };
 };

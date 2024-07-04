@@ -13,6 +13,7 @@ import cloudUpload from '@/assets/icons/common/cloud-upload.svg?component';
 import closeCircled from '@/assets/icons/common/close-circled.svg?component';
 import logout from '@/assets/icons/common/logout.svg?component';
 import laugh from '@/assets/icons/common/laugh.svg?component';
+import eyeSlash from '@/assets/icons/common/eye-slash.svg?component';
 
 export default {
   email,
@@ -29,5 +30,6 @@ export default {
   'cloud-upload': cloudUpload,
   'close-circled': closeCircled,
   logout,
-  laugh
+  laugh,
+  'eye-slash': eyeSlash
 };

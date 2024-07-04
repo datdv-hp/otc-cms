@@ -31,5 +31,9 @@ export default {
     create: 'Tạo quản trị viên không thành công',
     update: 'Cập nhật quản trị viên không thành công',
     delete: 'Xóa quản trị viên không thành công'
+  },
+  validate: {
+    emptyPassword: 'Mật khẩu không được để trống',
+    confirmPassword: 'Mật khẩu không trùng khớp'
   }
 };

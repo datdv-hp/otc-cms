@@ -1,25 +1,38 @@
 <script lang="ts" setup>
-import { notifyError, translateYupError } from '@/common/helper';
+import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import { adminApiService } from '../api';
+import { AdminCreateFormSchema, AdminUpdateFormSchema } from '../constant';
+import { toRequestCreateAdminFormDTO, toRequestUpdateAdminFormDTO } from '../helper';
 import { UseAdminStore } from '../store';
+import { IAdminForm } from '../type';
 
 const loading = shallowRef(true);
 const { t } = useI18n();
 const store = UseAdminStore();
+const showing = ref({ password: false, confirmPassword: false });
 const title = computed(() =>
-  store.dialog.adminId ? t('admin.title.edit') : t('admin.title.create')
+  store.dialog.adminId ? t('admin.title.update') : t('admin.title.create')
 );
+const isUpdate = computed(() => !!store.dialog?.adminId);
 
-const { errors, handleSubmit, isSubmitting } = useForm();
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<IAdminForm>({
+  validationSchema: isUpdate.value ? AdminUpdateFormSchema : AdminCreateFormSchema
+});
 const { value: fullname } = useField<string>('fullname');
 const { value: username } = useField<string>('username');
-useField<string>('password');
-useField<string>('confirmPassword');
+const { value: password } = useField<string>('password');
+const { value: confirmPassword } = useField<string>('confirmPassword');
 
 async function fetchAdmin() {
   try {
     if (store.dialog.adminId) {
-      await adminApiService._getDetail(store.dialog.adminId);
+      const res = await adminApiService.getAdmin(store.dialog.adminId);
+      resetForm({
+        values: {
+          fullname: res.data.fullname,
+          username: res.data.username
+        }
+      });
     }
   } catch (error) {
     notifyError(t('common.error.somethingWrong'));
@@ -28,11 +41,31 @@ async function fetchAdmin() {
   }
 }
 
-const submit = handleSubmit(async () => {
-  try {
-    //
-  } catch (error) {
-    //
+async function updateAdmin(form: IAdminForm) {
+  const res = await adminApiService.updateAdmin(
+    store.dialog?.adminId as number,
+    toRequestUpdateAdminFormDTO(form)
+  );
+  if (res.success) {
+    notifySuccess(t('admin.success.update'));
+  }
+  return res;
+}
+async function createAdmin(form: IAdminForm) {
+  const res = await adminApiService.createAdmin(toRequestCreateAdminFormDTO(form));
+  if (res.success) {
+    notifySuccess(t('admin.success.create'));
+  }
+  return res;
+}
+
+const submit = handleSubmit(async (values) => {
+  const res = isUpdate.value ? await updateAdmin(values) : await createAdmin(values);
+  if (!res.success) {
+    notifyError(t('common.error.somethingWrong'));
+  } else {
+    store.getList();
+    store.closeDialog();
   }
 });
 
@@ -42,7 +75,7 @@ onMounted(async () => {
 </script>
 <template>
   <v-dialog :model-value="true" max-width="600" min-width="350px" persistent>
-    <v-card class="py-2" prepend-icon="$sidebar.admin" :title="title" :loading="loading">
+    <v-card class="pa-4" prepend-icon="$sidebar.admin" :title="title" :loading="loading">
       <v-card-text>
         <v-row dense>
           <v-col cols="12" md="6">
@@ -66,17 +99,28 @@ onMounted(async () => {
 
           <v-col cols="12" md="6">
             <v-text-field
-              :label="t('admin.fields.password') + '*'"
+              v-model="password"
+              :label="t('admin.fields.password') + (isUpdate && !password ? '' : '*')"
               autocomplete="new-password"
-              type="password"
+              :type="showing.password ? 'text' : 'password'"
               hide-details="auto"
+              :error="!!errors.password"
+              :error-messages="translateYupError(errors.password)"
+              :append-inner-icon="showing.password ? '$common.eye-slash' : '$common.eye'"
+              @click:append-inner="showing.password = !showing.password"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              :label="t('admin.fields.confirmPassword') + '*'"
-              type="confirmPassword"
+              v-model="confirmPassword"
+              :label="t('admin.fields.confirmPassword') + (isUpdate && !password ? '' : '*')"
+              autocomplete="off"
+              :type="showing.confirmPassword ? 'text' : 'password'"
               hide-details="auto"
+              :error="!!errors.confirmPassword"
+              :error-messages="translateYupError(errors.confirmPassword)"
+              :append-inner-icon="showing.confirmPassword ? '$common.eye-slash' : '$common.eye'"
+              @click:append-inner="showing.confirmPassword = !showing.confirmPassword"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -92,13 +136,14 @@ onMounted(async () => {
           width="90"
           :text="t('common.button.close')"
           variant="plain"
+          color="neutral"
           @click="store.closeDialog"
         ></v-btn>
         <v-btn
           color="primary"
           width="90"
           :text="t('common.button.save')"
-          variant="tonal"
+          variant="flat"
           :loading="isSubmitting"
           @click="submit"
         ></v-btn>

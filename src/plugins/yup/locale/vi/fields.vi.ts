@@ -12,5 +12,11 @@ export default {
     stepValue: 'Mốc thưởng',
     description: 'Mô tả',
     icon: 'Ảnh mô tả'
+  },
+  admin: {
+    fullname: 'Họ và tên',
+    username: 'Tên đăng nhập',
+    password: 'Mật khẩu',
+    confirmPassword: 'Nhập lại mật khẩu'
   }
 };

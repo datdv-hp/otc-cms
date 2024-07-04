@@ -1,53 +1,31 @@
 <script lang="ts" setup>
 import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import { systemSettingServiceApi } from '../../api';
-import { CashbackSettingFormSchema } from '../../constant';
-import {
-  toRequestCreateSystemSettingFormDTO,
-  toRequestUpdateSystemSettingFormDTO,
-  toSystemSettingDetail
-} from '../../helper';
+import { CashbackSettingFormSchema, SystemSettingType } from '../../constant';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
-import { ISystemSettingForm } from '../../type';
+import { cloneDeep } from 'lodash';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
+
 const isUpdate = computed(() => !!store.dialog?.currentId);
 const title = computed(() =>
   isUpdate.value ? t('setting.system.title.update') : t('setting.system.title.create')
 );
-const initForm: Partial<ISystemSettingForm> = {
-  key: undefined,
-  value: undefined,
-  label: undefined,
-  type: undefined
-};
-
-const { errors, handleSubmit, isSubmitting, resetForm } = useForm<ISystemSettingForm>({
-  validationSchema: CashbackSettingFormSchema,
-  initialValues: initForm
+const initForm = { value: undefined };
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<{ value: any }>({
+  validationSchema: CashbackSettingFormSchema
 });
-const { value: key } = useField<string>('key');
-// const { value: value } = useField<any>('value');
-const { value: label } = useField<string>('label');
-// const { value: type } = useField<SystemSettingType>('type');
-
-async function fetchCashback() {
+const { value: value } = useField<any>('value');
+async function fetchSystemSetting() {
   try {
     store.setDialogLoading(true);
     if (store.dialog?.currentId) {
-      const res = await systemSettingServiceApi.getSystemSetting(store.dialog?.currentId);
-      if (res.success) {
-        const detail = toSystemSettingDetail(res.data);
-        resetForm({
-          values: {
-            key: detail.key,
-            value: detail.value,
-            label: detail.label,
-            type: detail.type
-          }
-        });
-      }
+      resetForm({
+        values: {
+          value: store.dialog.formValue?.value
+        }
+      });
     }
   } catch (error) {
     notifyError(t('common.error.somethingWrong'));
@@ -55,83 +33,69 @@ async function fetchCashback() {
     store.setDialogLoading(false);
   }
 }
-async function updateSystemSetting(form: ISystemSettingForm) {
-  const res = await systemSettingServiceApi.updateSystemSetting(
-    store.dialog?.currentId as string,
-    toRequestUpdateSystemSettingFormDTO(form)
-  );
+const submit = handleSubmit(async (values) => {
+  const res = await systemSettingServiceApi.updateSystemSetting(store.dialog?.currentId as string, {
+    type: store.dialog?.formValue?.type as SystemSettingType,
+    value: values.value
+  });
   if (res.success) {
     notifySuccess(t('setting.SystemSetting.success.update'));
-  }
-  return res;
-}
-async function createSystemSetting(form: ISystemSettingForm) {
-  const res = await systemSettingServiceApi.createSystemSetting(
-    toRequestCreateSystemSettingFormDTO(form)
-  );
-  if (res.success) {
-    notifySuccess(t('setting.cashback.success.create'));
-  }
-  return res;
-}
-const submit = handleSubmit(async (values) => {
-  const res = isUpdate.value
-    ? await updateSystemSetting(values)
-    : await createSystemSetting(values);
-  if (!res.success) {
-    notifyError(t('common.error.somethingWrong'));
-  } else {
     store.getList();
     store.closeDialog();
+  } else {
+    notifyError(t('common.error.somethingWrong'));
   }
 });
-
-watch(
-  () => store.dialog.isShow,
-  (value) => {
-    if (value) {
-      fetchCashback();
-    } else {
-      resetForm({ values: initForm });
-      store.resetDialog();
-    }
-  }
-);
+onMounted(() => {
+  fetchSystemSetting();
+});
+onUnmounted(() => {
+  resetForm({ values: cloneDeep(initForm) });
+});
 </script>
 <template>
-  <v-dialog :model-value="store?.dialog?.isShow" max-width="600" min-width="350px" persistent>
+  <v-dialog :model-value="true" max-width="600" min-width="350px" persistent>
     <v-card class="py-2" prepend-icon="$sidebar.setting" :title="title">
       <v-card-text>
         <v-row dense>
-          <v-col cols="12" md="6">
+          <v-col cols="12">
             <v-text-field
-              v-model="label"
-              :prepend="false"
-              :label="t('setting.system.fields.label') + '*'"
-              :placeholder="t('setting.system.placeholder.label')"
+              v-if="store.dialog?.formValue?.type === SystemSettingType.TEXT"
+              v-model="value"
+              :label="store.dialog?.formValue?.label"
+              :placeholder="t('setting.system.placeholder.value')"
               auto-focus
               :loading="!!store.dialog?.isLoading"
               :disabled="!!store.dialog?.isLoading"
-              :error="!!errors.label"
-              :error-messages="translateYupError(errors.label)"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
+              :error="!!errors.value"
+              :error-messages="translateYupError(errors.value)"
+            />
             <v-text-field
-              v-model="key"
-              :prepend="false"
-              :label="t('setting.system.fields.key') + '*'"
-              :placeholder="t('setting.system.placeholder.key')"
+              v-if="store.dialog?.formValue?.type === SystemSettingType.NUMBER"
+              v-model="value"
+              type="number"
+              :hide-spin-buttons="true"
+              :label="store.dialog?.formValue?.label"
+              :placeholder="t('setting.system.placeholder.value')"
               auto-focus
               :loading="!!store.dialog?.isLoading"
               :disabled="!!store.dialog?.isLoading"
-              :error="!!errors.key"
-              :error-messages="translateYupError(errors.key)"
-            ></v-text-field>
+              :error="!!errors.value"
+              :error-messages="translateYupError(errors.value)"
+            />
+            <v-textarea
+              v-if="store.dialog?.formValue?.type === SystemSettingType.TEXTAREA"
+              v-model="value"
+              :label="store.dialog?.formValue?.label"
+              :placeholder="t('setting.system.placeholder.value')"
+              auto-focus
+              :loading="!!store.dialog?.isLoading"
+              :disabled="!!store.dialog?.isLoading"
+              :error="!!errors.value"
+              :error-messages="translateYupError(errors.value)"
+            />
           </v-col>
         </v-row>
-
-        <small class="text-caption text-medium-emphasis">{{ t('common.indicateRequired') }}</small>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -142,6 +106,7 @@ watch(
           width="90"
           :text="t('common.button.close')"
           variant="plain"
+          color="neutral"
           @click="store.closeDialog"
         ></v-btn>
         <v-btn

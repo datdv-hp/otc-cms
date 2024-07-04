@@ -7,4 +7,7 @@ export type IRequestCreateSystemSettingBodyDTO = {
   value: any;
 };
 
-export type IRequestUpdateSystemSettingBodyDTO = Partial<IRequestCreateSystemSettingBodyDTO>;
+export type IRequestUpdateSystemSettingBodyDTO = {
+  type: SystemSettingType;
+  value: any;
+};

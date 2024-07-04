@@ -40,20 +40,20 @@ class UserApiService extends ApiService {
   getRefundByUser(
     id: number | string
   ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
-    return this.client.get(`user/${id}/list_refund`);
+    return this.client.get(`${id}/list_refund`);
   }
   bulkUpdateRefundByUser(
     id: number | string,
     data: IRequestUpdateUserRefundFormDTO
   ): Promise<IBodyResponse<IGetListData<IResponseUserRefundDTO>>> {
-    return this.client.patch(`user/${id}/list_refund`, data);
+    return this.client.patch(`${id}/list_refund`, data);
   }
 
   getTransactionList(
     id: number | string,
     query: IUserTransactionQueryParamsDTO
   ): Promise<IBodyResponse<IGetListData<IResponseUserTransactionDTO>>> {
-    return this.client.get(`user/${id}/list_transaction`, { params: query });
+    return this.client.get(`${id}/list_transaction`, { params: query });
   }
 
   async getUserListByLink(
@@ -62,4 +62,4 @@ class UserApiService extends ApiService {
     return this._getListByLink(url);
   }
 }
-export const userApiService = new UserApiService({ baseUrl: '/users' }, axiosInstance);
+export const userApiService = new UserApiService({ baseUrl: '/user' }, axiosInstance);

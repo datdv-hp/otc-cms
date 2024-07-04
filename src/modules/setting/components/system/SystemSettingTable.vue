@@ -14,13 +14,6 @@ const deleting = reactive<Record<string, boolean>>({});
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
-      key: 'data-table-select',
-      minWidth: '56',
-      width: '56',
-      sortable: false,
-      fixed: true
-    },
-    {
       title: t('setting.system.fields.id'),
       key: 'id',
       minWidth: '67',
@@ -29,7 +22,12 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     },
     {
       title: t('setting.system.fields.label'),
-      key: 'percent',
+      key: 'label',
+      minWidth: '120'
+    },
+    {
+      title: t('setting.system.fields.value'),
+      key: 'value',
       minWidth: '120'
     },
     {
@@ -96,7 +94,6 @@ async function deleteSystemSetting(item: ISystemSetting, index: number) {
     fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
-    show-select
     @update:options="loadItems"
   >
     <template #top>
@@ -117,7 +114,7 @@ async function deleteSystemSetting(item: ISystemSetting, index: number) {
           icon="$common.pencil"
           :tooltip="$t('common.button.edit')"
           color="neutral"
-          @click="store.openDialog(item.id)"
+          @click="store.openDialog(item)"
         />
         <BActionButton
           icon="$common.trash"
