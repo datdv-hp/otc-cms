@@ -10,7 +10,7 @@ const { smAndDown } = useDisplay();
   <v-app :full-height="true">
     <SideBar v-if="!smAndDown" />
     <HeaderBar />
-    <v-main height="2000">
+    <v-main>
       <div class="app-content pa-6">
         <router-view v-slot="{ Component }">
           <component :is="Component" />

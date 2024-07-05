@@ -5,11 +5,9 @@ import { formatDate } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
-import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
-const { smAndDown } = useDisplay();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -22,8 +20,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('setting.system.fields.label'),
       key: 'label',
-      minWidth: '120',
-      fixed: smAndDown.value
+      minWidth: '120'
     },
     {
       title: t('setting.system.fields.value'),

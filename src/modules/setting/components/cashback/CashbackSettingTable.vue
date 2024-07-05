@@ -1,19 +1,16 @@
-<!-- eslint-disable vue/valid-v-slot -->
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
 import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { cashbackSettingServiceApi } from '../../api';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackSetting } from '../../type';
-import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
-import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseCashbackSettingStore();
 const deleting = reactive<Record<string, boolean>>({});
-const { smAndDown } = useDisplay();
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
@@ -25,8 +22,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('setting.cashback.fields.name'),
       key: 'name',
-      minWidth: '160',
-      fixed: smAndDown.value
+      minWidth: '160'
     },
     {
       title: t('setting.cashback.fields.percent'),

@@ -5,7 +5,7 @@ import UserListTable from '../components/UserListTable.vue';
 <template>
   <v-card class="card-wrapper pa-3" :elevation="0">
     <FilterBar class="mb-6" />
-    <UserListTable class="flex-1" />
+    <UserListTable />
   </v-card>
 </template>
 <style lang="scss" scoped>

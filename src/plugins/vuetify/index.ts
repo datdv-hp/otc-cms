@@ -2,7 +2,6 @@ import { SupportLanguage } from '@/common/constants/common.constant';
 import localStorageAuthService from '@/common/storages/authStorage';
 import { createVuetify, type IconAliases } from 'vuetify';
 import { aliases as defaultAliases, mdi } from 'vuetify/iconsets/mdi';
-import { en, vi } from 'vuetify/locale';
 import customIcons from './custom-icons';
 import defaults from './defaults';
 
@@ -11,6 +10,8 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/styles';
 import './styles/index.scss';
 
+import { customVuetifyEn } from './locale/en/vuetify.en';
+import { customVuetifyVi } from './locale/vi/vuetify.vi';
 import theme from './theme';
 const aliases: IconAliases = {
   ...defaultAliases,
@@ -30,7 +31,7 @@ const Vuetify = createVuetify({
   locale: {
     locale: localStorageAuthService.getLanguage(),
     fallback: SupportLanguage.EN,
-    messages: { vi, en }
+    messages: { vi: customVuetifyVi, en: customVuetifyEn }
   }
 });
 

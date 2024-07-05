@@ -1,23 +1,17 @@
 <script lang="ts" setup>
 import { IBreadcrumb } from '@/layouts/type';
+import { useDisplay } from 'vuetify';
 import AccountMenu from './AccountMenu.vue';
-import { UseAppStore } from '@/common/app.store';
 const route = useRoute();
 const breadcrumbs = computed(() => route.meta.breadcrumbs as IBreadcrumb[]);
-const appStore = UseAppStore();
+const { smAndDown } = useDisplay();
 
-function toggleSidebar() {
-  appStore.setIsShowSidebar(!appStore.isShowSidebar);
-}
+const height = computed(() => (smAndDown.value ? 60 : 84));
 </script>
 <template>
-  <v-app-bar flat class="app-header px-5" height="84">
+  <v-app-bar flat class="app-header px-5" :height="height">
     <template #prepend>
-      <v-breadcrumbs :items="breadcrumbs">
-        <template #prepend v-if="!appStore.isShowSidebar">
-          <v-icon icon="$sidebar.layout" @click="toggleSidebar"></v-icon>
-        </template>
-      </v-breadcrumbs>
+      <v-breadcrumbs :items="breadcrumbs"> </v-breadcrumbs>
     </template>
     <template #append>
       <AccountMenu />

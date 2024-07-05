@@ -30,7 +30,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('user.fields.telegramUsername'),
       key: 'telegramUsername',
-      fixed: true,
       minWidth: '140',
       width: '20%'
     },

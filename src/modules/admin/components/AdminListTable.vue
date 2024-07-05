@@ -2,18 +2,16 @@
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
 import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { adminApiService } from '../api';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
-import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
-import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const deleting = reactive<Record<string, boolean>>({});
 const adminStore = UseAdminStore();
-const { smAndDown } = useDisplay();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -26,8 +24,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('admin.fields.fullname'),
       key: 'fullname',
-      minWidth: '160',
-      fixed: smAndDown.value
+      minWidth: '160'
     },
     {
       title: t('admin.fields.username'),

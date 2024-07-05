@@ -2,31 +2,28 @@
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
 import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { awardSettingServiceApi } from '../../api';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
 import { IAwardSetting } from '../../type';
-import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
-import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseAwardSettingStore();
 const deleting = reactive<Record<string, boolean>>({});
-const { mdAndDown } = useDisplay();
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
       title: t('setting.award.fields.id'),
       key: 'id',
-      minWidth: '67',
+      minWidth: '56',
       sortable: false
     },
     {
       title: t('setting.award.fields.name'),
       key: 'name',
-      minWidth: '160',
-      fixed: mdAndDown.value
+      minWidth: '160'
     },
     {
       title: t('setting.award.fields.stepValue'),
