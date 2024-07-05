@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import MSearchBar from '@/components/molecules/MSearchBar.vue';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
-const { t } = useI18n();
+
 const store = UseAwardSettingStore();
 const filter = ref({
   keyword: ''
@@ -13,32 +14,17 @@ function search() {
 }
 </script>
 <template>
-  <div class="filter-wrapper d-sm-flex">
-    <v-text-field
-      v-model="filter.keyword"
-      hide-details
-      max-width="300"
-      :placeholder="t('common.button.search')"
-      variant="outlined"
-      density="compact"
-      clearable
-      color="primary"
-      @keydown.enter="search"
-    ></v-text-field>
-    <v-btn
-      class="text-none mt-2 mt-sm-0"
-      flat
-      color="primary"
-      height="40"
-      variant="flat"
-      @click="search"
-    >
-      {{ t('common.button.search') }}
-    </v-btn>
-  </div>
+  <MSearchBar @search="search" v-model:keyword="filter.keyword" :loading="store.isLoadingList">
+    <template #append>
+      <v-btn
+        class="text-none"
+        prepend-icon="$common.add"
+        color="primary"
+        variant="flat"
+        @click="() => store.openDialog()"
+        >{{ $t('common.button.add') }}</v-btn
+      >
+    </template>
+  </MSearchBar>
 </template>
-<style lang="scss" scoped>
-.filter-wrapper {
-  gap: 8px;
-}
-</style>
+<style lang="scss" scoped></style>

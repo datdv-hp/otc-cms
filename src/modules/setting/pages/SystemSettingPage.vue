@@ -7,9 +7,9 @@ import { UseSystemSettingStore } from '../stores/system.setting.store';
 const store = UseSystemSettingStore();
 </script>
 <template>
-  <v-card class="card-wrapper pa-4" :elevation="1">
-    <SystemSettingFilterBar class="mb-2" />
-    <SystemSettingTable class="flex-1" />
+  <v-card class="card-wrapper pa-3" :elevation="0">
+    <SystemSettingFilterBar />
+    <SystemSettingTable />
   </v-card>
   <SystemSettingPopup v-if="store.dialog.isShow" />
 </template>
@@ -18,5 +18,6 @@ const store = UseSystemSettingStore();
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
 }
 </style>

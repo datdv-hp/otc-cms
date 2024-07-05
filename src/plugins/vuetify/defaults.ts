@@ -1,4 +1,7 @@
 export default {
+  global: {
+    ripple: false
+  },
   IconBtn: {
     icon: true,
     size: 'small',

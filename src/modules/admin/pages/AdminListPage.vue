@@ -7,7 +7,7 @@ import { UseAdminStore } from '../store';
 const adminStore = UseAdminStore();
 </script>
 <template>
-  <v-card class="card-wrapper pa-4" :elevation="1">
+  <v-card class="card-wrapper pa-3" :elevation="0">
     <AdminFilterBar />
     <AdminListTable />
   </v-card>
@@ -18,5 +18,6 @@ const adminStore = UseAdminStore();
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
 }
 </style>

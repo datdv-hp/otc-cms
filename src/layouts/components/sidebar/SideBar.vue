@@ -19,24 +19,27 @@ const isOpen = computed({
 const sidebar = computed<ISidebarItem[]>(() => {
   return [
     {
-      title: t('app.sidebar.user.name'),
-      icon: '$sidebar.user',
-      activeIcon: '$sidebar.user-solid',
-      routeName: PageName.USER_LIST_PAGE,
-      activeRouteNames: [PageName.USER_LIST_PAGE, PageName.USER_DETAIL_PAGE],
-      role: true
-    },
-    {
-      title: t('app.sidebar.admin.name'),
-      icon: '$sidebar.admin',
-      activeIcon: '$sidebar.admin-solid',
-      routeName: PageName.ADMIN_LIST_PAGE,
-      role: true
+      title: t('app.sidebar.management.name'),
+      role: true,
+      subItems: [
+        {
+          title: t('app.sidebar.management.user.name'),
+          icon: '$sidebar.user',
+          activeIcon: '$sidebar.user-solid',
+          routeName: PageName.USER_LIST_PAGE,
+          role: true
+        },
+        {
+          title: t('app.sidebar.management.admin.name'),
+          icon: '$sidebar.admin',
+          activeIcon: '$sidebar.admin-solid',
+          routeName: PageName.ADMIN_LIST_PAGE,
+          role: true
+        }
+      ]
     },
     {
       title: t('app.sidebar.setting.name'),
-      icon: '$sidebar.setting',
-      activeIcon: '$sidebar.setting-solid',
       role: true,
       subItems: [
         {
@@ -80,7 +83,7 @@ onMounted(() => {
 <template>
   <v-navigation-drawer
     v-model="isOpen"
-    class="px-1 py-0"
+    class="pa-0"
     :temporary="!smAndUp"
     :permanent="smAndUp"
     width="280"
@@ -88,12 +91,12 @@ onMounted(() => {
     flat
   >
     <div class="logo-wrapper">
-      <v-img :src="LogoImage"></v-img>
+      <img :src="LogoImage" width="44" height="44" />
       <span class="logo-text">OTC</span>
       <v-spacer />
       <v-icon icon="$common.close" @click="hideSidebar"></v-icon>
     </div>
-    <v-list class="sidebar-content" nav density="comfortable">
+    <v-list class="pa-0" nav>
       <template v-for="(item, _) in sidebar" :key="_">
         <template v-if="item.subItems?.length">
           <v-list-subheader :title="item.title" v-if="item.title" />
@@ -107,16 +110,16 @@ onMounted(() => {
               <v-icon :icon="isActive ? subItem.activeIcon : subItem.icon" />
             </template>
             <template #title="{ title }">
-              <span class="tp-base-1-sb">{{ title }}</span>
+              <span class="title-text">{{ title }}</span>
             </template>
           </v-list-item>
         </template>
-        <v-list-item v-else class="tp-base-1-sb" :title="item.title" :to="{ name: item.routeName }">
+        <v-list-item v-else class="title-text" :title="item.title" :to="{ name: item.routeName }">
           <template #prepend="{ isActive }">
             <v-icon :icon="isActive ? item.activeIcon : item.icon" />
           </template>
           <template #title="{ title }">
-            <span class="tp-base-1-sb">{{ title }}</span>
+            <span class="title-text">{{ title }}</span>
           </template>
         </v-list-item>
       </template>
@@ -125,7 +128,7 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .logo-wrapper {
-  padding: 6px 16px 48px 10px;
+  padding: 20px 16px 20px 32px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -134,6 +137,49 @@ onMounted(() => {
     font-size: 30px;
     font-weight: 600;
     letter-spacing: 0.25em;
+  }
+}
+
+:deep(.v-list-subheader) {
+  padding-inline-start: 32px !important;
+  margin-top: 12px;
+}
+
+:deep(.v-list-item) {
+  color: $color-neutral-3 !important;
+  padding-inline-start: 30px;
+  .v-list-item-title .title-text {
+    font-size: 15px;
+    font-weight: 500 !important;
+  }
+
+  &.v-list-item--active {
+    position: relative;
+    background-color: $color-neutral-8;
+    color: $color-neutral-0 !important;
+    .v-list-item-title .title-text {
+      font-weight: 600 !important;
+    }
+    > ::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      right: 0;
+      width: 2px;
+      height: 100%;
+      border-radius: 0 4px 4px 0;
+      background-color: rgb(var(--v-theme-primary));
+      transition: l3 0.3s;
+    }
+  }
+}
+
+@keyframes l3 {
+  20% {
+    background-position:
+      0% 0%,
+      50% 50%,
+      100% 50%;
   }
 }
 </style>

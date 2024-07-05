@@ -11,7 +11,7 @@ function toggleSidebar() {
 }
 </script>
 <template>
-  <v-app-bar flat class="app-header" height="60">
+  <v-app-bar flat class="app-header px-5" height="84">
     <template #prepend>
       <v-breadcrumbs :items="breadcrumbs">
         <template #prepend v-if="!appStore.isShowSidebar">

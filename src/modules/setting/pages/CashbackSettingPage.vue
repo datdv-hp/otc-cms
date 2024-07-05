@@ -7,9 +7,9 @@ import { UseCashbackSettingStore } from '../stores/cashback-setting.store';
 const store = UseCashbackSettingStore();
 </script>
 <template>
-  <v-card class="card-wrapper pa-4" :elevation="1">
-    <CashbackSettingFilterBar class="mb-2" />
-    <CashbackSettingTable class="flex-1" />
+  <v-card class="card-wrapper pa-3" :elevation="0">
+    <CashbackSettingFilterBar />
+    <CashbackSettingTable />
   </v-card>
   <CashbackSettingPopup v-if="store.dialog?.isShow" />
 </template>
@@ -18,5 +18,6 @@ const store = UseCashbackSettingStore();
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
 }
 </style>

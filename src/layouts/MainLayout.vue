@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FooterBar from './components/footer/FooterBar.vue';
 import HeaderBar from './components/header/HeaderBar.vue';
 import SideBar from './components/sidebar/SideBar.vue';
 </script>
@@ -9,13 +8,12 @@ import SideBar from './components/sidebar/SideBar.vue';
     <SideBar />
     <HeaderBar />
     <v-main style="min-height: 300px">
-      <div class="app-content pa-4">
+      <div class="app-content pa-6">
         <router-view v-slot="{ Component }">
           <component :is="Component" />
         </router-view>
       </div>
     </v-main>
-    <FooterBar />
   </v-app>
 </template>
 

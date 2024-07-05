@@ -8,22 +8,25 @@ import { awardSettingServiceApi } from '../../api';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
 import { IAwardSetting } from '../../type';
 import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseAwardSettingStore();
 const deleting = reactive<Record<string, boolean>>({});
+const { mdAndDown } = useDisplay();
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
       title: t('setting.award.fields.id'),
       key: 'id',
       minWidth: '67',
-      fixed: true
+      sortable: false
     },
     {
       title: t('setting.award.fields.name'),
       key: 'name',
-      minWidth: '160'
+      minWidth: '160',
+      fixed: mdAndDown.value
     },
     {
       title: t('setting.award.fields.stepValue'),
@@ -40,7 +43,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('setting.award.fields.createdAt'),
       key: 'createdAt',
       minWidth: '220',
-      align: 'center',
       value: (item) => formatDate(item.createdAt)
     },
     {
@@ -48,7 +50,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       key: 'actions',
       minWidth: '160',
       sortable: false,
-      fixed: true
+      align: 'center'
     }
   ];
 });
@@ -108,24 +110,10 @@ onUnmounted(() => {
     v-model:items-per-page="itemsPerPage"
     :items-length="store.totalItems"
     :items="store.list"
-    height="500"
-    fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
-    <template #top>
-      <div class="d-flex align-center">
-        <v-spacer></v-spacer>
-        <v-btn
-          :disabled="store.dialog.isShow"
-          class="text-none me-6"
-          color="primary"
-          @click="store.openDialog()"
-          >{{ $t('common.button.add') }}</v-btn
-        >
-      </div>
-    </template>
     <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton

@@ -8,10 +8,12 @@ import { adminApiService } from '../api';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
 import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const deleting = reactive<Record<string, boolean>>({});
 const adminStore = UseAdminStore();
+const { smAndDown } = useDisplay();
 
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
@@ -19,12 +21,13 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('admin.fields.id'),
       key: 'id',
       minWidth: '67',
-      fixed: true
+      sortable: false
     },
     {
       title: t('admin.fields.fullname'),
       key: 'fullname',
-      minWidth: '160'
+      minWidth: '160',
+      fixed: smAndDown.value
     },
     {
       title: t('admin.fields.username'),
@@ -35,7 +38,6 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('admin.fields.createdAt'),
       key: 'createdAt',
       minWidth: '220',
-      align: 'center',
       value: (item) => formatDate(item.createdAt)
     },
     {
@@ -43,7 +45,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       key: 'actions',
       minWidth: '160',
       sortable: false,
-      fixed: true
+      align: 'center'
     }
   ];
 });
@@ -99,23 +101,13 @@ onUnmounted(() => {
 </script>
 <template>
   <v-data-table-server
-    class="pa-4"
     v-model:items-per-page="itemsPerPage"
     :items-length="adminStore.totalItems"
     :items="adminStore.list"
-    height="500"
     :headers="headers"
     :loading="adminStore.isLoadingList"
     @update:options="loadItems"
   >
-    <template #top>
-      <div class="d-flex align-center">
-        <v-spacer></v-spacer>
-        <v-btn class="text-none me-6" color="primary" @click="() => adminStore.openDialog()">{{
-          $t('common.button.add')
-        }}</v-btn>
-      </div>
-    </template>
     <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton

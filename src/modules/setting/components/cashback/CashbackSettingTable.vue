@@ -8,23 +8,25 @@ import { cashbackSettingServiceApi } from '../../api';
 import { UseCashbackSettingStore } from '../../stores/cashback-setting.store';
 import { ICashbackSetting } from '../../type';
 import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseCashbackSettingStore();
 const deleting = reactive<Record<string, boolean>>({});
+const { smAndDown } = useDisplay();
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
       title: t('setting.cashback.fields.id'),
       key: 'id',
       minWidth: '67',
-      sortable: false,
-      fixed: true
+      sortable: false
     },
     {
       title: t('setting.cashback.fields.name'),
       key: 'name',
-      minWidth: '160'
+      minWidth: '160',
+      fixed: smAndDown.value
     },
     {
       title: t('setting.cashback.fields.percent'),
@@ -43,7 +45,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       key: 'actions',
       minWidth: '160',
       sortable: false,
-      fixed: true
+      align: 'center'
     }
   ];
 });
@@ -99,28 +101,14 @@ onUnmounted(() => {
 </script>
 <template>
   <v-data-table-server
-    class="pa-4"
     v-model:items-per-page="itemsPerPage"
     :items-length="store.totalItems"
     :items="store.list"
-    height="500"
     fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
-    <template #top>
-      <div class="d-flex align-center">
-        <v-spacer></v-spacer>
-        <v-btn
-          :disabled="store.dialog.isShow"
-          class="text-none me-6"
-          color="primary"
-          @click="store.openDialog()"
-          >{{ $t('common.button.add') }}</v-btn
-        >
-      </div>
-    </template>
     <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
       <div class="actions">
         <BActionButton

@@ -5,22 +5,25 @@ import { formatDate } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
+const { smAndDown } = useDisplay();
+
 const headers = computed<VDataTableServer['$props']['headers']>(() => {
   return [
     {
       title: t('setting.system.fields.id'),
       key: 'id',
       minWidth: '67',
-      sortable: false,
-      fixed: true
+      sortable: false
     },
     {
       title: t('setting.system.fields.label'),
       key: 'label',
-      minWidth: '120'
+      minWidth: '120',
+      fixed: smAndDown.value
     },
     {
       title: t('setting.system.fields.value'),
@@ -39,7 +42,7 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       key: 'actions',
       minWidth: '160',
       sortable: false,
-      fixed: true
+      align: 'center'
     }
   ];
 });
@@ -74,12 +77,9 @@ onUnmounted(() => {
 </script>
 <template>
   <v-data-table-server
-    class="pa-4"
     v-model:items-per-page="itemsPerPage"
     :items-length="store.totalItems"
     :items="store.list"
-    height="500"
-    fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"

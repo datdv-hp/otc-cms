@@ -5,11 +5,14 @@ export default {
     home: {
       name: 'Trang chủ'
     },
-    user: {
-      name: 'Người dùng'
-    },
-    admin: {
-      name: 'Quản trị viên'
+    management: {
+      name: 'Quản lý',
+      user: {
+        name: 'Người dùng'
+      },
+      admin: {
+        name: 'Quản trị viên'
+      }
     },
     setting: {
       name: 'Cài đặt',

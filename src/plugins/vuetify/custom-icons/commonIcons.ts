@@ -13,6 +13,8 @@ import cloudUpload from '@/assets/icons/common/cloud-upload.svg?component';
 import closeCircled from '@/assets/icons/common/close-circled.svg?component';
 import logout from '@/assets/icons/common/logout.svg?component';
 import laugh from '@/assets/icons/common/laugh.svg?component';
+import search from '@/assets/icons/common/search.svg?component';
+import add from '@/assets/icons/common/add.svg?component';
 import eyeSlash from '@/assets/icons/common/eye-slash.svg?component';
 
 export default {
@@ -31,5 +33,7 @@ export default {
   'close-circled': closeCircled,
   logout,
   laugh,
+  search,
+  add,
   'eye-slash': eyeSlash
 };
