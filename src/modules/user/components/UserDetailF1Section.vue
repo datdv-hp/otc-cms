@@ -132,7 +132,6 @@ function openCashbackConfigPopup(item: IUserListItem) {
         <v-data-table-server
           v-model:items-per-page="itemPerPage"
           :items-length="store.totalItems"
-          fixed-header
           :items="store.list"
           :headers="headers"
           :loading="loading"

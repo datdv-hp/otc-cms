@@ -104,7 +104,6 @@ onUnmounted(() => {
     v-model:items-per-page="itemsPerPage"
     :items-length="store.totalItems"
     :items="store.list"
-    fixed-header
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"
