@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import { useDisplay } from 'vuetify';
 import HeaderBar from './components/header/HeaderBar.vue';
-import SideBar from './components/sidebar/SideBar.vue';
+import SideBar from './components/navbar/SideBar.vue';
+import MobileBottomBar from './components/navbar/MobileBottomBar.vue';
+const { smAndDown } = useDisplay();
 </script>
 
 <template>
   <v-app :full-height="true">
-    <SideBar />
+    <SideBar v-if="!smAndDown" />
     <HeaderBar />
-    <v-main style="min-height: 300px">
+    <v-main height="2000">
       <div class="app-content pa-6">
         <router-view v-slot="{ Component }">
           <component :is="Component" />
         </router-view>
       </div>
     </v-main>
+    <MobileBottomBar v-if="smAndDown"> </MobileBottomBar>
   </v-app>
 </template>
 
