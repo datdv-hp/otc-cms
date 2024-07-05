@@ -36,12 +36,12 @@ const activeRouteName = ref();
       :to="{ name: item.routeName }"
       :value="item.routeName"
       :ripple="false"
-      min-width="56"
+      min-width="80"
       max-width="120"
       align="center"
     >
-      <span v-if="isActiveRoute(item.routeName)"> {{ item.title }}</span>
-      <v-icon v-else :icon="item.icon"></v-icon>
+      <span v-show="isActiveRoute(item.routeName)"> {{ item.title }}</span>
+      <v-icon v-show="!isActiveRoute(item.routeName)" :icon="item.icon"></v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -49,7 +49,6 @@ const activeRouteName = ref();
 :deep(.v-btn--active) {
   position: relative;
   font-weight: 600 !important;
-  font-size: 13px !important;
   > ::before {
     position: absolute;
     content: '';

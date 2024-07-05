@@ -19,20 +19,32 @@ function search() {
 </script>
 <template>
   <div class="filter-wrapper">
-    <v-text-field
-      class="search flex-1-0"
-      v-model="keyword"
-      hide-details
-      max-width="400"
-      min-width="250"
-      :placeholder="$t('common.button.search')"
-      variant="solo"
-      :disabled="loading"
-      density="compact"
-      color="primary"
-      prepend-inner-icon="$common.search"
-      @keydown.enter="search"
-    />
+    <div class="search__wrapper">
+      <v-text-field
+        class="search"
+        v-model="keyword"
+        hide-details
+        max-width="400"
+        min-width="250"
+        :placeholder="$t('common.button.search')"
+        variant="solo"
+        :disabled="loading"
+        density="compact"
+        color="primary"
+        prepend-inner-icon="$common.search"
+        @keydown.enter="search"
+      />
+      <v-btn
+        icon="$common.search"
+        rounded="lg"
+        color="neutral"
+        variant="outlined"
+        height="44"
+        width="44"
+        min-height="44"
+        @click="search"
+      ></v-btn>
+    </div>
     <div class="append">
       <slot name="append"></slot>
     </div>
@@ -41,18 +53,22 @@ function search() {
 <style lang="scss" scoped>
 .filter-wrapper {
   padding: 12px;
-  gap: 8px;
+  gap: 12px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.search {
-  :deep(.v-field) {
-    border-radius: 12px;
+.search__wrapper {
+  display: flex;
+  gap: 12px;
+  .search {
+    :deep(.v-field) {
+      border-radius: 12px;
+    }
   }
-}
-:deep(.v-field--variant-solo) {
-  background: $color-neutral-6;
+  :deep(.v-field--variant-solo) {
+    background: $color-neutral-6;
+  }
 }
 </style>
