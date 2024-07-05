@@ -3,7 +3,7 @@ import { useWindowScroll, watchThrottled } from '@vueuse/core';
 import { initMobileBottomBar } from '../util';
 import { PageName } from '@/common/constants/common.constant';
 
-const { x, y } = useWindowScroll();
+const { y } = useWindowScroll();
 const showBottomBar = ref(true);
 
 watchThrottled(
