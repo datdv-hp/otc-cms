@@ -1,4 +1,5 @@
 import { formatCurrenCy, formatDate } from '@/common/helper';
+import { IRequestUpdateUserRefundFormDTO } from './dto/request.user-dto';
 import {
   IResponseF1UserListItemDTO,
   IResponseUserDetailDTO,
@@ -14,7 +15,6 @@ import {
   IUserRefundItemInForm,
   IUserTransaction
 } from './type';
-import { IRequestUpdateUserRefundFormDTO } from './dto/request.user-dto';
 
 export const toUserListItem = (params: IResponseUserListItemDTO): IUserListItem => {
   return {
@@ -70,12 +70,12 @@ export const toUserTransaction = (params: IResponseUserTransactionDTO): IUserTra
     id: params.id,
     userId: params.user_id,
     chainType: params.chain_type,
-    fee: params.fee,
-    tip: params.tip,
+    fee: formatCurrenCy(params.fee),
+    tip: formatCurrenCy(params.tip),
     tokenAddress: params.token_address,
     type: params.type,
-    volumn: params.volumn,
-    createdAt: params.created_at
+    volumn: formatCurrenCy(params.volumn),
+    createdAt: formatDate(params.created_at)
   };
 };
 

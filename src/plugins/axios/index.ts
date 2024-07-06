@@ -103,7 +103,7 @@ axiosInstance.interceptors.response.use(
           success: false
         });
       }
-
+      Object.assign(error.response.data, { status: errorResponse.status });
       return error.response.data as IBodyResponse<unknown>;
     }
     if (error.request) {

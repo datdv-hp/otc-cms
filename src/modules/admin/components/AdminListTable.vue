@@ -8,6 +8,7 @@ import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { adminApiService } from '../api';
 import { UseAdminStore } from '../store';
 import { IAdmin } from '../type';
+import MPagination from '@/components/molecules/MPagination.vue';
 
 const { t } = useI18n();
 const deleting = reactive<Record<string, boolean>>({});
@@ -101,6 +102,7 @@ onUnmounted(() => {
     v-model:items-per-page="itemsPerPage"
     :items-length="adminStore.totalItems"
     :items="adminStore.list"
+    :page="adminStore.queryParams.page"
     :headers="headers"
     :loading="adminStore.isLoadingList"
     @update:options="loadItems"
@@ -125,12 +127,16 @@ onUnmounted(() => {
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
     </template>
+    <template #bottom="{ pageCount }">
+      <v-divider></v-divider>
+      <MPagination
+        v-model:item-per-page="adminStore.queryParams.per_page"
+        v-model:page="adminStore.queryParams.page"
+        :total-pages="pageCount"
+        :disabled="adminStore.isLoadingList"
+        :loading="adminStore.isLoadingList"
+      ></MPagination>
+    </template>
   </v-data-table-server>
 </template>
-<style lang="scss" scoped>
-.create-form {
-  :deep(.v-field__input) {
-    padding-top: 0;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

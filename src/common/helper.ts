@@ -69,7 +69,7 @@ export function formatDate(
 }
 
 export function formatCurrenCy(value: number, params?: { lang?: string; currency?: string }) {
-  const { lang = navigator.languages?.[0] || 'en-US', currency = 'SOL' } = params || {};
+  const { lang = 'vi-VI', currency = 'SOL' } = params || {};
   return Intl.NumberFormat(lang, {
     style: 'currency',
     currency,

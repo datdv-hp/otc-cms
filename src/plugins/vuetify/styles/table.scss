@@ -1,5 +1,5 @@
 .v-data-table__tbody {
-  tr:nth-of-type(2n + 1) td {
-    background-color: $color-neutral-9;
+  tr:nth-of-type(2n) td {
+    background-color: $color-neutral-6;
   }
 }

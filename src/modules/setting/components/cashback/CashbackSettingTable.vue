@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, SortDirection } from '@/common/constants/common.constant';
 import { formatDate, notifyError, notifySuccess } from '@/common/helper';
+import MPagination from '@/components/molecules/MPagination.vue';
 import { showDialogConfirm } from '@/plugins/vuetify/dialog-confirm/util';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
@@ -100,6 +101,7 @@ onUnmounted(() => {
     v-model:items-per-page="itemsPerPage"
     :items-length="store.totalItems"
     :items="store.list"
+    :page="store.queryParams.page"
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"
@@ -123,6 +125,16 @@ onUnmounted(() => {
     </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
+    </template>
+    <template #bottom="{ pageCount }">
+      <v-divider></v-divider>
+      <MPagination
+        v-model:item-per-page="store.queryParams.per_page"
+        v-model:page="store.queryParams.page"
+        :total-pages="pageCount"
+        :disabled="store.isLoadingList"
+        :loading="store.isLoadingList"
+      ></MPagination>
     </template>
   </v-data-table-server>
 </template>

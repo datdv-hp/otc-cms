@@ -26,14 +26,20 @@ export default {
     slippageSnip: 'Slippage snip',
     buyCustom: 'Buy custom',
     sellCustom: 'Sell custom',
-    antimev: 'Antimev'
+    antimev: 'Antimev',
+    transactionFee: 'Phí',
+    transactionVolumn: 'Khối lượng',
+    transactionChainType: 'Chain type',
+    transactionType: 'Loại giao dịch',
+    transactionTokenAddress: 'Token address',
+    transactionDateAt: 'Thời gian'
   },
   status: {
     [UserStatus.ACTIVE]: 'Đang hoạt động',
     [UserStatus.INACTIVE]: 'Ngừng hoạt động'
   },
   chainType: {
-    [ChainType.ETHEREUM]: 'Ethereum',
+    [ChainType.ETHEREUM]: 'Ethereum Solana',
     [ChainType.SOLANA]: 'Solana'
   },
   action: {
@@ -50,7 +56,8 @@ export default {
     detail: 'Chi tiết',
     ban: 'Vô hiệu hóa',
     unban: 'Kích hoạt',
-    configCashback: 'Cấu hình hoàn tiền'
+    configCashback: 'Cấu hình hoàn tiền',
+    transactionDetail: 'Lịch sử giao dịch'
   },
   success: {
     ban: 'Vô hiệu hóa người dùng thành công',

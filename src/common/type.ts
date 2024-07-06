@@ -13,6 +13,7 @@ export type IResponseError<T = any> = {
 };
 
 export type IBodyResponse<T> = {
+  status: HttpStatus;
   success: boolean;
   message: string;
   data: Prettify<T>;

@@ -8,6 +8,7 @@ import { authApiService } from '../api';
 import { SignInSchema } from '../constant';
 import { UseAuthStore } from '../store';
 import { ISignInBody } from '../types';
+import HttpStatus from '@/common/constants/http.constant';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -19,7 +20,7 @@ const { meta, errors, handleSubmit, isSubmitting, isValidating } = useForm<ISign
   validationSchema: SignInSchema
 });
 const { value: username } = useField<string>('username');
-const { value: password } = useField<string>('password');
+const { value: password, setErrors } = useField<string>('password');
 const { value: remember } = useField<boolean>('remember');
 
 function redirectIfNeed() {
@@ -43,6 +44,12 @@ const signIn = handleSubmit(async (values) => {
     const profile = await fetchProfile();
     if (profile?.success) {
       notifySuccess(t('auth.success.signIn'));
+    }
+  } else {
+    if (res.status === HttpStatus.UNAUTHORIZED) {
+      setErrors(t('auth.error.invalidCredentials'));
+    } else {
+      notifyError(t('common.error.somethingWrong'));
     }
   }
 });

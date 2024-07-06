@@ -15,6 +15,10 @@ import logout from '@/assets/icons/common/logout.svg?component';
 import laugh from '@/assets/icons/common/laugh.svg?component';
 import search from '@/assets/icons/common/search.svg?component';
 import add from '@/assets/icons/common/add.svg?component';
+import arrowDown from '@/assets/icons/common/arrow-down.svg?component';
+import arrowLeft from '@/assets/icons/common/arrow-left.svg?component';
+import arrowRight from '@/assets/icons/common/arrow-right.svg?component';
+import transaction from '@/assets/icons/common/transaction.svg?component';
 import eyeSlash from '@/assets/icons/common/eye-slash.svg?component';
 
 export default {
@@ -35,5 +39,9 @@ export default {
   laugh,
   search,
   add,
-  'eye-slash': eyeSlash
+  'eye-slash': eyeSlash,
+  transaction,
+  'arrow-down': arrowDown,
+  'arrow-left': arrowLeft,
+  'arrow-right': arrowRight
 };

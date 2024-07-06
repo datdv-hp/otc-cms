@@ -43,6 +43,24 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
   function setTransactionLastPage(value: number) {
     transactionLastPage.value = value;
   }
+  function setTransactionLoading(value: boolean) {
+    isLoadingTransactions.value = value;
+  }
+
+  async function getUserTransactions(
+    userId: number | string,
+    query = transactionQueryParams.value
+  ) {
+    setTransactionLoading(true);
+    const res = await userApiService.getTransactionList(userId, query);
+    setTransactionLoading(false);
+    if (res.success) {
+      setTransactions(toUserTransactionList(res.data.data));
+      setTotalTransactions(res.data.total);
+      setTransactionLastPage(res.data.last_page);
+    }
+    return res;
+  }
   /** transactions end */
 
   /** User refund */
@@ -113,14 +131,6 @@ export const UseUserStore = defineStore(STORE_NAME, () => {
     const res = await userApiService.getUser(id);
     if (res.success) {
       setDetail(toUserDetail(res.data));
-    }
-    return res;
-  }
-
-  async function getUserTransactions(userId: number, query = transactionQueryParams.value) {
-    const res = await userApiService.getTransactionList(userId, query);
-    if (res.success) {
-      setTransactions(toUserTransactionList(res.data.data));
     }
     return res;
   }

@@ -2,6 +2,7 @@
 <script lang="ts" setup>
 import { DEFAULT_PER_PAGE, PageName, SortDirection } from '@/common/constants/common.constant';
 import { notifyError, notifySuccess } from '@/common/helper';
+import MPagination from '@/components/molecules/MPagination.vue';
 import { StatusColor } from '@/modules/admin/constant';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
@@ -9,7 +10,6 @@ import { userApiService } from '../api';
 import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
-import UserRefundUpdateDialog from './UserRefundUpdateDialog.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -40,25 +40,24 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
     {
       title: t('user.fields.lastTransactionAt'),
       key: 'lastTransactionAt',
-      minWidth: '180',
+      minWidth: '120',
       sortable: false
     },
     {
       title: t('user.fields.lastClaimAt'),
       key: 'lastClaimAt',
-      minWidth: '180',
+      minWidth: '120',
       sortable: false
     },
     {
       title: t('user.fields.f1Count'),
       key: 'f1Count',
-      minWidth: '100',
+      minWidth: '110',
       sortable: false
     },
     {
       title: t('user.fields.status'),
       key: 'status',
-      minWidth: '160',
       align: 'center',
       sortable: false
     },
@@ -145,10 +144,10 @@ defineExpose({
 </script>
 <template>
   <v-data-table-server
-    v-model:items-per-page="itemPerPage"
+    :items-per-page="itemPerPage"
     :items-length="store.totalItems"
-    fixed-header
     :items="store.list"
+    :page="store.queryParams.page"
     :headers="headers"
     :loading="store.isLoadingList"
     @update:options="loadItems"
@@ -160,9 +159,12 @@ defineExpose({
       <span>{{ index + 1 }}</span>
     </template>
     <template v-slot:[`item.telegramUsername`]="{ item }">
-      <a class="username" :href="`https://t.me/${item.telegramUsername}`" target="_blank">{{
-        item.telegramUsername
-      }}</a>
+      <a
+        class="link-text-highlight"
+        :href="`https://t.me/${item.telegramUsername}`"
+        target="_blank"
+        >{{ item.telegramUsername }}</a
+      >
     </template>
     <template v-slot:[`item.status`]="{ item }">
       <v-chip
@@ -194,21 +196,16 @@ defineExpose({
         />
       </div>
     </template>
+    <template #bottom="{ pageCount }">
+      <v-divider></v-divider>
+      <MPagination
+        v-model:item-per-page="store.queryParams.per_page"
+        v-model:page="store.queryParams.page"
+        :total-pages="pageCount"
+        :disabled="store.isLoadingList"
+        :loading="store.isLoadingList"
+      ></MPagination>
+    </template>
   </v-data-table-server>
-  <UserRefundUpdateDialog v-if="store.refundDialog.isShow" />
 </template>
-<style lang="scss" scoped>
-:deep(.v-table) {
-  min-height: 300px;
-}
-.username {
-  text-decoration: none;
-  color: rgb(var(--v-theme-primary));
-  font-weight: bold;
-  transition: font-size 0.1s linear;
-  &:hover {
-    font-size: 1.02em;
-    text-decoration: underline;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

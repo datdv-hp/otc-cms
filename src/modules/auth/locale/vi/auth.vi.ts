@@ -13,7 +13,8 @@ export default {
     password: '············'
   },
   error: {
-    profile: 'Thông tin người dùng không hợp lệ'
+    profile: 'Thông tin người dùng không hợp lệ',
+    invalidCredentials: 'Tên đăng nhập hoặc mật khẩu không hợp lệ'
   },
   success: {
     signIn: 'Đăng nhập thành công'

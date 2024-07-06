@@ -54,11 +54,11 @@ export type IUserRefundItemInForm = {
 export type IUserTransaction = {
   id: number;
   userId: number;
-  fee: number;
-  volumn: number;
+  fee: number | string;
+  volumn: number | string;
   chainType: ChainType;
   tokenAddress: string;
-  tip: number;
+  tip: number | string;
   type: UserTransactionType;
-  createdAt: Date;
+  createdAt: Date | string;
 };

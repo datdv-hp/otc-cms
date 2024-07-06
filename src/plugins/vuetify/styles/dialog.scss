@@ -1,0 +1,17 @@
+.v-dialog {
+  .v-overlay__content {
+    > .v-card {
+      border-radius: 12px;
+      > .v-card-item {
+        font-size: 1.5em;
+      }
+    }
+  }
+  .v-card-actions {
+    .v-btn {
+      border-radius: 8px;
+      font-size: 15px;
+      text-transform: none;
+    }
+  }
+}

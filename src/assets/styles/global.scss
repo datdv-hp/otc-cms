@@ -149,7 +149,12 @@ body {
   font-size: 1.2em;
 }
 
-.table-text-highlight {
+.link-text-highlight {
   color: $color-primary-6;
   font-weight: 500;
+  text-decoration: none;
+  transition: font-size 0.1s linear;
+  &:hover {
+    text-decoration: underline;
+  }
 }

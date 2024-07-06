@@ -48,3 +48,5 @@ export const DEFAULT_PER_PAGE = 10;
 export const Regex = {
   USERNAME: /^[a-zA-Z0-9_.-@]+$/
 };
+
+export const MIN_DISPLAY_WIDTH = 425;

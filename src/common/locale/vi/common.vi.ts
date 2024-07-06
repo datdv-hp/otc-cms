@@ -10,6 +10,9 @@ export default {
     search: 'Tìm kiếm',
     chooseImage: 'Chọn ảnh'
   },
+  pagination: {
+    show: 'Hiển thị'
+  },
   error: {
     somethingWrong: 'Có lỗi xảy ra, vui lòng thử lại sau'
   },

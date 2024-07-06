@@ -5,6 +5,7 @@ import { formatDate } from '@/common/helper';
 import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
+import MPagination from '@/components/molecules/MPagination.vue';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
@@ -78,6 +79,7 @@ onUnmounted(() => {
     :items-length="store.totalItems"
     :items="store.list"
     :headers="headers"
+    :page="store.queryParams.page"
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
@@ -93,6 +95,16 @@ onUnmounted(() => {
     </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>
+    </template>
+    <template #bottom="{ pageCount }">
+      <v-divider></v-divider>
+      <MPagination
+        v-model:item-per-page="store.queryParams.per_page"
+        v-model:page="store.queryParams.page"
+        :total-pages="pageCount"
+        :disabled="store.isLoadingList"
+        :loading="store.isLoadingList"
+      ></MPagination>
     </template>
   </v-data-table-server>
 </template>

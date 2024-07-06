@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import LogoImage from '@/assets/images/logo.png';
 import { UseAppStore } from '@/common/app.store';
-import { useDisplay } from 'vuetify';
 import { initSidebar } from '../util';
 
-const { smAndUp } = useDisplay();
 const appStore = UseAppStore();
 
 const isOpen = computed({
@@ -20,28 +18,23 @@ function hideSidebar() {
 }
 
 onMounted(() => {
-  if (smAndUp.value) {
-    isOpen.value = true;
-  } else {
-    isOpen.value = false;
-  }
+  isOpen.value = !appStore.isTemporarySidebar;
 });
 </script>
 <template>
   <v-navigation-drawer
     v-model="isOpen"
     class="pa-0"
-    :temporary="!smAndUp"
-    :permanent="smAndUp"
+    :temporary="appStore.isTemporarySidebar"
+    :permanent="!appStore.isTemporarySidebar"
     width="280"
     :scrim="false"
     flat
   >
     <div class="logo-wrapper">
       <img :src="LogoImage" width="44" height="44" />
-      <span class="logo-text">OTC</span>
       <v-spacer />
-      <v-icon icon="$common.close" @click="hideSidebar"></v-icon>
+      <v-icon v-if="appStore.isTemporarySidebar" icon="$common.close" @click="hideSidebar" />
     </div>
     <v-list class="pa-0" nav>
       <template v-for="(item, _) in sidebar" :key="_">

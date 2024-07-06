@@ -4,15 +4,15 @@ import { notifyError, notifySuccess } from '@/common/helper';
 import { StatusColor } from '@/modules/admin/constant';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { userApiService } from '../api';
-import { UserDetailSection, UserStatus } from '../constant';
+import { UserStatus } from '../constant';
 import { UseUserStore } from '../store';
 import { IUserListItem } from '../type';
+import MPagination from '@/components/molecules/MPagination.vue';
 
 const { t } = useI18n();
 const loading = shallowRef(false);
 const store = UseUserStore();
 const router = useRouter();
-const open = shallowRef(UserDetailSection.F1);
 const submittingStatus = reactive<Record<string, boolean>>({});
 const route = useRoute();
 
@@ -115,97 +115,95 @@ async function changeStatus(item: IUserListItem, index: number) {
 }
 
 function openCashbackConfigPopup(item: IUserListItem) {
-  // TODO: Open cashback config popup
-  console.log(item);
+  store.openRefundDialog(item.id as number);
 }
 </script>
 <template>
-  <v-expansion-panels v-model="open" :elevation="1">
-    <v-expansion-panel :value="UserDetailSection.F1">
-      <template #title>
-        <span class="section-title">
-          {{ t('user.section.f1Title') }}
-        </span>
-      </template>
-      <template #text>
-        <v-data-table-server
-          v-model:items-per-page="itemPerPage"
-          :items-length="store.totalItems"
-          :items="store.list"
-          :headers="headers"
-          :loading="loading"
-          @update:options="loadItems"
-        >
-          <template v-slot:loading>
-            <v-skeleton-loader :type="`table-row@${itemPerPage}`"></v-skeleton-loader>
-          </template>
-          <template v-slot:[`item.index`]="{ index }">
-            <span>{{ index + 1 }}</span>
-          </template>
-          <template v-slot:[`item.telegramUsername`]="{ item }">
-            <a class="username" :href="`https://t.me/${item.telegramUsername}`" target="_blank">{{
-              item.telegramUsername
-            }}</a>
-          </template>
-          <template v-slot:[`item.status`]="{ item }">
-            <v-chip
-              density="compact"
-              :color="StatusColor[item.status]"
-              :text="t(`admin.status.${item.status}`)"
-            ></v-chip>
-          </template>
-          <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
-            <div class="actions">
-              <BActionButton
-                icon="$common.open"
-                :tooltip="$t('user.tooltip.detail')"
-                color="neutral"
-                @click="toDetail(item)"
-              />
-              <BActionButton
-                :icon="actions[item.status].icon"
-                :tooltip="actions[item.status].tooltip"
-                color="neutral"
-                :loading="submittingStatus[`${actionIndex}`]"
-                @click="changeStatus(item, actionIndex)"
-              />
-              <BActionButton
-                icon="$common.tune"
-                :tooltip="$t('user.tooltip.configCashback')"
-                color="neutral"
-                @click="openCashbackConfigPopup(item)"
-              />
-            </div>
-          </template>
-        </v-data-table-server>
-      </template>
-    </v-expansion-panel>
-  </v-expansion-panels>
+  <v-card class="pa-2">
+    <v-card-title>
+      <span class="section-title">
+        {{ t('user.section.f1Title') }}
+      </span>
+    </v-card-title>
+    <v-divider class="mt-2 mb-4" />
+    <v-card-text class="table-wrapper">
+      <v-data-table-server
+        v-model:items-per-page="itemPerPage"
+        :items-length="store.totalItems"
+        :items="store.list"
+        :page="store.queryParams.page"
+        :headers="headers"
+        :loading="loading"
+        @update:options="loadItems"
+      >
+        <template v-slot:loading>
+          <v-skeleton-loader :type="`table-row@${itemPerPage}`"></v-skeleton-loader>
+        </template>
+        <template v-slot:[`item.index`]="{ index }">
+          <span>{{ index + 1 }}</span>
+        </template>
+        <template v-slot:[`item.telegramUsername`]="{ item }">
+          <a
+            class="link-text-highlight"
+            :href="`https://t.me/${item.telegramUsername}`"
+            target="_blank"
+            >{{ item.telegramUsername }}</a
+          >
+        </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-chip
+            density="compact"
+            :color="StatusColor[item.status]"
+            :text="t(`admin.status.${item.status}`)"
+          ></v-chip>
+        </template>
+        <template v-slot:[`item.actions`]="{ item, index: actionIndex }">
+          <div class="actions">
+            <BActionButton
+              icon="$common.open"
+              :tooltip="$t('user.tooltip.detail')"
+              color="neutral"
+              @click="toDetail(item)"
+            />
+            <BActionButton
+              :icon="actions[item.status].icon"
+              :tooltip="actions[item.status].tooltip"
+              color="neutral"
+              :loading="submittingStatus[`${actionIndex}`]"
+              @click="changeStatus(item, actionIndex)"
+            />
+            <BActionButton
+              icon="$common.tune"
+              :tooltip="$t('user.tooltip.configCashback')"
+              color="neutral"
+              @click="openCashbackConfigPopup(item)"
+            />
+          </div>
+        </template>
+        <template #bottom="{ pageCount }">
+          <v-divider></v-divider>
+          <MPagination
+            v-model:item-per-page="store.queryParams.per_page"
+            v-model:page="store.queryParams.page"
+            :total-pages="pageCount"
+            :disabled="store.isLoadingList"
+            :loading="store.isLoadingList"
+          ></MPagination>
+        </template>
+      </v-data-table-server>
+    </v-card-text>
+  </v-card>
 </template>
 <style lang="scss" scoped>
-:deep(.v-expansion-panel-title) {
-  transition: border-bottom-color 0.3s ease;
-  border-bottom: 1px solid transparent;
-  &.v-expansion-panel-title--active {
-    border-bottom-color: rgba(var(--v-theme-on-surface));
-  }
-}
-:deep(.v-expansion-panel-text__wrapper) {
-  padding: 1.5rem;
-}
 .section-title {
-  font-size: 1.3rem;
+  font-size: 1.3em;
   font-weight: 600;
 }
 
-.username {
-  text-decoration: none;
-  color: rgb(var(--v-theme-primary));
-  font-weight: bold;
-  transition: font-size 0.1s linear;
-  &:hover {
-    font-size: 1.02em;
-    text-decoration: underline;
-  }
+.table-wrapper {
+  // border: 1px solid $color-neutral-6;
+  // border-radius: 8px;
+  padding: 0;
+  // margin: 20px 12px 12px 12px;
 }
 </style>

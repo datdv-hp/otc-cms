@@ -9,7 +9,6 @@ const showBottomBar = ref(true);
 watchThrottled(
   y,
   (value, oldValue) => {
-    console.log(value, oldValue);
     showBottomBar.value = !(value > oldValue + 3);
   },
   { throttle: 600, trailing: false }
@@ -36,8 +35,8 @@ const activeRouteName = ref();
       :to="{ name: item.routeName }"
       :value="item.routeName"
       :ripple="false"
-      min-width="80"
-      max-width="120"
+      min-width="60"
+      max-width="110"
       align="center"
     >
       <span v-show="isActiveRoute(item.routeName)"> {{ item.title }}</span>
