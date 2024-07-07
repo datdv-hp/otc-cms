@@ -55,8 +55,8 @@ export const FontSize = Extension.create<FontSizeOptions>({
 
             editor.chain()?.setFontSize(String(size))?.focus()?.run();
           },
-          divider: size === DEFAULT_FONT_SIZE_VALUE ?? false,
-          default: size === DEFAULT_FONT_SIZE_VALUE ?? false
+          divider: size === DEFAULT_FONT_SIZE_VALUE || false,
+          default: size === DEFAULT_FONT_SIZE_VALUE || false
         }));
 
         return {
