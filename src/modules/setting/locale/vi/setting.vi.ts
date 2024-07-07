@@ -104,11 +104,10 @@ export default {
       update: 'Cập nhật cấu hình hệ thống không thành công'
     },
     settingType: {
-      [SystemSettingType.BOOLEAN]: 'Boolean',
       [SystemSettingType.DATE]: 'Date',
       [SystemSettingType.FILE]: 'File',
       [SystemSettingType.NUMBER]: 'Number',
-      [SystemSettingType.RICHTEXT]: 'Richtext',
+      [SystemSettingType.EDITOR]: 'Richtext',
       [SystemSettingType.TEXT]: 'Text',
       [SystemSettingType.TEXTAREA]: 'Textarea'
     }

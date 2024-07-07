@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import MSearchBar from '@/components/molecules/MSearchBar.vue';
 import { UseAwardSettingStore } from '../../stores/award-setting.store';
+import { UseAppStore } from '@/common/app.store';
 
 const store = UseAwardSettingStore();
+const appStore = UseAppStore();
 const filter = ref({
   keyword: ''
 });
@@ -16,15 +18,36 @@ function search() {
 <template>
   <MSearchBar @search="search" v-model:keyword="filter.keyword" :loading="store.isLoadingList">
     <template #append>
-      <v-btn
-        class="text-none"
-        prepend-icon="$common.add"
-        color="primary"
-        variant="flat"
-        @click="() => store.openDialog()"
-        >{{ $t('common.button.add') }}</v-btn
-      >
+      <div class="append__wrapper">
+        <v-spacer></v-spacer>
+        <v-btn
+          v-if="appStore.isMinDisplayWidth"
+          icon="$common.add"
+          density="comfortable"
+          rounded="lg"
+          color="primary"
+          variant="flat"
+          @click="store.openDialog()"
+        ></v-btn>
+        <v-btn
+          v-else
+          class="text-none"
+          prepend-icon="$common.add"
+          color="primary"
+          variant="flat"
+          rounded="lg"
+          @click="store.openDialog()"
+          >{{ $t('common.button.add') }}</v-btn
+        >
+      </div>
     </template>
   </MSearchBar>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.append__wrapper {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+</style>

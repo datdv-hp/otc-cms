@@ -72,7 +72,6 @@ const toolbar = computed(() => {
 <template>
   <v-toolbar
     v-bind="$attrs"
-    color="white"
     density="compact"
     flat
     height="auto"

@@ -14,6 +14,7 @@ import fieldsEn from '../yup/locale/en/fields.en';
 import yupEn from '../yup/locale/en/yup.en';
 import fieldsVi from '../yup/locale/vi/fields.vi';
 import yupVi from '../yup/locale/vi/yup.vi';
+import { tiptapEditorLocale } from '@/components/tiptap-editor/locale';
 
 const messages = {
   en: {
@@ -24,7 +25,8 @@ const messages = {
     fields: fieldsEn,
     common: commonEn,
     auth: authEn,
-    setting: settingEn
+    setting: settingEn,
+    tiptapEditor: tiptapEditorLocale.en
   },
   vi: {
     app: appVi,
@@ -34,7 +36,8 @@ const messages = {
     fields: fieldsVi,
     common: commonVi,
     auth: authVi,
-    setting: settingVi
+    setting: settingVi,
+    tiptapEditor: tiptapEditorLocale.vi
   }
 };
 export default messages;

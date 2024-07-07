@@ -20,8 +20,6 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'large'
 });
 
-// Defining emits
-// for closing a notification
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
@@ -67,90 +65,71 @@ const close = () => {
 </template>
 
 <style lang="scss" scoped>
-// .toast-wrapper {
-//   cursor: pointer;
-//   max-width: 456px;
-//   position: relative;
-//   background: white;
-//   // box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.08), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-//   //     0 1px 5px 0 rgba(0, 0, 0, 0.12);
-//   transition: all 0.2s ease-in-out;
-//   border-radius: 4px;
-// }
+.toast-wrapper {
+  cursor: pointer;
+  max-width: 456px;
+  position: relative;
+  box-shadow:
+    0 3px 1px -2px rgba(0, 0, 0, 0.08),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+}
 
-// :deep(.v-alert) {
-//   border: 1px solid transparent;
-//   padding: 12px 16px;
-//   .v-alert__prepend {
-//     margin-top: 3px;
-//     margin-right: 10px;
-//   }
-//   .v-alert__close {
-//     margin-left: 14px;
-//     margin-top: 4px;
-//     color: $color-neutral-5;
+:deep(.v-alert) {
+  border: 1px solid transparent;
+  padding: 12px 16px;
+  .v-alert__prepend {
+    margin-top: 3px;
+    margin-right: 10px;
+  }
+  .v-alert__close {
+    margin-left: 14px;
+    margin-top: 4px;
 
-//     .v-btn__overlay,
-//     .v-btn__underlay {
-//       display: none;
-//     }
-//     .v-btn {
-//       font-size: 12px;
-//       display: block;
-//       width: 18px;
-//       height: 18px;
-//     }
-//   }
-// }
+    .v-btn__overlay,
+    .v-btn__underlay {
+      display: none;
+    }
+    .v-btn {
+      font-size: 12px;
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
 
-// :deep(.bg-success) {
-//   border-color: $color-state-success;
-//   background-color: rgba(241, 255, 244, 1) !important;
-//   .v-alert__prepend {
-//     color: $color-state-success;
-//   }
-// }
+:deep(.bg-success) {
+  background-color: $color-primary-1 !important;
+}
 
-// :deep(.bg-info) {
-//   border-color: $color-state-info;
-//   background-color: rgba(243, 247, 254, 1) !important;
+:deep(.bg-info) {
+  background-color: $color-primary-6 !important;
+}
 
-//   .v-alert__prepend {
-//     color: $color-state-info;
-//   }
-// }
+:deep(.bg-warning) {
+  background-color: $color-primary-5 !important;
+}
 
-// :deep(.bg-warning) {
-//   border-color: $color-state-warning;
-//   background-color: rgba(255, 251, 241, 1) !important;
-//   .v-alert__prepend {
-//     color: $color-state-warning;
-//   }
-// }
+:deep(.bg-error) {
+  background-color: $color-primary-3 !important;
+}
 
-// :deep(.bg-error) {
-//   border-color: $color-state-error;
-//   background-color: rgba(255, 245, 245, 1) !important;
-//   .v-alert__prepend {
-//     color: $color-state-error;
-//   }
-// }
+.alert-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: left;
+}
 
-// .alert-title {
-//   color: $color-text-black;
-//   font-size: 18px;
-//   font-weight: 600;
-//   line-height: 28px;
-//   letter-spacing: 0em;
-//   text-align: left;
-// }
-
-// .alert-text {
-//   color: $color-text-black;
-//   font-size: 16px;
-//   font-weight: 400;
-//   line-height: 24px;
-//   letter-spacing: 0em;
-//   text-align: left;
-// }
+.alert-text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+}
 </style>

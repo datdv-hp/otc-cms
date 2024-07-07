@@ -8,15 +8,19 @@ type Props = {
   width?: number | string;
   cover?: boolean;
   aspectRatio?: string;
+  chooseText?: string;
+  accept?: string;
 };
 const { t } = useI18n();
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '200%',
-  cover: true
+  cover: true,
+  accept: '*'
 });
+const accept = computed(() => props.accept);
 const imgSrc = defineModel<string | null>();
-const { onChange, open: openChooseIconFileDialog, reset } = useFileDialog();
+const { onChange, open: openChooseIconFileDialog, reset } = useFileDialog({ accept: accept.value });
 
 onChange((files) => {
   fileToBase64(files?.[0]).then((src) => {
@@ -81,7 +85,7 @@ onUnmounted(() => {
             color="secondary"
             @click.stop="openChooseIconFileDialog"
           >
-            {{ t('common.button.chooseImage') }}
+            {{ chooseText || t('common.button.chooseImage') }}
           </v-btn>
         </div>
       </div>

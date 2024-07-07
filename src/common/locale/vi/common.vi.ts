@@ -8,7 +8,8 @@ export default {
     delete: 'Xóa',
     edit: 'Chỉnh sửa',
     search: 'Tìm kiếm',
-    chooseImage: 'Chọn ảnh'
+    chooseImage: 'Chọn ảnh',
+    chooseFile: 'Chọn tệp'
   },
   pagination: {
     show: 'Hiển thị'

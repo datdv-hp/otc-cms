@@ -18,15 +18,15 @@ defineProps<Props>();
 <style lang="scss" scoped>
 .item__wrapper {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
   .item__title {
-    flex-basis: 200px !important;
+    flex-basis: 160px !important;
     opacity: 0.9;
   }
   .item__value {
-    font-size: 1.2em;
+    font-size: 1.25em;
     flex-basis: 200px;
     font-weight: 600;
   }

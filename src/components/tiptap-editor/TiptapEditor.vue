@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateYupError } from '@/common/helper';
 import { AnyExtension, EditorContent, useEditor, type Content } from '@tiptap/vue-3';
 import { useDebounceFn } from '@vueuse/core';
 import Dompurify from 'isomorphic-dompurify';
@@ -55,7 +56,6 @@ const emits = defineEmits<IEmits>();
 
 const props = withDefaults(defineProps<Props>(), {
   editable: true,
-  bgColor: '#fff',
   maxLength: 10000,
   counter: true,
   hideToolbar: false,
@@ -164,31 +164,43 @@ defineExpose({
       <div v-if="editor && !hideToolbar" class="toolbar">
         <TiptapToolbar :editor="editor" />
       </div>
-      <div class="wrapper-content" :style="{ backgroundColor: 'white' }">
+      <div class="wrapper-content">
         <editor-content :style="{ backgroundColor: bgColor }" :editor="editor" />
       </div>
       <div v-if="maxLength && counter" class="counter">
         {{ editor?.storage?.characterCount?.characters() }} / {{ maxLength }}
       </div>
     </div>
-    <!-- <InputStatus :is-show="!!errorMessage" :message="errorMessage || ''" type="error" /> -->
+    <span class="error-message" v-if="!!errorMessage">
+      {{ translateYupError(errorMessage || '') }}
+    </span>
   </div>
 </template>
 <style lang="scss" scoped>
 .mark-required {
-  color: $color-red;
+  color: $color-primary-3;
 }
 
 .editor-wrapper {
   border-radius: 8px;
   outline: 1px solid $color-neutral-6;
   position: relative;
+  transition: outline 0.15s linear;
   .wrapper-content {
     font-family: sans-serif;
   }
 
   &.error {
-    outline: 1px solid $color-state-error;
+    outline: 1px solid $color-primary-3;
+  }
+
+  .error-message {
+    margin-inline-start: 8px;
+    color: $color-primary-1;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
   }
 
   &:hover:not(.error) {
@@ -200,7 +212,7 @@ defineExpose({
     font-size: 12px;
     text-align: right;
     position: absolute;
-    color: $color-neutral-5;
+    color: $color-neutral-4;
     bottom: 2px;
     right: 16px;
   }
@@ -212,6 +224,9 @@ defineExpose({
   gap: 8px;
   padding: 4px;
   border-bottom: 1px solid $color-neutral-6;
+  :deep(.v-toolbar) {
+    border-radius: 4px 4px 0 0 !important;
+  }
   button {
     border-radius: 4px;
     background-color: transparent;
@@ -220,11 +235,11 @@ defineExpose({
     font-size: 12px;
     transition: all 0.2s ease-in-out;
     &:not(:disabled) {
-      color: $color-text-black;
+      color: $color-neutral-8;
     }
     &.is-active {
-      background-color: $color-primary-2;
-      color: $color-white;
+      background-color: $color-primary-1;
+      color: $color-neutral-0;
     }
   }
 }
@@ -258,7 +273,7 @@ defineExpose({
   }
 
   pre {
-    background: $color-text-black;
+    background: $color-neutral-8;
     color: #fff;
     font-family: 'JetBrainsMono', monospace;
     padding: 0.75rem 1rem;

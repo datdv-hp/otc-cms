@@ -1,15 +1,13 @@
 <script lang="ts" setup>
+import { UseAppStore } from '@/common/app.store';
 import MSearchBar from '@/components/molecules/MSearchBar.vue';
 import { UseAdminStore } from '../store';
-import { useDisplay } from 'vuetify';
-import { MIN_DISPLAY_WIDTH } from '@/common/constants/common.constant';
 
 const store = UseAdminStore();
-const { width } = useDisplay();
+const appStore = UseAppStore();
 const filter = ref({
   keyword: ''
 });
-const isMinDisplayWidth = computed(() => width.value < MIN_DISPLAY_WIDTH);
 
 function search() {
   filter.value.keyword = filter.value.keyword?.trim();
@@ -23,7 +21,7 @@ function search() {
       <div class="append__wrapper">
         <v-spacer></v-spacer>
         <v-btn
-          v-if="isMinDisplayWidth"
+          v-if="appStore.isMinDisplayWidth"
           icon="$common.add"
           density="comfortable"
           rounded="lg"

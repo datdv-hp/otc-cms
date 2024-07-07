@@ -25,10 +25,10 @@ export default {
     // set v-badge default color to primary
     color: 'primary'
   },
-  VBtn: {
-    // set v-btn default color to primary
-    color: 'primary'
-  },
+  // VBtn: {
+  //   // set v-btn default color to primary
+  //   color: 'primary'
+  // },
   VChip: {
     elevation: 0,
     density: 'comfortable'

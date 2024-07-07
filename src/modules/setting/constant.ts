@@ -26,7 +26,6 @@ export enum SystemSettingType {
   FILE = 'file',
   NUMBER = 'number',
   TEXT = 'text',
-  BOOLEAN = 'boolean',
   TEXTAREA = 'textarea',
-  RICHTEXT = 'richtext'
+  EDITOR = 'editor'
 }

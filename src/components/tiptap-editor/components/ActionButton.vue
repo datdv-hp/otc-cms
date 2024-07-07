@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   tooltip: undefined,
   disabled: false,
-  color: undefined,
+  color: 'neutral',
   action: undefined,
   isActive: undefined
 });

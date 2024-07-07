@@ -126,23 +126,16 @@ onMounted(async () => {
     </v-card-title>
     <v-divider class="mt-2 mb-4" />
     <v-card-text>
-      <v-row dense>
-        <v-col cols="12" sm="4" class="avatar">
-          <DefaultAvatar />
+      <v-skeleton-loader type="table-row@5" v-if="isLoading"></v-skeleton-loader>
+      <v-row v-else>
+        <v-col cols="12" sm="6">
+          <v-row v-for="(leftItem, index) in generalInfo.left" :key="index">
+            <v-col cols="12"><UserGeneralInformationItem v-bind="leftItem" /> </v-col>
+          </v-row>
         </v-col>
-        <v-col cols="12" sm="8">
-          <v-skeleton-loader type="table-row@5" v-if="isLoading"></v-skeleton-loader>
-          <v-row v-else>
-            <v-col cols="12" sm="6">
-              <v-row v-for="(leftItem, index) in generalInfo.left" :key="index">
-                <v-col cols="12"><UserGeneralInformationItem v-bind="leftItem" /> </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-row v-for="(rightItem, index) in generalInfo.right" :key="index">
-                <v-col cols="12"><UserGeneralInformationItem v-bind="rightItem" /></v-col>
-              </v-row>
-            </v-col>
+        <v-col cols="12" sm="6">
+          <v-row v-for="(rightItem, index) in generalInfo.right" :key="index">
+            <v-col cols="12"><UserGeneralInformationItem v-bind="rightItem" /></v-col>
           </v-row>
         </v-col>
       </v-row>

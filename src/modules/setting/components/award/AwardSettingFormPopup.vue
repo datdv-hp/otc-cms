@@ -141,7 +141,7 @@ onUnmounted(() => {
       </v-col>
       <v-col cols="12">
         <v-label>{{ t('setting.award.fields.icon') }}</v-label>
-        <BImageUpload class="image" v-model="icon" :height="200" />
+        <BFileUpload class="image" v-model="icon" :height="200" />
       </v-col>
       <v-col cols="12"
         ><small class="text-caption text-medium-emphasis">{{
@@ -151,8 +151,4 @@ onUnmounted(() => {
     </v-row>
   </BDialog>
 </template>
-<style lang="scss" scoped>
-.image {
-  border: 1px solid red;
-}
-</style>
+<style lang="scss" scoped></style>
