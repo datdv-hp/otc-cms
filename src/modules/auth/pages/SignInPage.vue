@@ -110,6 +110,7 @@ const isPasswordVisible = ref(false);
             <VTextField
               v-model="username"
               autofocus
+              autocomplete="false"
               :placeholder="t('auth.fields.username')"
               label="Username"
               :error="!!errors.username"
@@ -123,6 +124,7 @@ const isPasswordVisible = ref(false);
             <VTextField
               v-model="password"
               label="Password"
+              autocomplete="false"
               :placeholder="t('auth.fields.password')"
               :type="isPasswordVisible ? 'text' : 'password'"
               :append-inner-icon="isPasswordVisible ? '$common.eye' : '$common.eye'"
@@ -146,6 +148,7 @@ const isPasswordVisible = ref(false);
               :disabled="!meta.valid"
               :loading="isValidating || isSubmitting"
               @click="signIn"
+              color="primary"
             >
               {{ t('auth.signIn.title') }}
               <template #loader> <span class="loader"></span></template>
@@ -170,23 +173,11 @@ const isPasswordVisible = ref(false);
   padding-bottom: 10%;
 
   .auth-card {
-    background-color: rgba(var(--v-theme-surface), 0.4);
+    background-color: rgba($color-neutral-5, 0.4);
     backdrop-filter: blur(10px);
     --webkit-backdrop-filter: blur(10px);
   }
 }
-// .logo-wrapper {
-//   padding-bottom: 24px;
-//   display: flex;
-//   align-items: center;
-//   gap: 12px;
-//   .logo-text {
-//     font-family: 'Poppins', sans-serif;
-//     font-size: 30px;
-//     font-weight: 600;
-//     letter-spacing: 0.25em;
-//   }
-// }
 
 .loader {
   width: 30px;
@@ -198,6 +189,15 @@ const isPasswordVisible = ref(false);
     var(--_g) 100% 50%;
   background-size: calc(100% / 3) 50%;
   animation: l3 1s infinite linear;
+}
+
+:deep(.v-field) {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+  }
 }
 @keyframes l3 {
   20% {
@@ -225,16 +225,4 @@ const isPasswordVisible = ref(false);
       100% 100%;
   }
 }
-
-// .sign-in__title {
-//   margin-bottom: 32px;
-// }
-// .sign-in__content {
-//   width: 296px;
-// }
-// .sign-btn {
-//   width: 100%;
-//   border-radius: 12px;
-//   text-transform: none;
-// }
 </style>
