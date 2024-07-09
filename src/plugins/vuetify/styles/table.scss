@@ -1,5 +1,9 @@
+.v-table__wrapper {
+  border-radius: 0 !important;
+}
 .v-data-table__tbody {
   tr:nth-of-type(2n) td {
-    background-color: $color-neutral-6;
+    background-color: hsl(224, 62%, 5%);
+    // filter: brightness(0.8);
   }
 }

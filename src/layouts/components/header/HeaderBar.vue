@@ -15,7 +15,7 @@ const headerHeight = computed(() => (appStore.isTemporarySidebar ? 60 : 84));
 const avatarSize = computed(() => (appStore.isTemporarySidebar ? '24px' : '36px'));
 </script>
 <template>
-  <v-app-bar flat :height="headerHeight">
+  <v-app-bar :height="headerHeight" class="header-bar">
     <template #append>
       <AccountMenu :avatar-size="avatarSize" />
     </template>
@@ -32,14 +32,20 @@ const avatarSize = computed(() => (appStore.isTemporarySidebar ? '24px' : '36px'
   </v-app-bar>
 </template>
 <style lang="scss" scoped>
+:global(.header-bar.v-toolbar) {
+  background: url('/src/assets/images/wallpaper.png') !important;
+  backdrop-filter: blur(10px);
+}
 :deep(.v-toolbar__content) {
+  filter: none;
   padding: 0 20px;
   .v-toolbar-title {
     font-size: 16px;
   }
 }
 :deep(.v-toolbar__extension) {
-  background-color: $color-neutral-8;
+  background-color: #00000099;
+  backdrop-filter: blur(1px);
   font-size: 13px;
   padding: 0 20px;
 }

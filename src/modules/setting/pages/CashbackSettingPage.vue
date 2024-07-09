@@ -8,7 +8,7 @@ const store = UseCashbackSettingStore();
 </script>
 <template>
   <v-card class="card-wrapper pa-3" :elevation="0">
-    <CashbackSettingFilterBar />
+    <CashbackSettingFilterBar class="mb-6" />
     <CashbackSettingTable />
   </v-card>
   <CashbackSettingPopup v-if="store.dialog?.isShow" />

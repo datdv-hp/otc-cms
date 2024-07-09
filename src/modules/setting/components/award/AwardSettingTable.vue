@@ -22,8 +22,13 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       sortable: false
     },
     {
-      title: t('setting.award.fields.name'),
-      key: 'name',
+      title: t('setting.award.fields.nameVi'),
+      key: 'nameVi',
+      minWidth: '160'
+    },
+    {
+      title: t('setting.award.fields.nameEn'),
+      key: 'nameEn',
       minWidth: '160'
     },
     {
@@ -32,8 +37,14 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       minWidth: '160'
     },
     {
-      title: t('setting.award.fields.description'),
-      key: 'description',
+      title: t('setting.award.fields.descriptionVi'),
+      key: 'descriptionVi',
+      sortable: false,
+      minWidth: '160'
+    },
+    {
+      title: t('setting.award.fields.descriptionEn'),
+      key: 'descriptionEn',
       sortable: false,
       minWidth: '160'
     },
@@ -77,7 +88,7 @@ async function loadItems(options: {
 async function deleteCashbackSetting(item: IAwardSetting, index: number) {
   const confirm = await showDialogConfirm('error', {
     title: t('setting.award.confirm.delete.title'),
-    text: t('setting.award.confirm.delete.content', { award: item.name })
+    text: t('setting.award.confirm.delete.content', { award: item.nameVi })
   });
   if (!confirm) return;
   deleting[index] = true;

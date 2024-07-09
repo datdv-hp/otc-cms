@@ -7,7 +7,7 @@ const store = UseAwardSettingStore();
 </script>
 <template>
   <v-card class="card-wrapper pa-3" :elevation="0">
-    <AwardSettingFilterBar />
+    <AwardSettingFilterBar class="mb-6" />
     <AwardSettingTable />
   </v-card>
   <AwardSettingFormPopup v-if="store.dialog?.isShow" />

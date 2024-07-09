@@ -12,7 +12,7 @@ import VueRouteMiddleware, { GLOBAL_MIDDLEWARE_NAME } from './middleware';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: { name: PageName.USER_LIST_PAGE }
+    redirect: { nameVi: PageName.USER_LIST_PAGE }
   },
   ...moduleRoutes,
   {

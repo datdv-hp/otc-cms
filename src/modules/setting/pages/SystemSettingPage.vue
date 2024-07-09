@@ -8,7 +8,7 @@ const store = UseSystemSettingStore();
 </script>
 <template>
   <v-card class="card-wrapper pa-3" :elevation="0">
-    <SystemSettingFilterBar />
+    <SystemSettingFilterBar class="mb-6" />
     <SystemSettingTable />
   </v-card>
   <SystemSettingPopup v-if="store.dialog.isShow" />

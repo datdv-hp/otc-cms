@@ -56,7 +56,8 @@ export const UseSystemSettingStore = defineStore('system-setting', () => {
         key: setting.key,
         label: setting.label,
         type: setting.type,
-        value: setting.value
+        valueVi: setting.valueVi,
+        valueEn: setting.valueEn
       };
     }
   }

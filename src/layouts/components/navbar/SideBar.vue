@@ -30,6 +30,7 @@ onMounted(() => {
     width="280"
     :scrim="false"
     flat
+    image="/src/assets/images/wallpaper.png"
   >
     <div class="logo-wrapper">
       <img :src="LogoImage" width="44" height="44" />
@@ -67,6 +68,24 @@ onMounted(() => {
   </v-navigation-drawer>
 </template>
 <style lang="scss" scoped>
+:deep(.v-navigation-drawer__content) {
+  &::after {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    content: '';
+    display: block;
+    max-width: 250px;
+    width: 40%;
+    aspect-ratio: 278/350;
+    z-index: 0;
+    background: url('@/assets/images/image.png') center center no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
 .logo-wrapper {
   padding: 20px 16px 20px 32px;
   display: flex;
@@ -93,9 +112,18 @@ onMounted(() => {
     font-weight: 500 !important;
   }
 
+  .v-list-item__overlay {
+    transition: background-color 0.7s linear;
+  }
+
   &.v-list-item--active {
     position: relative;
-    background-color: $color-neutral-8;
+    // background-color: $color-neutral-8;
+    background-color: hsl(224, 62%, 5%) !important;
+
+    .v-list-item__overlay {
+      background-color: hsl(224, 62%, 5%) !important;
+    }
     color: $color-neutral-0 !important;
     .v-list-item-title .title-text {
       font-weight: 600 !important;

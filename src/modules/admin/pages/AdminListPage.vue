@@ -8,7 +8,7 @@ const adminStore = UseAdminStore();
 </script>
 <template>
   <v-card class="card-wrapper pa-3" :elevation="0">
-    <AdminFilterBar />
+    <AdminFilterBar class="mb-6" />
     <AdminListTable />
   </v-card>
   <AdminFormPopup v-if="adminStore.dialog.isShow" />

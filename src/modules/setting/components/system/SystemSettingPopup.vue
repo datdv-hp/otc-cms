@@ -10,23 +10,31 @@ import dayjs from '@/plugins/dayjs';
 const { t } = useI18n();
 const store = UseSystemSettingStore();
 
-const initForm = { value: undefined };
-const { errors, handleSubmit, isSubmitting, resetForm } = useForm<{ value: any }>({});
-const { value: value, setValue } = useField<any>('value');
+const initForm = { valueVi: undefined, valueEn: undefined };
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<{ valueVi: any; valueEn: any }>(
+  {}
+);
+const { value: valueVi, setValue: setValueVi } = useField<any>('valueVi');
+const { value: valueEn, setValue: setValueEn } = useField<any>('valueEn');
 async function fetchSystemSetting() {
   try {
     store.setDialogLoading(true);
     if (store.dialog?.currentId) {
-      let value = store.dialog?.formValue?.value;
+      let valueVi = store.dialog?.formValue?.valueVi;
+      let valueEn = store.dialog?.formValue?.valueEn;
       switch (store.dialog.formValue?.type) {
         case SystemSettingType.DATE: {
-          const date = store.dialog?.formValue?.value;
-          value = date && dayjs(date).isValid() ? dayjs(date).toDate() : undefined;
+          const dateVi = store.dialog?.formValue?.valueVi;
+          const dateEn = store.dialog?.formValue?.valueVi;
+          valueVi = dateVi && dayjs(dateVi).isValid() ? dayjs(dateVi).toDate() : undefined;
+          valueVi = dateEn && dayjs(dateEn).isValid() ? dayjs(dateEn).toDate() : undefined;
           break;
         }
         case SystemSettingType.FILE: {
-          const fileURL = store.dialog?.formValue?.value?.url;
-          value = fileURL;
+          const fileURLVi = store.dialog?.formValue?.valueVi?.url;
+          const fileURLEn = store.dialog?.formValue?.valueEn?.url;
+          valueVi = fileURLVi;
+          valueEn = fileURLEn;
           break;
         }
         default:
@@ -34,7 +42,8 @@ async function fetchSystemSetting() {
       }
       resetForm({
         values: {
-          value: value
+          valueVi,
+          valueEn
         }
       });
     }
@@ -47,7 +56,8 @@ async function fetchSystemSetting() {
 const submit = handleSubmit(async (values) => {
   const res = await systemSettingServiceApi.updateSystemSetting(store.dialog?.currentId as string, {
     type: store.dialog?.formValue?.type as SystemSettingType,
-    value: values.value
+    valueVi: values.valueVi,
+    valueEn: values.valueEn
   });
   if (res.success) {
     notifySuccess(t('setting.system.success.update'));
@@ -79,62 +89,123 @@ onUnmounted(() => {
       <v-col cols="12">
         <v-text-field
           v-if="store.dialog?.formValue?.type === SystemSettingType.TEXT"
-          v-model="value"
-          :label="store.dialog?.formValue?.label"
-          :placeholder="t('setting.system.placeholder.value')"
+          v-model="valueVi"
+          :label="store.dialog?.formValue?.label + ' (VI)'"
+          :placeholder="t('setting.system.placeholder.valueVi')"
           auto-focus
           :loading="!!store.dialog?.isLoading"
           :disabled="!!store.dialog?.isLoading"
-          :error="!!errors.value"
-          :error-messages="translateYupError(errors.value)"
+          :error="!!errors.valueVi"
+          :error-messages="translateYupError(errors.valueVi)"
         />
         <v-text-field
           v-if="store.dialog?.formValue?.type === SystemSettingType.NUMBER"
-          v-model="value"
+          v-model="valueVi"
           type="number"
           :hide-spin-buttons="true"
-          :label="store.dialog?.formValue?.label"
-          :placeholder="t('setting.system.placeholder.value')"
+          :label="store.dialog?.formValue?.label + '(VI)'"
+          :placeholder="t('setting.system.placeholder.valueVi')"
           auto-focus
           :loading="!!store.dialog?.isLoading"
           :disabled="!!store.dialog?.isLoading"
-          :error="!!errors.value"
-          :error-messages="translateYupError(errors.value)"
+          :error="!!errors.valueVi"
+          :error-messages="translateYupError(errors.valueVi)"
         />
         <v-textarea
           v-if="store.dialog?.formValue?.type === SystemSettingType.TEXTAREA"
-          v-model="value"
-          :label="store.dialog?.formValue?.label"
-          :placeholder="t('setting.system.placeholder.value')"
+          v-model="valueVi"
+          :label="store.dialog?.formValue?.label + '(VI)'"
+          :placeholder="t('setting.system.placeholder.valueVi')"
           auto-focus
           :loading="!!store.dialog?.isLoading"
           :disabled="!!store.dialog?.isLoading"
-          :error="!!errors.value"
-          :error-messages="translateYupError(errors.value)"
+          :error="!!errors.valueVi"
+          :error-messages="translateYupError(errors.valueVi)"
         />
         <TiptapEditor
           v-if="store.dialog?.formValue?.type === SystemSettingType.EDITOR"
-          :label="store.dialog?.formValue?.label"
-          :placeholder="t('setting.system.placeholder.value')"
-          :model-value="value"
-          @update:model-value="setValue"
-          :errorMessage="errors.value"
+          :label="store.dialog?.formValue?.label + '(VI)'"
+          :placeholder="t('setting.system.placeholder.valueVi')"
+          :model-value="valueVi"
+          @update:model-value="setValueVi"
+          :errorMessage="errors.valueVi"
         ></TiptapEditor>
         <v-date-picker
           v-if="store.dialog?.formValue?.type === SystemSettingType.DATE"
-          :title="store.dialog?.formValue?.label"
+          :title="store.dialog?.formValue?.label + '(VI)'"
           color="primary"
           bg-color="transparent"
-          v-model="value"
+          v-model="valueVi"
           :border="'sm'"
           width="100%"
           show-adjacent-months
         ></v-date-picker>
         <BFileUpload
           v-if="store.dialog?.formValue?.type === SystemSettingType.FILE"
-          v-model="value"
+          v-model="valueVi"
           :height="200"
-          :choose-text="$t('common.button.chooseFile')"
+          :choose-text="$t('common.button.chooseFile') + '(VI)'"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-if="store.dialog?.formValue?.type === SystemSettingType.TEXT"
+          v-model="valueEn"
+          :label="store.dialog?.formValue?.label + ' (EN)'"
+          :placeholder="t('setting.system.placeholder.valueEn')"
+          auto-focus
+          :loading="!!store.dialog?.isLoading"
+          :disabled="!!store.dialog?.isLoading"
+          :error="!!errors.valueEn"
+          :error-messages="translateYupError(errors.valueEn)"
+        />
+        <v-text-field
+          v-if="store.dialog?.formValue?.type === SystemSettingType.NUMBER"
+          v-model="valueEn"
+          type="number"
+          :hide-spin-buttons="true"
+          :label="store.dialog?.formValue?.label + ' (EN)'"
+          :placeholder="t('setting.system.placeholder.valueEn')"
+          auto-focus
+          :loading="!!store.dialog?.isLoading"
+          :disabled="!!store.dialog?.isLoading"
+          :error="!!errors.valueEn"
+          :error-messages="translateYupError(errors.valueEn)"
+        />
+        <v-textarea
+          v-if="store.dialog?.formValue?.type === SystemSettingType.TEXTAREA"
+          v-model="valueEn"
+          :label="store.dialog?.formValue?.label + ' (EN)'"
+          :placeholder="t('setting.system.placeholder.valueEn')"
+          auto-focus
+          :loading="!!store.dialog?.isLoading"
+          :disabled="!!store.dialog?.isLoading"
+          :error="!!errors.valueEn"
+          :error-messages="translateYupError(errors.valueEn)"
+        />
+        <TiptapEditor
+          v-if="store.dialog?.formValue?.type === SystemSettingType.EDITOR"
+          :label="store.dialog?.formValue?.label + ' (EN)'"
+          :placeholder="t('setting.system.placeholder.valueEn')"
+          :model-value="valueEn"
+          @update:model-value="setValueVi"
+          :errorMessage="errors.valueEn"
+        ></TiptapEditor>
+        <v-date-picker
+          v-if="store.dialog?.formValue?.type === SystemSettingType.DATE"
+          :title="store.dialog?.formValue?.label + ' (EN)'"
+          color="primary"
+          bg-color="transparent"
+          v-model="valueEn"
+          :border="'sm'"
+          width="100%"
+          show-adjacent-months
+        ></v-date-picker>
+        <BFileUpload
+          v-if="store.dialog?.formValue?.type === SystemSettingType.FILE"
+          v-model="valueEn"
+          :height="200"
+          :choose-text="$t('common.button.chooseFile') + ' (EN)'"
         />
       </v-col>
     </v-row>

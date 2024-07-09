@@ -19,20 +19,23 @@ const title = computed(() =>
 );
 const isUpdate = computed(() => !!store?.dialog?.currentId);
 const initForm: Partial<IAwardForm> = {
-  name: undefined,
+  nameVi: undefined,
   icon: undefined,
   stepValue: undefined,
-  description: undefined
+  descriptionVi: undefined,
+  descriptionEn: undefined
 };
 
 /** Form */
 const { errors, handleSubmit, isSubmitting, resetForm } = useForm<IAwardForm>({
   validationSchema: AwardSettingFormSchema
 });
-const { value: name } = useField<string>('name');
+const { value: nameVi } = useField<string>('nameVi');
+const { value: nameEn } = useField<string>('nameEn');
 const { value: stepValue } = useField<number>('stepValue');
 const { value: icon } = useField<string | null>('icon');
-const { value: description } = useField<string>('description');
+const { value: descriptionVi } = useField<string>('descriptionVi');
+const { value: descriptionEn } = useField<string>('descriptionEn');
 
 /** Get detail */
 async function fetchAward() {
@@ -43,10 +46,12 @@ async function fetchAward() {
       const detail = toAwardSettingDetail(res.data);
       resetForm({
         values: {
-          name: detail.name,
+          nameVi: detail.nameVi,
+          nameEn: detail.nameEn,
           stepValue: detail.stepValue,
           icon: detail.icon?.url as string,
-          description: detail.description
+          descriptionVi: detail.descriptionVi,
+          descriptionEn: detail.descriptionEn
         }
       });
     }
@@ -108,15 +113,25 @@ onUnmounted(() => {
     <v-row v-else>
       <v-col cols="12" md="6">
         <v-text-field
-          v-model="name"
-          :label="t('setting.award.fields.name') + '*'"
+          v-model="nameVi"
+          :label="t('setting.award.fields.nameVi') + '*'"
           :placeholder="t('setting.award.placeholder.name')"
           hide-details="auto"
-          :error="!!errors.name"
-          :error-messages="translateYupError(errors.name)"
+          :error="!!errors.nameVi"
+          :error-messages="translateYupError(errors.nameVi)"
         />
       </v-col>
       <v-col cols="12" md="6">
+        <v-text-field
+          v-model="nameEn"
+          :label="t('setting.award.fields.nameEn') + '*'"
+          :placeholder="t('setting.award.placeholder.name')"
+          hide-details="auto"
+          :error="!!errors.nameEn"
+          :error-messages="translateYupError(errors.nameEn)"
+        />
+      </v-col>
+      <v-col cols="12">
         <v-text-field
           v-model="stepValue"
           type="number"
@@ -131,12 +146,22 @@ onUnmounted(() => {
 
       <v-col cols="12">
         <v-textarea
-          v-model="description"
-          :label="t('setting.award.fields.description')"
+          v-model="descriptionVi"
+          :label="t('setting.award.fields.descriptionVi')"
           :placeholder="t('setting.award.placeholder.description')"
           hide-details="auto"
-          :error="!!errors.description"
-          :error-messages="translateYupError(errors.description)"
+          :error="!!errors.descriptionVi"
+          :error-messages="translateYupError(errors.descriptionVi)"
+        ></v-textarea>
+      </v-col>
+      <v-col cols="12">
+        <v-textarea
+          v-model="descriptionEn"
+          :label="t('setting.award.fields.descriptionEn')"
+          :placeholder="t('setting.award.placeholder.description')"
+          hide-details="auto"
+          :error="!!errors.descriptionEn"
+          :error-messages="translateYupError(errors.descriptionEn)"
         ></v-textarea>
       </v-col>
       <v-col cols="12">

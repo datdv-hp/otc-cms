@@ -24,8 +24,13 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       minWidth: '120'
     },
     {
-      title: t('setting.system.fields.value'),
-      key: 'value',
+      title: t('setting.system.fields.valueVi'),
+      key: 'valueVi',
+      minWidth: '120'
+    },
+    {
+      title: t('setting.system.fields.valueEn'),
+      key: 'valueEn',
       minWidth: '120'
     },
     {

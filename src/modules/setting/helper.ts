@@ -62,9 +62,11 @@ export const toRequestUpdateCashbackFormDTO = (
 export const toAwardSettingListItem = (setting: IResponseAwardDTO): IAwardSetting => {
   return {
     id: setting.id,
-    name: setting.name,
+    nameVi: setting.name_vi,
+    nameEn: setting.name_en,
     icon: setting.icon,
-    description: setting.description,
+    descriptionVi: setting.description_vi,
+    descriptionEn: setting.description_en,
     stepValue: setting.step_value,
     createdAt: setting.created_at
   };
@@ -76,9 +78,9 @@ export const toAwardSettingList = (settings: IResponseAwardDTO[]): IAwardSetting
 export const toAwardSettingDetail = (setting: IResponseAwardDTO): IAwardSettingDetail => {
   return {
     id: setting.id,
-    name: setting.name,
+    nameVi: setting.name_vi,
     icon: setting.icon,
-    description: setting.description,
+    descriptionVi: setting.description_vi,
     stepValue: setting.step_value,
     createdAt: setting.created_at
   };
@@ -88,9 +90,11 @@ export const toRequestCreateAwardFormDTO = async (
   settings: IAwardForm
 ): Promise<IRequestCreateAwardBodyDTO> => {
   return {
-    name: settings.name,
+    name_vi: settings.nameVi,
+    name_en: settings.nameEn,
     icon: settings.icon,
-    description: settings.description,
+    description_vi: settings.descriptionVi,
+    description_en: settings.descriptionEn,
     step_value: settings.stepValue
   };
 };
@@ -98,9 +102,11 @@ export const toRequestUpdateAwardFormDTO = async (
   settings: IAwardForm
 ): Promise<IRequestUpdateAwardBodyDTO> => {
   return {
-    name: settings.name,
+    name_vi: settings.nameVi,
+    name_en: settings.nameEn,
     icon: settings.icon,
-    description: settings.description,
+    description_vi: settings.descriptionVi,
+    description_en: settings.descriptionEn,
     step_value: settings.stepValue
   };
 };
@@ -113,7 +119,8 @@ export const toSystemSettingListItem = (setting: IResponseSystemSettingDTO): ISy
     label: setting.label,
     type: setting.type,
     key: setting.key,
-    value: setting.value,
+    valueVi: setting.value_vi,
+    valueEn: setting.value_en,
     createdAt: setting.createdAt
   };
 };
@@ -127,7 +134,8 @@ export const toSystemSettingDetail = (setting: IResponseSystemSettingDTO): ISyst
     label: setting.label,
     type: setting.type,
     key: setting.key,
-    value: setting.value,
+    valueVi: setting.value_vi,
+    valueEn: setting.value_en,
     createdAt: setting.createdAt
   };
 };

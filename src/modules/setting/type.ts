@@ -16,23 +16,27 @@ export type ICashbackForm = {
 
 export type IAwardSetting = {
   id: string | number;
-  name: string;
+  nameVi?: string;
+  nameEn?: string;
   stepValue: number;
   icon?: {
     name: string;
     mimeType: string;
     url: string;
   } | null;
-  description?: string;
+  descriptionVi?: string;
+  descriptionEn?: string;
   createdAt: string | Date;
 };
 export type IAwardSettingDetail = IAwardSetting;
 export type IAwardSettingQueryParams = IQueryParams;
 export type IAwardForm = {
-  name: string;
+  nameVi: string;
+  nameEn: string;
   stepValue: number;
   icon: ArrayBuffer | string | null;
-  description: string;
+  descriptionVi?: string;
+  descriptionEn?: string;
 };
 
 export type ISystemSetting = {
@@ -40,7 +44,8 @@ export type ISystemSetting = {
   type: SystemSettingType;
   label: string;
   key: string;
-  value: any;
+  valueVi: any;
+  valueEn: any;
   createdAt: Date;
 };
 export type ISystemSettingDetail = ISystemSetting;
@@ -49,5 +54,6 @@ export type ISystemSettingForm = {
   type: SystemSettingType;
   label: string;
   key: string;
-  value: any;
+  valueVi: any;
+  valueEn: any;
 };

@@ -14,8 +14,11 @@ import SideBar from './components/navbar/SideBar.vue';
         </router-view>
       </div>
     </v-main>
-    <!-- <MobileBottomBar v-if="smAndDown"> </MobileBottomBar> -->
   </v-app>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.v-main) {
+  background-image: url('/src/assets/images/wallpaper.png');
+}
+</style>

@@ -5,6 +5,7 @@ export type IResponseSystemSettingDTO = {
   type: SystemSettingType;
   label: string;
   key: string;
-  value: any;
+  value_vi?: any;
+  value_en?: any;
   createdAt: Date;
 };

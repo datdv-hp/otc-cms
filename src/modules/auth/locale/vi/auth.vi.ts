@@ -1,4 +1,7 @@
 export default {
+  breadcrumb: {
+    profile: 'Hồ sơ cá nhân'
+  },
   signIn: {
     title: 'Đăng nhập',
     welcome: 'Chào mừng trở lại với OTC! 👋🏻',
@@ -17,6 +20,17 @@ export default {
     invalidCredentials: 'Tên đăng nhập hoặc mật khẩu không hợp lệ'
   },
   success: {
-    signIn: 'Đăng nhập thành công'
+    signIn: 'Đăng nhập thành công',
+    changePassword: 'Đổi mật khẩu thành công'
+  },
+  profile: {
+    joinDate: 'Ngày tham gia'
+  },
+  changePassword: {
+    title: 'Đổi mật khẩu',
+    currentPassword: 'Mật khẩu hiện tại',
+    newPassword: 'Mật khẩu mới',
+    confirmPassword: 'Xác nhận mật khẩu mới',
+    button: 'Đổi mật khẩu'
   }
 };

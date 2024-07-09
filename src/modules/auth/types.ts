@@ -17,3 +17,11 @@ export type IAuthTokens = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type IProfileForm = {
+  username: string;
+  fullname: string;
+  password: string;
+  newPassword: string;
+  confirmPassword: string;
+};

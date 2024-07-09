@@ -50,6 +50,7 @@ function search() {
   }
   :deep(.v-field--variant-solo) {
     background: $color-neutral-6;
+    background: #00000099;
   }
 }
 </style>

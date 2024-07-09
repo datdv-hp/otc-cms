@@ -1,7 +1,9 @@
 export default {
   auth: {
     username: 'Tên đăng nhập',
-    password: 'Mật khẩu'
+    password: 'Mật khẩu',
+    currentPassword: 'Mật khẩu hiện tại',
+    newPassword: 'Mật khẩu mới'
   },
   cashbackSetting: {
     name: 'Tên gói hoàn tiền',

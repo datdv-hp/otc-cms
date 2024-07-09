@@ -10,7 +10,6 @@ export const UseAuthStore = defineStore(STORE_NAME, () => {
     profile.value = user;
   };
 
-  // TODO: implement getProfile
   async function getProfile() {
     const res: IBodyResponse<IUserProfile> = await authApiService.getProfile();
     if (res.success) {

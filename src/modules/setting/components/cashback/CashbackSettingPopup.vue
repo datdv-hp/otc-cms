@@ -25,7 +25,7 @@ const { errors, handleSubmit, isSubmitting, resetForm } = useForm<ICashbackForm>
   validationSchema: CashbackSettingFormSchema,
   initialValues: initForm
 });
-const { value: name } = useField<string>('name');
+const { value: nameVi } = useField<string>('name');
 const { value: percent } = useField<number>('percent');
 
 async function fetchCashback() {

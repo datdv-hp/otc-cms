@@ -201,9 +201,6 @@ function openCashbackConfigPopup(item: IUserListItem) {
 }
 
 .table-wrapper {
-  // border: 1px solid $color-neutral-6;
-  // border-radius: 8px;
-  padding: 0;
-  // margin: 20px 12px 12px 12px;
+  padding: 12px;
 }
 </style>

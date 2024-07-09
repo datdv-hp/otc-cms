@@ -1,8 +1,10 @@
 export type IResponseAwardDTO = {
   id: number | string;
-  name: string;
+  name_vi?: string;
+  name_en?: string;
   step_value: number;
-  description: string;
+  description_vi?: string;
+  description_en?: string;
   icon?: {
     name: string;
     mimeType: string;

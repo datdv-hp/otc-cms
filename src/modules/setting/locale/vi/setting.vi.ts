@@ -47,10 +47,12 @@ export default {
     },
     fields: {
       id: 'ID',
-      name: 'Tên mốc thưởng',
+      nameVi: 'Tên mốc thưởng tiếng Việt',
+      nameEn: 'Tên mốc thưởng tiếng Anh',
       stepValue: 'Mốc thưởng',
       icon: 'Ảnh minh họa',
-      description: 'Mô tả',
+      descriptionVi: 'Mô tả tiếng Việt',
+      descriptionEn: 'Mô tả tiếng Anh',
       createdAt: 'Ngày tạo',
       actions: 'Hành động'
     },
@@ -87,7 +89,8 @@ export default {
       type: 'Loại dữ liệu',
       label: 'Nhãn',
       key: 'Khóa',
-      value: 'Giá trị',
+      valueVi: 'Giá trị tiếng Việt',
+      valueEn: 'Giá trị tiếng Anh',
       createdAt: 'Ngày tạo',
       actions: 'Hành động'
     },
@@ -95,7 +98,8 @@ export default {
       type: 'Chọn loại dữ liệu',
       label: 'Nhập nhãn',
       key: 'Nhập khóa',
-      value: 'Nhập giá trị'
+      valueVi: 'Nhập giá trị tiếng Việt',
+      valueEn: 'Nhập giá trị tiếng Anh'
     },
     success: {
       update: 'Cập nhật cấu hình hệ thống thành công'

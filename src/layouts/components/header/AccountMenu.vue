@@ -13,17 +13,17 @@ const router = useRouter();
 const menuItems = computed(() => {
   return [
     {
-      title: t('auth.accountMenu.signOut'),
-      prependIcon: '$common.logout',
-      onClick: () => {
-        logout();
-      }
-    },
-    {
       title: t('auth.accountMenu.profile'),
       prependIcon: '$common.laugh',
       onClick: () => {
         router.push({ name: PageName.PROFILE_PAGE });
+      }
+    },
+    {
+      title: t('auth.accountMenu.signOut'),
+      prependIcon: '$common.logout',
+      onClick: () => {
+        logout();
       }
     }
   ];
@@ -34,7 +34,6 @@ const selected = shallowRef();
   <v-menu elevation="2">
     <template #activator="{ props }">
       <DefaultAvatar v-bind="props" class="cursor-pointer" :style="{ fontSize: avatarSize }" />
-      <!-- <v-img v-bind="props"  :src="Avatar" :height="36" :width="36"></v-img> -->
     </template>
     <v-list v-model="selected" density="compact">
       <v-list-item

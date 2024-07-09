@@ -9,5 +9,9 @@ class AuthApiService extends ApiService {
   getProfile(): Promise<IBodyResponse<IUserProfile>> {
     return this.client.get(`/profile`);
   }
+
+  changePassword(body: { password: string; newPassword: string }): Promise<IBodyResponse<null>> {
+    return this.client.post(`/password`, body);
+  }
 }
 export const authApiService = new AuthApiService({ baseUrl: '/auth' }, axiosInstance);
