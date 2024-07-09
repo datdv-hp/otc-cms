@@ -188,7 +188,7 @@ onUnmounted(() => {
           :label="store.dialog?.formValue?.label + ' (EN)'"
           :placeholder="t('setting.system.placeholder.valueEn')"
           :model-value="valueEn"
-          @update:model-value="setValueVi"
+          @update:model-value="setValueEn"
           :errorMessage="errors.valueEn"
         ></TiptapEditor>
         <v-date-picker

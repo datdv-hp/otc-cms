@@ -135,7 +135,7 @@ class VueRouteMiddleware {
    * @return {boolean}
    */
   _error(text: string) {
-    console.error(this.constructor.nameVi + ': ' + text);
+    console.error(this.constructor.name + ': ' + text);
   }
 
   /**
