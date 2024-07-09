@@ -79,7 +79,7 @@ onMounted(() => {
     width: 40%;
     aspect-ratio: 278/350;
     z-index: 0;
-    background: url('/src/assets/images/image.png') center center no-repeat;
+    background: url('/src/assets/images/robot.png') center center no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
