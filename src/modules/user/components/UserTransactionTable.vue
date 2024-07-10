@@ -107,7 +107,7 @@ defineExpose({
   <v-data-table-server
     v-model:items-per-page="itemPerPage"
     :items-length="store.totalTransactions"
-    :page="store.queryParams.page"
+    :page="store.transactionQueryParams.page"
     :items="store.transactions"
     :headers="headers"
     :loading="store.isLoadingTransactions"
@@ -132,11 +132,11 @@ defineExpose({
     <template #bottom="{ pageCount }">
       <v-divider></v-divider>
       <MPagination
-        v-model:item-per-page="store.queryParams.per_page"
-        v-model:page="store.queryParams.page"
+        v-model:item-per-page="store.transactionQueryParams.per_page"
+        v-model:page="store.transactionQueryParams.page"
         :total-pages="pageCount"
-        :disabled="store.isLoadingList"
-        :loading="store.isLoadingList"
+        :disabled="store.isLoadingTransactions"
+        :loading="store.isLoadingTransactions"
       ></MPagination>
     </template>
   </v-data-table-server>
