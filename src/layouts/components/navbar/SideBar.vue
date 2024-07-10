@@ -30,7 +30,6 @@ onMounted(() => {
     width="280"
     :scrim="false"
     flat
-    image="/src/assets/images/wallpaper.png"
   >
     <div class="logo-wrapper">
       <img :src="LogoImage" width="44" height="44" />
