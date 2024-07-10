@@ -16,7 +16,7 @@ export const CashbackSettingFormSchema = yup.object({
 
 export const AwardSettingFormSchema = yup.object({
   nameVi: yup.string().max(TEXT_MAX_LENGTH).required().label('awardSetting.name'),
-  nameEn: yup.string().max(TEXT_MAX_LENGTH).label('awardSetting.name'),
+  nameEn: yup.string().max(TEXT_MAX_LENGTH).required().label('awardSetting.name'),
   icon: yup.string().nullable().optional().label('awardSetting.icon'),
   stepValue: yup.number().min(MIN_STEP_VALUE).required().label('awardSetting.stepValue'),
   descriptionVi: yup.string().max(TEXT_MAX_LENGTH).nullable().label('awardSetting.description'),
@@ -31,3 +31,8 @@ export enum SystemSettingType {
   TEXTAREA = 'textarea',
   EDITOR = 'editor'
 }
+
+export const SystemSettingFormSchema = yup.object({
+  valueVi: yup.mixed().required().label('systemSetting.name'),
+  valueEn: yup.mixed().required().label('systemSetting.name')
+});

@@ -11,7 +11,7 @@ class AuthApiService extends ApiService {
   }
 
   changePassword(body: { password: string; newPassword: string }): Promise<IBodyResponse<null>> {
-    return this.client.post(`/password`, body);
+    return this.client.put(`/password`, body);
   }
 }
 export const authApiService = new AuthApiService({ baseUrl: '/auth' }, axiosInstance);

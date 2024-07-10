@@ -19,6 +19,7 @@ const title = computed(() =>
 );
 const isUpdate = computed(() => !!store?.dialog?.currentId);
 const initForm: Partial<IAwardForm> = {
+  nameEn: undefined,
   nameVi: undefined,
   icon: undefined,
   stepValue: undefined,

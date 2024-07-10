@@ -15,6 +15,9 @@ export default {
     description: 'Mô tả',
     icon: 'Ảnh mô tả'
   },
+  systemSetting: {
+    value: 'Giá trị'
+  },
   admin: {
     fullname: 'Họ và tên',
     username: 'Tên đăng nhập',

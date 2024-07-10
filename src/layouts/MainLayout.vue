@@ -20,5 +20,6 @@ import SideBar from './components/navbar/SideBar.vue';
 <style lang="scss" scoped>
 :deep(.v-main) {
   background-image: url('/src/assets/images/wallpaper.png');
+  background-size: cover;
 }
 </style>

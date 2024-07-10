@@ -41,10 +41,12 @@ const signIn = handleSubmit(async (values) => {
   const res = await authApiService.signIn(values);
   if (res.success) {
     localStorageAuthService.setAuthTokens(res.data);
-    const profile = await fetchProfile();
-    if (profile?.success) {
-      notifySuccess(t('auth.success.signIn'));
-    }
+    await fetchProfile().then((res) => {
+      if (res.success) {
+        notifySuccess(t('auth.success.signIn'));
+        redirectIfNeed();
+      }
+    });
   } else {
     if (res.status === HttpStatus.UNAUTHORIZED) {
       setErrors(t('auth.error.invalidCredentials'));
@@ -60,16 +62,20 @@ async function fetchProfile() {
     overlay.value = false;
     notifyError(t('auth.error.profile'));
     logout();
-    return res;
   }
-  redirectIfNeed();
+  return res;
 }
 
 function setup() {
   overlay.value = true;
   const token = hasToken();
   if (token) {
-    fetchProfile();
+    fetchProfile().then((res) => {
+      if (res?.success) {
+        redirectIfNeed();
+      }
+    });
+
     return;
   }
   overlay.value = false;

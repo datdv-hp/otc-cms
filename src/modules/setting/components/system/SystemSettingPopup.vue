@@ -3,7 +3,7 @@ import { notifyError, notifySuccess, translateYupError } from '@/common/helper';
 import TiptapEditor from '@/components/tiptap-editor/TiptapEditor.vue';
 import { cloneDeep } from 'lodash';
 import { systemSettingServiceApi } from '../../api';
-import { SystemSettingType } from '../../constant';
+import { SystemSettingFormSchema, SystemSettingType } from '../../constant';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
 import dayjs from '@/plugins/dayjs';
 
@@ -11,9 +11,9 @@ const { t } = useI18n();
 const store = UseSystemSettingStore();
 
 const initForm = { valueVi: undefined, valueEn: undefined };
-const { errors, handleSubmit, isSubmitting, resetForm } = useForm<{ valueVi: any; valueEn: any }>(
-  {}
-);
+const { errors, handleSubmit, isSubmitting, resetForm } = useForm<{ valueVi: any; valueEn: any }>({
+  validationSchema: SystemSettingFormSchema
+});
 const { value: valueVi, setValue: setValueVi } = useField<any>('valueVi');
 const { value: valueEn, setValue: setValueEn } = useField<any>('valueEn');
 async function fetchSystemSetting() {
@@ -56,8 +56,8 @@ async function fetchSystemSetting() {
 const submit = handleSubmit(async (values) => {
   const res = await systemSettingServiceApi.updateSystemSetting(store.dialog?.currentId as string, {
     type: store.dialog?.formValue?.type as SystemSettingType,
-    valueVi: values.valueVi,
-    valueEn: values.valueEn
+    value_vi: values.valueVi,
+    value_en: values.valueEn
   });
   if (res.success) {
     notifySuccess(t('setting.system.success.update'));
@@ -218,10 +218,10 @@ onUnmounted(() => {
     letter-spacing: 0.01em;
     font-size: 1.2em;
     border-bottom: 1px solid $color-neutral-6;
-    background-color: $color-neutral-7;
+    background-color: hsl(224, 62%, 5%);
   }
   .v-date-picker-header {
-    background-color: $color-neutral-7 !important;
+    background-color: hsl(224, 62%, 5%) !important;
   }
   .v-date-picker-controls__month-btn .v-btn__content {
     text-transform: capitalize;
