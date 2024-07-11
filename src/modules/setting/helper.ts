@@ -79,6 +79,7 @@ export const toAwardSettingDetail = (setting: IResponseAwardDTO): IAwardSettingD
   return {
     id: setting.id,
     nameVi: setting.name_vi,
+    nameEn: setting.name_en,
     icon: setting.icon,
     descriptionVi: setting.description_vi,
     stepValue: setting.step_value,

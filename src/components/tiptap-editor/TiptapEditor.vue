@@ -196,7 +196,7 @@ defineExpose({
 
   .error-message {
     margin-inline-start: 8px;
-    color: $color-primary-1;
+    color: $color-primary-3;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

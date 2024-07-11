@@ -6,6 +6,7 @@ import { snakeCase } from 'lodash';
 import { VDataTableServer } from 'vuetify/components/VDataTable';
 import { UseSystemSettingStore } from '../../stores/system.setting.store';
 import MPagination from '@/components/molecules/MPagination.vue';
+import { SystemSettingType } from '../../constant';
 
 const { t } = useI18n();
 const store = UseSystemSettingStore();
@@ -73,6 +74,14 @@ async function loadItems(options: {
   store.getList();
 }
 
+function isValidUrl(url: string) {
+  try {
+    return Boolean(new URL(url));
+  } catch (error) {
+    return false;
+  }
+}
+
 onUnmounted(() => {
   store.setQueryParams({});
   store.setList([]);
@@ -90,6 +99,44 @@ onUnmounted(() => {
     :loading="store.isLoadingList"
     @update:options="loadItems"
   >
+    <template v-slot:[`item.valueVi`]="{ item }">
+      <a
+        v-if="item.type === SystemSettingType.FILE"
+        class="link-text-highlight"
+        :href="item.valueVi?.url"
+        target="_blank"
+        >{{ item.valueVi?.name }}</a
+      >
+      <span v-else-if="item.type === SystemSettingType.EDITOR" v-html="item.valueVi"></span>
+      <a
+        v-else-if="isValidUrl(item.valueVi)"
+        class="link-text-highlight"
+        :href="item.valueVi"
+        target="_blank"
+      >
+        {{ item.valueVi }}
+      </a>
+      <span v-else>{{ item.valueVi }}</span>
+    </template>
+    <template v-slot:[`item.valueEn`]="{ item }">
+      <a
+        v-if="item.type === SystemSettingType.FILE"
+        class="link-text-highlight"
+        :href="item.valueEn?.url"
+        target="_blank"
+        >{{ item.valueEn?.name }}</a
+      >
+      <span v-else-if="item.type === SystemSettingType.EDITOR" v-html="item.valueEn"></span>
+      <a
+        v-else-if="isValidUrl(item.valueEn)"
+        class="link-text-highlight"
+        :href="item.valueEn"
+        target="_blank"
+      >
+        {{ item.valueEn }}
+      </a>
+      <span v-else>{{ item.valueEn }}</span>
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <div class="actions">
         <BActionButton

@@ -33,6 +33,6 @@ export enum SystemSettingType {
 }
 
 export const SystemSettingFormSchema = yup.object({
-  valueVi: yup.mixed().required().label('systemSetting.name'),
-  valueEn: yup.mixed().required().label('systemSetting.name')
+  valueVi: yup.mixed().required().label('systemSetting.value'),
+  valueEn: yup.mixed().required().label('systemSetting.value')
 });

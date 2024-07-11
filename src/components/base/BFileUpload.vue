@@ -10,6 +10,7 @@ type Props = {
   aspectRatio?: string;
   chooseText?: string;
   accept?: string;
+  errorMessage?: string;
 };
 const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
@@ -89,10 +90,19 @@ onUnmounted(() => {
           </v-btn>
         </div>
       </div>
+      <div v-if="!!errorMessage" class="error-message">{{ errorMessage }}</div>
     </template>
   </v-hover>
 </template>
 <style lang="scss" scoped>
+.error-message {
+  margin-inline-start: 8px;
+  color: $color-primary-3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+}
 .image-upload__wrapper {
   position: relative;
   .no-image {

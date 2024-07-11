@@ -145,6 +145,7 @@ onUnmounted(() => {
           v-model="valueVi"
           :height="200"
           :choose-text="$t('common.button.chooseFile') + '(VI)'"
+          :error-message="translateYupError(errors.valueVi)"
         />
       </v-col>
       <v-col cols="12">
@@ -206,6 +207,7 @@ onUnmounted(() => {
           v-model="valueEn"
           :height="200"
           :choose-text="$t('common.button.chooseFile') + ' (EN)'"
+          :error-message="translateYupError(errors.valueEn)"
         />
       </v-col>
     </v-row>

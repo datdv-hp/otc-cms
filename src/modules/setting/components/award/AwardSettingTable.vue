@@ -19,7 +19,17 @@ const headers = computed<VDataTableServer['$props']['headers']>(() => {
       title: t('setting.award.fields.id'),
       key: 'id',
       minWidth: '56',
+      maxWidth: '56',
+      width: '56',
       sortable: false
+    },
+    {
+      title: t('setting.award.fields.icon'),
+      key: 'icon',
+      minWidth: '100',
+      width: '130',
+      sortable: false,
+      align: 'center'
     },
     {
       title: t('setting.award.fields.nameVi'),
@@ -140,6 +150,9 @@ onUnmounted(() => {
           @click="deleteCashbackSetting(item, actionIndex)"
         />
       </div>
+    </template>
+    <template v-slot:[`item.icon`]="{ item }">
+      <v-img v-if="item.icon?.url" class="my-3 mx-auto" :src="item.icon?.url" :width="50"></v-img>
     </template>
     <template v-slot:loading>
       <v-skeleton-loader :type="`table-row@${itemsPerPage}`"></v-skeleton-loader>

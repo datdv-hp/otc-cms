@@ -23,7 +23,7 @@ function submit() {
 }
 </script>
 <template>
-  <v-dialog :model-value="true" :max-width="maxWidth" :min-width="minWidth" persistent>
+  <v-dialog :model-value="true" :max-width="maxWidth" :min-width="minWidth" persistent scrollable>
     <v-card class="pa-4" :prepend-icon="prependIcon" :title="title">
       <v-card-text class="py-6">
         <slot></slot>
